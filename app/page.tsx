@@ -12,13 +12,13 @@ const versions = [
     n: "1",
     slug: "/y1",
     name: "Slate II",
-    blurb: "Slate, refined — wider column, the @ up top, companies not projects.",
+    blurb: "Slate, refined: wider column, the @ up top, companies not projects.",
   },
   {
     n: "2",
     slug: "/y2",
     name: "Record",
-    blurb: "Slate's calm with Ledger's move — career chapters breathe open.",
+    blurb: "Slate's calm with Ledger's move. Career chapters breathe open.",
   },
   {
     n: "3",
@@ -30,13 +30,13 @@ const versions = [
     n: "4",
     slug: "/y4",
     name: "Thread",
-    blurb: "Slate with Reveal's move — roles and handles slide open inline.",
+    blurb: "Slate with Reveal's move. Roles and handles slide open inline.",
   },
   {
     n: "5",
     slug: "/y5",
     name: "Story",
-    blurb: "The whole thing as a short letter — the path woven into sentences.",
+    blurb: "The whole thing as a short letter, the path woven into sentences.",
   },
 ];
 
@@ -56,7 +56,7 @@ export default function Home() {
             owen opacki / newomp4
           </h1>
           <p className="mt-2 text-sm text-[#8A8A8A]">
-            Round four: five takes on Slate — wider, story-first, @ up front.
+            Round four: five takes on Slate. Wider, story-first, @ up front.
             Pick one and we refine from there.
           </p>
         </header>
@@ -116,7 +116,7 @@ export default function Home() {
           className="rise mt-16 text-xs text-[#5A5A5A]"
           style={{ "--rise-delay": "0.64s" } as React.CSSProperties}
         >
-          All copy is placeholder — the career path, links, and socials all
+          All copy is placeholder. The career path, links, and socials all
           live in lib/content.ts.
         </footer>
       </main>

@@ -16,7 +16,7 @@ import Print from "./Print";
 import styles from "./styles.module.css";
 
 export const metadata: Metadata = {
-  title: "Owen Opacki — Slate II",
+  title: "Owen Opacki · Slate II",
   description: profile.tagline,
 };
 
@@ -228,7 +228,7 @@ export default function SlateTwoPage() {
                     {...(social.href.startsWith("http")
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
-                    aria-label={`${social.label} — ${social.handle}`}
+                    aria-label={`${social.label} · ${social.handle}`}
                     className={styles.social}
                   >
                     {social.label}{" "}

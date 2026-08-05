@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Owen Opacki — newomp4",
+  title: "Owen Opacki · newomp4",
   description: "Owen Opacki makes things for the internet. @newomp4 everywhere.",
 };
 

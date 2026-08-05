@@ -18,7 +18,7 @@ export const profile = {
   // Short one-liner used under the name in some versions
   tagline: "I make things for the internet.",
   intro: [
-    "I make things for the internet — content, small tools, and the systems that connect the two.",
+    "I make things for the internet: content, small tools, and the systems that connect the two.",
     "This site is the index. What I'm building, what I've shipped, where to find me. No case studies. Just the links.",
   ],
   now: "Right now I'm heads-down on something new. More soon.",
@@ -38,7 +38,7 @@ export type PathItem = {
 
 export const path: PathItem[] = [
   {
-    years: "2024 — now",
+    years: "2024 – now",
     title: "Company One",
     role: "Content & growth",
     note: "The short version of what you actually do there.",
@@ -46,7 +46,7 @@ export const path: PathItem[] = [
     external: true,
   },
   {
-    years: "2023 — 2024",
+    years: "2023 – 2024",
     title: "Company Two",
     role: "Made videos",
     note: "One line on what that chapter taught you.",
@@ -54,10 +54,10 @@ export const path: PathItem[] = [
     external: true,
   },
   {
-    years: "2022 — 2023",
+    years: "2022 – 2023",
     title: "On my own",
     role: "Building an audience",
-    note: "What you were figuring out before anyone paid you to. This entry is deliberately longer to show the layout stretches with you — write two, three, four sentences about a chapter and the row simply grows to fit. No truncation, no cut-off text, just more story where you want more story.",
+    note: "What you were figuring out before anyone paid you to. This entry is deliberately longer to show the layout stretches with you: write two, three, four sentences about a chapter and the row simply grows to fit. No truncation, no cut-off text, just more story where you want more story.",
   },
 ];
 
@@ -72,14 +72,14 @@ export type LinkItem = {
 // "What I do / have made" — placeholder entries, swap in your real stuff
 export const work: LinkItem[] = [
   {
-    year: "2025 — now",
+    year: "2025 – now",
     title: "Project One",
     description: "A one-liner about what this is and why it exists.",
     href: "https://example.com",
     external: true,
   },
   {
-    year: "2024 — now",
+    year: "2024 – now",
     title: "Project Two",
     description: "The outcome, a success metric, or a cheesy tagline.",
     href: "https://example.com",
@@ -126,6 +126,6 @@ export type Social = {
 export const socials: Social[] = [
   { label: "Twitter", handle: "@newomp4", href: "https://x.com/newomp4" },
   { label: "Instagram", handle: "@newomp4", href: "https://instagram.com/newomp4" },
-  { label: "YouTube", handle: "@newomp4", href: "https://youtube.com/@newomp4" },
+  { label: "YouTube (I don't post haha)", handle: "@newomp4", href: "https://youtube.com/@newomp4" },
   { label: "Discord", handle: "newomp4", copyToClipboard: true },
 ];
