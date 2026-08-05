@@ -4,9 +4,9 @@
   color-scheme: dark;
 }
 
-/* Accent 1 of 2 — text selection */
+/* Text selection — quiet inversion */
 .root ::selection {
-  background: #ec9d5d;
+  background: #f5f5f5;
   color: #111111;
 }
 
@@ -34,9 +34,9 @@
   background-size: 100% 1px;
 }
 
-/* Accent 2 of 2 — the @ people know him by */
+/* The @ people know him by — brightest mark in the byline */
 .at {
-  color: #ec9d5d;
+  color: #f5f5f5;
 }
 
 .handleArrow {
@@ -151,14 +151,73 @@
   color: #d4d4d4;
 }
 
+/* ── The enclosed photograph: a 3:2 print laid on the page at a slight tilt.
+     Picked up on hover/focus — straightens (overshoot), lifts, shadow deepens ── */
+.photoFigure {
+  width: 68%;
+}
+
+.photo {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid #262626;
+  background: #161616;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  transform: rotate(-1.5deg);
+  /* Straighten leads; the shadow trails it by 40ms */
+  transition:
+    transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 350ms ease 40ms;
+}
+
+.photo:hover,
+.photo:focus-visible {
+  transform: rotate(0deg) translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.5);
+}
+
+.photo:focus-visible {
+  outline: 2px solid #f5f5f5;
+  outline-offset: 4px;
+}
+
+/* Placeholder art — layered gradients standing in for a real photo */
+.photoArt {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      120% 75% at 68% 10%,
+      rgba(224, 232, 240, 0.07),
+      transparent 58%
+    ),
+    radial-gradient(
+      90% 60% at 22% 85%,
+      rgba(255, 255, 255, 0.03),
+      transparent 55%
+    ),
+    linear-gradient(165deg, #2b323d 0%, #232933 46%, #1d222a 74%, #171b21 100%);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .handle,
   .handleArrow,
   .proseLink,
   .miniArrow,
   .timeline > li,
-  .timeLink {
+  .timeLink,
+  .photo {
     transition: none;
+  }
+
+  /* The photo renders straight and stays put */
+  .photo,
+  .photo:hover,
+  .photo:focus-visible {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
   }
 
   .handle:hover .handleArrow,

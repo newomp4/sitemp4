@@ -4,9 +4,9 @@
   color-scheme: dark;
 }
 
-/* Orange 1 of 3 — text selection */
+/* Text selection — inverted grayscale */
 .root ::selection {
-  background: #ec9d5d;
+  background: #f5f5f5;
   color: #111111;
 }
 
@@ -31,7 +31,7 @@
   color: #f5f5f5;
 }
 
-/* Orange 2 of 3 — the hover dot */
+/* The hover dot */
 .navLink::after {
   content: "";
   position: absolute;
@@ -40,7 +40,7 @@
   width: 3px;
   height: 3px;
   border-radius: 9999px;
-  background: #ec9d5d;
+  background: #f5f5f5;
   opacity: 0;
   transform: translate(-50%, 3px) scale(0);
   transition:
@@ -59,11 +59,12 @@
     transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ── Orange 3 of 3 — the @handle, the identity of the page ──
-   Underline draws left → right; the arrow nudges out 80ms behind it. */
+/* ── The @handle, the identity of the page — prominent by size,
+   weight, and position. Underline draws left → right; the arrow
+   nudges out 80ms behind it. */
 .handle {
   display: inline-block;
-  color: #ec9d5d;
+  color: #f5f5f5;
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
   background-position: 0 100%;
@@ -84,6 +85,90 @@
 .handle:focus-visible .handleArrow {
   transform: translate(2px, -2px);
   transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 80ms;
+}
+
+/* ── Photo placeholders — pure CSS art, swapped for real images later ──
+   The frame owns position/clip/border; aspect, width, and rounding come
+   from the call site. Spans (display set here) so they sit legally
+   inside the chapter rows' <a> tags. */
+.artFrame {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border: 1px solid #232323;
+  background: #141414;
+}
+
+.art {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+/* The wide photo under the intro — art breathes to 1.03 (the frame
+   clips), border brightens 60ms behind it. */
+.photo .art {
+  transform-origin: center;
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.photo:hover .art {
+  transform: scale(1.03);
+}
+
+.photo {
+  transition: border-color 250ms ease;
+}
+
+.photo:hover {
+  border-color: #333333;
+  transition: border-color 250ms ease 60ms;
+}
+
+/* One quiet gradient each — hero, then per chapter */
+.artWide {
+  background:
+    radial-gradient(
+      90% 70% at 72% 8%,
+      rgba(216, 226, 236, 0.05),
+      transparent 60%
+    ),
+    radial-gradient(
+      70% 90% at 12% 88%,
+      rgba(255, 255, 255, 0.03),
+      transparent 55%
+    ),
+    linear-gradient(160deg, #23272d 0%, #1c1f24 48%, #16181b 100%);
+}
+
+.artSlate {
+  background:
+    radial-gradient(
+      110% 65% at 30% 15%,
+      rgba(208, 224, 240, 0.06),
+      transparent 60%
+    ),
+    linear-gradient(150deg, #2c3441 0%, #242b35 55%, #1b2027 100%);
+}
+
+.artMoss {
+  background:
+    radial-gradient(
+      120% 70% at 70% 12%,
+      rgba(214, 228, 216, 0.05),
+      transparent 60%
+    ),
+    linear-gradient(155deg, #29312b 0%, #212823 55%, #181c19 100%);
+}
+
+.artChar {
+  background:
+    radial-gradient(
+      130% 70% at 60% 8%,
+      rgba(255, 255, 255, 0.05),
+      transparent 55%
+    ),
+    linear-gradient(172deg, #2c2c2c 0%, #202020 55%, #171717 100%);
 }
 
 /* ── The path: sibling-dim — the held row stays, the rest recede ── */
@@ -109,7 +194,7 @@
     transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* mono years — lift from ledger-gray toward the text */
+/* years — lift from ledger-gray toward the text */
 .years {
   color: #6e6e6e;
   transition: color 150ms ease;
@@ -273,12 +358,18 @@
   .linkTitle,
   .linkArrow,
   .social,
-  .socialArrow {
+  .socialArrow,
+  .photo,
+  .photo .art {
     transition: none;
   }
 
   .list > li:hover,
   .list > li:focus-within {
+    transform: none;
+  }
+
+  .photo:hover .art {
     transform: none;
   }
 

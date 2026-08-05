@@ -32,7 +32,7 @@ function PathRow({ item }: { item: PathItem }) {
   const meta = [item.role, item.note].filter(Boolean).join(" · ");
   const inner = (
     <>
-      <p className="font-mono text-[12px] leading-6 text-[#6E6E6E]">
+      <p className="text-[12px] leading-6 text-[#6E6E6E]">
         {item.years}
       </p>
       <div>
@@ -147,7 +147,7 @@ export default function StillsPage() {
               href={profile.handleHref}
               target="_blank"
               rel="noopener noreferrer"
-              className={`${styles.handle} font-mono text-[15px]`}
+              className={`${styles.handle} text-[15px]`}
             >
               @{profile.handle}{" "}
               <span aria-hidden="true" className={styles.handleArrow}>
@@ -176,7 +176,7 @@ export default function StillsPage() {
             ))}
           </div>
 
-          <p className="mt-8 font-mono text-xs text-[#6E6E6E]">{profile.now}</p>
+          <p className="mt-8 text-xs text-[#6E6E6E]">{profile.now}</p>
         </section>
 
         <main>
@@ -270,7 +270,7 @@ export default function StillsPage() {
       <Link
         href="/"
         aria-label="Back to all versions"
-        className="fixed right-4 bottom-4 z-50 rounded-full border border-[#262626] bg-[#161616]/90 px-2.5 py-1 font-mono text-[11px] text-[#6E6E6E] transition-colors duration-150 hover:text-[#F5F5F5] motion-reduce:transition-none"
+        className="fixed right-4 bottom-4 z-50 rounded-full border border-[#262626] bg-[#161616]/90 px-2.5 py-1 text-[11px] text-[#6E6E6E] transition-colors duration-150 hover:text-[#F5F5F5] motion-reduce:transition-none"
       >
         3 / 5
       </Link>

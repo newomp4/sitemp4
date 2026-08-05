@@ -10,6 +10,7 @@ import {
   type Social,
 } from "@/lib/content";
 import CopyDiscord from "./copy-discord";
+import Photo from "./photo";
 import styles from "./styles.module.css";
 
 export const metadata: Metadata = {
@@ -133,7 +134,7 @@ export default function StoryPage() {
             </h1>
 
             {/* The byline — how people actually know him */}
-            <p className="rise mt-3 font-mono text-[15px]" style={rise(2)}>
+            <p className="rise mt-3 text-[15px]" style={rise(2)}>
               <a href={profile.handleHref} {...blank} className={styles.handle}>
                 <span className={styles.at}>@</span>
                 {profile.handle}{" "}
@@ -160,8 +161,13 @@ export default function StoryPage() {
               </p>
             </div>
 
+            {/* ── A photograph, enclosed with the letter ── */}
+            <div className="rise mt-12" style={rise(4)}>
+              <Photo />
+            </div>
+
             <p
-              className="rise mt-10 font-mono text-xs text-[#6E6E6E]"
+              className="rise mt-12 text-xs text-[#6E6E6E]"
               style={rise(4)}
             >
               {profile.now}
@@ -170,7 +176,7 @@ export default function StoryPage() {
             {/* A quiet index of the same story, for scanners */}
             <ol
               aria-label="Timeline"
-              className={`${styles.timeline} rise mt-10 space-y-2 font-mono text-[12px] text-[#6E6E6E]`}
+              className={`${styles.timeline} rise mt-10 space-y-2 text-[12px] text-[#6E6E6E]`}
               style={rise(4)}
             >
               {path.map((item) => {
@@ -270,7 +276,7 @@ export default function StoryPage() {
       <Link
         href="/"
         aria-label="Back to all versions"
-        className="fixed right-4 bottom-4 z-50 rounded-full border border-[#262626] bg-[#161616]/90 px-2.5 py-1 font-mono text-[11px] text-[#6E6E6E] transition-colors duration-150 hover:text-[#F5F5F5] motion-reduce:transition-none"
+        className="fixed right-4 bottom-4 z-50 rounded-full border border-[#262626] bg-[#161616]/90 px-2.5 py-1 text-[11px] text-[#6E6E6E] transition-colors duration-150 hover:text-[#F5F5F5] motion-reduce:transition-none"
       >
         5 / 5
       </Link>

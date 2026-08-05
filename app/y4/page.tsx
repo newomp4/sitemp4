@@ -10,6 +10,7 @@ import {
   type LinkItem,
 } from "@/lib/content";
 import CopyDiscord from "./CopyDiscord";
+import Portrait from "./Portrait";
 import styles from "./styles.module.css";
 
 export const metadata: Metadata = {
@@ -35,7 +36,7 @@ function host(href: string): string {
 function PathRow({ item }: { item: PathItem }) {
   const inner = (
     <>
-      <span className="block font-mono text-[12px] text-[#6E6E6E]">
+      <span className="block text-[12px] text-[#6E6E6E]">
         {item.years}
       </span>
       <span className="mt-1 block sm:mt-0">
@@ -44,7 +45,7 @@ function PathRow({ item }: { item: PathItem }) {
           {item.role && (
             <span className={styles.reveal}>
               <span
-                className={`${styles.revealInner} font-mono text-[12px] text-[#6E6E6E]`}
+                className={`${styles.revealInner} text-[12px] text-[#6E6E6E]`}
               >
                 {` · ${item.role}`}
               </span>
@@ -106,7 +107,7 @@ function LinkRow({ item }: { item: LinkItem }) {
         {hostname && (
           <span className={styles.reveal}>
             <span
-              className={`${styles.revealInner} font-mono text-[12px] text-[#6E6E6E]`}
+              className={`${styles.revealInner} text-[12px] text-[#6E6E6E]`}
             >
               {` · ${hostname}`}
             </span>
@@ -145,43 +146,49 @@ export default function ThreadPage() {
         {/* ── Hero ── */}
         <section
           aria-labelledby="intro-heading"
-          className="rise mt-16 sm:mt-20"
+          className="rise mt-16 sm:mt-20 sm:grid sm:grid-cols-[1fr_auto] sm:items-start sm:gap-x-10"
           style={rise(1)}
         >
-          <h1
-            id="intro-heading"
-            className="text-[26px] font-semibold tracking-tight text-[#F5F5F5]"
-          >
-            {profile.headline}
-          </h1>
-          {/* The @ is the identity of the page. */}
-          <p className="mt-3">
-            <a
-              href={profile.handleHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`@${profile.handle} on Twitter`}
-              className={`${styles.trigger} ${styles.handle} font-mono text-[17px]`}
+          {/* First in DOM: above the headline on mobile, right column on sm+ */}
+          <div className="mb-6 sm:order-2 sm:mb-0">
+            <Portrait />
+          </div>
+          <div className="sm:order-1">
+            <h1
+              id="intro-heading"
+              className="text-[26px] font-semibold tracking-tight text-[#F5F5F5]"
             >
-              <span className={styles.handleText}>@{profile.handle}</span>
-              <span className={styles.reveal} aria-hidden="true">
-                <span
-                  className={`${styles.revealInner} text-[13px] text-[#6E6E6E]`}
-                >
-                  {" · this is where to find me"}
+              {profile.headline}
+            </h1>
+            {/* The @ is the identity of the page. */}
+            <p className="mt-3">
+              <a
+                href={profile.handleHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`@${profile.handle} on Twitter`}
+                className={`${styles.trigger} ${styles.handle} text-[17px]`}
+              >
+                <span className={styles.handleText}>@{profile.handle}</span>
+                <span className={styles.reveal} aria-hidden="true">
+                  <span
+                    className={`${styles.revealInner} text-[13px] text-[#6E6E6E]`}
+                  >
+                    {" · this is where to find me"}
+                  </span>
                 </span>
-              </span>
-            </a>
-          </p>
-          {profile.intro.map((paragraph) => (
-            <p
-              key={paragraph}
-              className="mt-4 text-[15px] leading-relaxed text-[#A3A3A3]"
-            >
-              {paragraph}
+              </a>
             </p>
-          ))}
-          <p className="mt-6 font-mono text-xs text-[#6E6E6E]">{profile.now}</p>
+            {profile.intro.map((paragraph) => (
+              <p
+                key={paragraph}
+                className="mt-4 text-[15px] leading-relaxed text-[#A3A3A3]"
+              >
+                {paragraph}
+              </p>
+            ))}
+            <p className="mt-6 text-xs text-[#6E6E6E]">{profile.now}</p>
+          </div>
         </section>
 
         <main>
@@ -254,7 +261,7 @@ export default function ThreadPage() {
                     {social.label}
                     <span className={styles.reveal} aria-hidden="true">
                       <span
-                        className={`${styles.revealInner} font-mono text-[12px] text-[#6E6E6E]`}
+                        className={`${styles.revealInner} text-[12px] text-[#6E6E6E]`}
                       >
                         {` ${social.handle}`}
                       </span>
@@ -276,7 +283,7 @@ export default function ThreadPage() {
       <Link
         href="/"
         aria-label="Back to all versions"
-        className="fixed right-4 bottom-4 z-50 rounded-full border border-[#262626] bg-[#161616]/90 px-2.5 py-1 font-mono text-[11px] text-[#6E6E6E] transition-colors duration-150 hover:text-[#F5F5F5] motion-reduce:transition-none"
+        className="fixed right-4 bottom-4 z-50 rounded-full border border-[#262626] bg-[#161616]/90 px-2.5 py-1 text-[11px] text-[#6E6E6E] transition-colors duration-150 hover:text-[#F5F5F5] motion-reduce:transition-none"
       >
         4 / 5
       </Link>

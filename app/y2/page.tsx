@@ -10,6 +10,7 @@ import {
   type LinkItem,
 } from "@/lib/content";
 import CopyHandle from "./copy-handle";
+import Placeholder, { type Tone } from "./placeholder";
 import styles from "./styles.module.css";
 
 export const metadata: Metadata = {
@@ -20,17 +21,19 @@ export const metadata: Metadata = {
 const rise = (step: number): CSSProperties =>
   ({ "--rise-delay": `${step * 0.06}s` }) as CSSProperties;
 
+/* Each chapter's thumbnail gets its own quiet gradient. */
+const CHAPTER_TONES: Tone[] = ["slate", "moss", "char"];
+
 /* One chapter of the path. Resting state is a single line — years,
    title, role — with the note folded shut beneath. On hover or
-   keyboard focus the row breathes open; linkless chapters get a
-   tabIndex so keyboard users can unfold them too. */
-function Chapter({ item }: { item: PathItem }) {
+   keyboard focus the row breathes open — revealing the note and a
+   small thumbnail beside it; linkless chapters get a tabIndex so
+   keyboard users can unfold them too. */
+function Chapter({ item, tone }: { item: PathItem; tone: Tone }) {
   const external = item.external ?? /^https?:/.test(item.href ?? "");
   const inner = (
     <>
-      <span className={`${styles.years} font-mono text-[12px]`}>
-        {item.years}
-      </span>
+      <span className={`${styles.years} text-[12px]`}>{item.years}</span>
       <span className="min-w-0 text-[16px]">
         <span className={`${styles.title} font-medium`}>{item.title}</span>
         {item.role && <span className="text-[#8A8A8A]"> · {item.role}</span>}
@@ -43,8 +46,14 @@ function Chapter({ item }: { item: PathItem }) {
       {item.note && (
         <span className={`${styles.reveal} col-span-2 col-start-2`}>
           <span className={styles.revealInner}>
-            <span className="block pt-2 text-[14px] leading-relaxed text-[#A3A3A3]">
-              {item.note}
+            <span className="flex items-start gap-4 pt-2">
+              <Placeholder
+                tone={tone}
+                className="aspect-[4/3] w-24 flex-none rounded-md"
+              />
+              <span className="min-w-0 text-[14px] leading-relaxed text-[#A3A3A3]">
+                {item.note}
+              </span>
             </span>
           </span>
         </span>
@@ -136,7 +145,7 @@ export default function RecordPage() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`@${profile.handle} on Twitter`}
-            className={`${styles.handle} mt-3 font-mono text-[15px]`}
+            className={`${styles.handle} mt-3 text-[15px] font-medium`}
           >
             @{profile.handle}{" "}
             <span
@@ -154,8 +163,16 @@ export default function RecordPage() {
               {paragraph}
             </p>
           ))}
-          <p className="mt-6 font-mono text-xs text-[#6E6E6E]">{profile.now}</p>
+          <p className="mt-6 text-xs text-[#6E6E6E]">{profile.now}</p>
         </section>
+
+        {/* ── Photo — always visible, art breathes on hover ── */}
+        <div className="rise mt-16" style={rise(2)}>
+          <Placeholder
+            tone="wide"
+            className={`${styles.photo} aspect-[16/10] w-full rounded-lg`}
+          />
+        </div>
 
         <main>
           {/* ── The path ── */}
@@ -163,7 +180,7 @@ export default function RecordPage() {
             id="path"
             aria-labelledby="path-heading"
             className="rise scroll-mt-10 pt-24"
-            style={rise(2)}
+            style={rise(3)}
           >
             <h2
               id="path-heading"
@@ -172,8 +189,12 @@ export default function RecordPage() {
               The path
             </h2>
             <ul className={styles.list}>
-              {path.map((item) => (
-                <Chapter key={item.title} item={item} />
+              {path.map((item, index) => (
+                <Chapter
+                  key={item.title}
+                  item={item}
+                  tone={CHAPTER_TONES[index % CHAPTER_TONES.length]}
+                />
               ))}
             </ul>
           </section>
@@ -183,7 +204,7 @@ export default function RecordPage() {
             id="links"
             aria-labelledby="links-heading"
             className="rise scroll-mt-10 pt-24"
-            style={rise(3)}
+            style={rise(4)}
           >
             <h2
               id="links-heading"
@@ -204,7 +225,7 @@ export default function RecordPage() {
           id="contact"
           aria-labelledby="contact-heading"
           className="rise scroll-mt-10 pt-24 pb-8"
-          style={rise(4)}
+          style={rise(5)}
         >
           <h2
             id="contact-heading"
@@ -248,7 +269,7 @@ export default function RecordPage() {
       <Link
         href="/"
         aria-label="Back to all versions"
-        className="fixed right-4 bottom-4 z-50 rounded-full border border-[#262626] bg-[#161616]/90 px-2.5 py-1 font-mono text-[11px] text-[#6E6E6E] transition-colors duration-150 hover:text-[#F5F5F5] motion-reduce:transition-none"
+        className="fixed right-4 bottom-4 z-50 rounded-full border border-[#262626] bg-[#161616]/90 px-2.5 py-1 text-[11px] text-[#6E6E6E] transition-colors duration-150 hover:text-[#F5F5F5] motion-reduce:transition-none"
       >
         2 / 5
       </Link>

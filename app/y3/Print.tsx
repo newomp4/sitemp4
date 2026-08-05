@@ -36,7 +36,7 @@ export default function Print({ label, tone, step }: Props) {
         */}
         <div aria-hidden="true" className={`${ART[tone]} absolute inset-0`} />
         <figcaption
-          className={`${styles.printLabel} absolute bottom-2 left-2.5 font-mono text-[10px] tracking-wide`}
+          className={`${styles.printLabel} absolute bottom-2 left-2.5 text-[10px] tracking-wide`}
         >
           {label}
         </figcaption>

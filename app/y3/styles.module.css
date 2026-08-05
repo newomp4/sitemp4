@@ -4,9 +4,9 @@
   color-scheme: dark;
 }
 
-/* Orange 1 of 3 — text selection */
+/* Text selection — near-white on ink */
 .root ::selection {
-  background: #ec9d5d;
+  background: #f5f5f5;
   color: #111111;
 }
 
@@ -31,7 +31,7 @@
   color: #f5f5f5;
 }
 
-/* Orange 2 of 3 — the hover dot */
+/* The hover dot */
 .navLink::after {
   content: "";
   position: absolute;
@@ -40,7 +40,7 @@
   width: 3px;
   height: 3px;
   border-radius: 9999px;
-  background: #ec9d5d;
+  background: #f5f5f5;
   opacity: 0;
   transform: translate(-50%, 3px) scale(0);
   transition:
@@ -59,10 +59,10 @@
     transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ── Orange 3 of 3 — the @handle under the headline ── */
+/* ── The @handle under the headline ── */
 /* Underline draws left → right, arrow nudges 60ms behind it. */
 .handle {
-  color: #ec9d5d;
+  color: #f5f5f5;
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
   background-position: 0 100%;
@@ -172,7 +172,7 @@
   --nudge: -2px;
 }
 
-/* The tiny mono caption brightens, trailing the lift */
+/* The tiny caption brightens, trailing the lift */
 .printLabel {
   color: #6e6e6e;
   transition: color 250ms ease 80ms;

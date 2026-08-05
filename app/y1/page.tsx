@@ -10,6 +10,7 @@ import {
   type PathItem,
 } from "@/lib/content";
 import CopyHandle from "./copy-handle";
+import Print from "./Print";
 import styles from "./styles.module.css";
 
 export const metadata: Metadata = {
@@ -24,7 +25,7 @@ const rise = (step: number): CSSProperties =>
 function PathRow({ item }: { item: PathItem }) {
   const body = (
     <div className="grid grid-cols-[92px_1fr] gap-x-4">
-      <p className="font-mono text-[12px] leading-6 text-[#6E6E6E]">
+      <p className="text-[12px] leading-6 tracking-[0.01em] text-[#6E6E6E]">
         {item.years}
       </p>
       <div>
@@ -136,9 +137,11 @@ export default function SlateTwoPage() {
           className="rise mt-16 sm:mt-20"
           style={rise(1)}
         >
+          {/* A single portrait, set down above the headline */}
+          <Print />
           <h1
             id="intro-heading"
-            className="text-[26px] font-semibold tracking-tight text-[#F5F5F5]"
+            className="mt-7 text-[26px] font-semibold tracking-tight text-[#F5F5F5]"
           >
             {profile.headline}
           </h1>
@@ -149,7 +152,7 @@ export default function SlateTwoPage() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`@${profile.handle} on X`}
-              className={`${styles.handle} font-mono`}
+              className={styles.handle}
             >
               @{profile.handle}{" "}
               <span
@@ -168,7 +171,9 @@ export default function SlateTwoPage() {
               {paragraph}
             </p>
           ))}
-          <p className="mt-6 font-mono text-xs text-[#6E6E6E]">{profile.now}</p>
+          <p className="mt-6 text-xs tracking-[0.01em] text-[#6E6E6E]">
+            {profile.now}
+          </p>
         </section>
 
         <main>
@@ -262,7 +267,7 @@ export default function SlateTwoPage() {
       <Link
         href="/"
         aria-label="Back to all versions"
-        className="fixed right-4 bottom-4 z-50 rounded-full border border-[#262626] bg-[#161616]/90 px-2.5 py-1 font-mono text-[11px] text-[#6E6E6E] transition-colors duration-150 hover:text-[#F5F5F5] motion-reduce:transition-none"
+        className="fixed right-4 bottom-4 z-50 rounded-full border border-[#262626] bg-[#161616]/90 px-2.5 py-1 text-[11px] tracking-[0.01em] text-[#6E6E6E] transition-colors duration-150 hover:text-[#F5F5F5] motion-reduce:transition-none"
       >
         1 / 5
       </Link>

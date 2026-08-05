@@ -4,9 +4,9 @@
   color-scheme: dark;
 }
 
-/* Orange 1 of 3 — text selection */
+/* Text selection — quiet, grayscale */
 .root ::selection {
-  background: #ec9d5d;
+  background: #f5f5f5;
   color: #111111;
 }
 
@@ -31,7 +31,7 @@
   color: #f5f5f5;
 }
 
-/* Orange 2 of 3 — the hover dot */
+/* The hover dot */
 .navLink::after {
   content: "";
   position: absolute;
@@ -40,7 +40,7 @@
   width: 3px;
   height: 3px;
   border-radius: 9999px;
-  background: #ec9d5d;
+  background: #f5f5f5;
   opacity: 0;
   transform: translate(-50%, 3px) scale(0);
   transition:
@@ -116,6 +116,59 @@
 .handle:hover .handleText,
 .handle:focus-visible .handleText {
   background-size: 100% 1px;
+}
+
+/* ── The portrait — a single 4:5 print set down beside the intro ──
+   Rests at 2deg; hover/focus picks it up: straighten (overshoot), lift,
+   pop, deepen shadow. Transform lives on CSS vars so reduced motion can
+   zero them out. */
+.print {
+  position: relative;
+  width: 112px;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid #262626;
+  background: #161616;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  transform: translateY(var(--lift, 0px)) rotate(var(--tilt, 2deg))
+    scale(var(--pop, 1));
+  /* Straighten leads, shadow trails 40ms, border trails 80ms */
+  transition:
+    transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 350ms ease 40ms,
+    border-color 250ms ease 80ms;
+}
+
+@media (min-width: 640px) {
+  .print {
+    width: 132px;
+  }
+}
+
+.print:hover,
+.print:focus-visible {
+  --tilt: 0deg;
+  --lift: -3px;
+  --pop: 1.04;
+  border-color: #3f3f3f;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.5);
+}
+
+.print:focus-visible {
+  outline: 2px solid #f5f5f5;
+  outline-offset: 4px;
+}
+
+/* Placeholder art — swapped for a real photo later */
+.printArt {
+  background:
+    radial-gradient(
+      110% 65% at 30% 15%,
+      rgba(208, 224, 240, 0.06),
+      transparent 60%
+    ),
+    linear-gradient(150deg, #2c3441 0%, #242b35 55%, #1b2027 100%);
 }
 
 /* ── The path: sibling-dim from Slate — hovered row holds, rest recede ── */
@@ -222,7 +275,8 @@
   color: #f5f5f5;
 }
 
-/* Reduced motion: every reveal simply sits there, already open */
+/* Reduced motion: every reveal simply sits there, already open;
+   the portrait renders straight and stays put */
 @media (prefers-reduced-motion: reduce) {
   .navLink,
   .navLink::after,
@@ -230,6 +284,7 @@
   .revealInner,
   .handle,
   .handleText,
+  .print,
   .pathList > li,
   .pathTitle,
   .note,
@@ -237,6 +292,17 @@
   .linkTitle,
   .social {
     transition: none;
+  }
+
+  .print {
+    --tilt: 0deg;
+  }
+
+  .print:hover,
+  .print:focus-visible {
+    --lift: 0px;
+    --pop: 1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
   }
 
   .pathList > li:hover,

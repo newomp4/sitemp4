@@ -25,7 +25,6 @@ const versions = [
     slug: "/y3",
     name: "Stills",
     blurb: "Slate with a strip of set-down photographs. Drop your images in.",
-    images: true,
   },
   {
     n: "4",
@@ -73,17 +72,12 @@ export default function Home() {
                 href={v.slug}
                 className="group flex items-baseline gap-6 py-5 transition-colors duration-200 hover:bg-[#161616]"
               >
-                <span className="w-8 shrink-0 font-mono text-xs text-[#5A5A5A] transition-colors duration-200 group-hover:text-[#EDEDED]">
+                <span className="w-8 shrink-0 text-xs text-[#5A5A5A] transition-colors duration-200 group-hover:text-[#EDEDED]">
                   {v.n}
                 </span>
                 <span className="flex-1">
                   <span className="block text-sm font-medium tracking-tight">
                     {v.name}
-                    {v.images && (
-                      <span className="ml-2 rounded-full border border-[#2A2A2A] px-1.5 py-0.5 align-middle font-mono text-[10px] font-normal text-[#5A5A5A]">
-                        img
-                      </span>
-                    )}
                   </span>
                   <span className="mt-0.5 block text-sm text-[#8A8A8A]">
                     {v.blurb}

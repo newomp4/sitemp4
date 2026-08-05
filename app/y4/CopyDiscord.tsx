@@ -39,7 +39,7 @@ export default function CopyDiscord({
     >
       {label}
       <span className={styles.reveal} aria-hidden="true">
-        <span className={`${styles.revealInner} font-mono text-[12px]`}>
+        <span className={`${styles.revealInner} text-[12px]`}>
           {/* Grid stack: width is the wider of the two strings, so the
               handle → "copied ✓" swap never moves layout. */}
           <span className="inline-grid">
@@ -50,9 +50,9 @@ export default function CopyDiscord({
             >
               {` ${handle}`}
             </span>
-            {/* Orange 3 of 3 — the copied flash */}
+            {/* The copied flash — lifts to white */}
             <span
-              className={`col-start-1 row-start-1 text-[#ec9d5d] transition-opacity duration-150 ease-in-out motion-reduce:transition-none ${
+              className={`col-start-1 row-start-1 text-[#f5f5f5] transition-opacity duration-150 ease-in-out motion-reduce:transition-none ${
                 copied ? "opacity-100" : "opacity-0"
               }`}
             >
