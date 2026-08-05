@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# owen — personal site
 
-## Getting Started
+Personal "what I do" site for [@newomp4](https://github.com/newomp4). Ultra-minimal, inspired by
+[Minimal Portfolio Lite](https://www.figma.com/community/file/1071188711165074571/minimal-portfolio-lite),
+[krish.sh](https://www.krish.sh), [michieldegraaf.com](https://www.michieldegraaf.com), and the copy of [nickbig.com](https://nickbig.com).
 
-First, run the development server:
+Built with Next.js (App Router) + Tailwind CSS v4 + TypeScript.
+
+## The five versions
+
+The homepage is a temporary picker. Each route is a complete, standalone take on the same content:
+
+| Route | Name     | Personality                                                        |
+| ----- | -------- | ------------------------------------------------------------------ |
+| `/v1` | Lite     | The Figma template, faithfully — avatar, quiet type, ↗ links       |
+| `/v2` | Terminal | Dark `#111`, tiny, lowercase, anti-promotional                     |
+| `/v3` | Document | A Notion page — blocks, hover highlights, callout, a real toggle   |
+| `/v4` | Index    | Swiss grid, hairlines, huge type, rows that invert on hover        |
+| `/v5` | Letter   | 420px of warm cream paper, links woven into sentences, a glass dock |
+
+Once a winner is chosen: its page becomes `app/page.tsx`, the other `v*` folders get deleted.
+
+## Editing content
+
+**All copy, work items, links, and socials live in [`lib/content.ts`](lib/content.ts).**
+Edit that one file and every version updates. Everything in it right now is placeholder.
+
+## Develop
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deploy (Vercel + Namecheap)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Push this repo to GitHub (done).
+2. Go to [vercel.com/new](https://vercel.com/new), import the repo, hit Deploy. Defaults are correct.
+3. In the Vercel project → Settings → Domains, add your domain.
+4. In Namecheap → Domain → Advanced DNS, add the records Vercel shows you
+   (an `A` record `@ → 76.76.21.21` and a `CNAME` `www → cname.vercel-dns.com`).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Every push to `main` auto-deploys after that.

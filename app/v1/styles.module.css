@@ -1,0 +1,70 @@
+/* ── Nav link with the signature 3px dot below the label ── */
+.navLink {
+  position: relative;
+  font-size: 14px;
+  line-height: 1;
+  color: #6b6b6b;
+  transition: color 150ms ease;
+}
+
+.navLink:hover,
+.navLink:focus-visible,
+.navLink:active {
+  color: #1a1a1a;
+}
+
+.navLink:focus-visible {
+  outline: 2px solid #1a1a1a;
+  outline-offset: 6px;
+  border-radius: 2px;
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  background: #1a1a1a;
+  opacity: 0;
+  transform: translateX(-50%) scale(0);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.navLink:hover::after,
+.navLink:focus-visible::after,
+.navLink:active::after {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* ── Tiny pop when the copy button swaps ↗ for ✓ ── */
+@keyframes glyphIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.glyphIn {
+  display: inline-block;
+  animation: glyphIn 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glyphIn {
+    animation: none;
+  }
+
+  .navLink::after {
+    transition: none;
+  }
+}

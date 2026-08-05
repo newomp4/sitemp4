@@ -11,14 +11,14 @@ export const profile = {
   name: "Owen",
   handle: "newomp4",
   email: "owen@contentrewards.com",
-  headline: "I make things for the internet.",
+  headline: "Hi, I'm Owen.",
   // Short one-liner used under the name in some versions
-  tagline: "Building, filming, shipping — mostly at the same time.",
+  tagline: "I make things for the internet.",
   intro: [
-    "I spend most of my time making things on the internet — content, small tools, and the systems that connect the two.",
-    "This site is a running index of what I'm up to: what I'm building, what I've made, and where to find me. No case studies, no fluff — just the links.",
+    "I make things for the internet — content, small tools, and the systems that connect the two.",
+    "This site is the index. What I'm building, what I've shipped, where to find me. No case studies. Just the links.",
   ],
-  now: "Right now I'm heads-down on something new. More on that soon.",
+  now: "Right now I'm heads-down on something new. More soon.",
 };
 
 export type LinkItem = {
