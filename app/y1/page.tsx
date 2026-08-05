@@ -21,7 +21,8 @@ export const metadata: Metadata = {
 const rise = (step: number): CSSProperties =>
   ({ "--rise-delay": `${step * 0.06}s` }) as CSSProperties;
 
-/* ── A chapter of the path: years left, the story right ── */
+/* ── A chapter of the path: one compact line at rest — years, title, role.
+   Hover/focus breathes the note open beneath it. ── */
 function PathRow({ item }: { item: PathItem }) {
   const body = (
     <div className="grid grid-cols-[92px_1fr] gap-x-4">
@@ -47,16 +48,21 @@ function PathRow({ item }: { item: PathItem }) {
           )}
         </h3>
         {item.note && (
-          <p className="mt-1 text-[14px] leading-relaxed text-[#8A8A8A]">
-            {item.note}
-          </p>
+          <div className={styles.noteWrap}>
+            <div className={styles.noteInner}>
+              <p className="pt-1 text-[14px] leading-relaxed text-[#8A8A8A]">
+                {item.note}
+              </p>
+            </div>
+          </div>
         )}
       </div>
     </div>
   );
 
   if (!item.href) {
-    return <li>{body}</li>;
+    // Focusable so keyboard users can unfold the note too.
+    return <li tabIndex={0}>{body}</li>;
   }
 
   const external = item.external ?? /^https?:/.test(item.href);
@@ -109,7 +115,7 @@ function Row({ item }: { item: LinkItem }) {
 export default function SlateTwoPage() {
   return (
     <div className={`${styles.root} min-h-dvh w-full bg-[#111111]`}>
-      <div className="mx-auto w-full max-w-[42rem] px-6 py-16 sm:py-24">
+      <div className="mx-auto w-full max-w-[42rem] px-6 py-12 sm:py-16">
         {/* ── Hero ── */}
         <section
           aria-labelledby="intro-heading"
@@ -145,12 +151,12 @@ export default function SlateTwoPage() {
           {profile.intro.map((paragraph) => (
             <p
               key={paragraph}
-              className="mt-4 text-[15px] leading-relaxed text-[#A3A3A3]"
+              className="mt-3 text-[15px] leading-relaxed text-[#A3A3A3]"
             >
               {paragraph}
             </p>
           ))}
-          <p className="mt-6 text-xs tracking-[0.01em] text-[#6E6E6E]">
+          <p className="mt-5 text-xs tracking-[0.01em] text-[#6E6E6E]">
             {profile.now}
           </p>
         </section>
@@ -160,16 +166,16 @@ export default function SlateTwoPage() {
           <section
             id="path"
             aria-labelledby="path-heading"
-            className="rise scroll-mt-10 pt-24"
+            className="rise scroll-mt-10 pt-14"
             style={rise(1)}
           >
             <h2
               id="path-heading"
-              className="mb-8 text-[14px] font-semibold text-[#F5F5F5]"
+              className="mb-5 text-[14px] font-semibold text-[#F5F5F5]"
             >
               The path
             </h2>
-            <ul className={`${styles.list} space-y-10`}>
+            <ul className={`${styles.list} space-y-5`}>
               {path.map((item) => (
                 <PathRow key={item.title} item={item} />
               ))}
@@ -180,16 +186,16 @@ export default function SlateTwoPage() {
           <section
             id="elsewhere"
             aria-labelledby="elsewhere-heading"
-            className="rise scroll-mt-10 pt-24"
+            className="rise scroll-mt-10 pt-14"
             style={rise(2)}
           >
             <h2
               id="elsewhere-heading"
-              className="mb-8 text-[14px] font-semibold text-[#F5F5F5]"
+              className="mb-5 text-[14px] font-semibold text-[#F5F5F5]"
             >
               Elsewhere
             </h2>
-            <ul className={`${styles.list} space-y-8`}>
+            <ul className={`${styles.list} space-y-5`}>
               {links.map((item) => (
                 <Row key={item.title} item={item} />
               ))}
@@ -201,12 +207,12 @@ export default function SlateTwoPage() {
         <footer
           id="contact"
           aria-labelledby="contact-heading"
-          className="rise scroll-mt-10 pt-24 pb-8"
+          className="rise scroll-mt-10 pt-14 pb-6"
           style={rise(3)}
         >
           <h2
             id="contact-heading"
-            className="mb-8 text-[14px] font-semibold text-[#F5F5F5]"
+            className="mb-5 text-[14px] font-semibold text-[#F5F5F5]"
           >
             Contact
           </h2>
@@ -236,7 +242,7 @@ export default function SlateTwoPage() {
               </li>
             ))}
           </ul>
-          <p className="mt-10 text-[13px] text-[#6E6E6E]">
+          <p className="mt-8 text-[13px] text-[#6E6E6E]">
             © 2026 {profile.name}
           </p>
         </footer>

@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
+/* Dark is the site's ground truth — the page never peeks white,
+   even on rubber-band overscroll past the top or bottom. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #111111;
+  --foreground: #ededed;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -21,8 +24,8 @@ body {
 }
 
 ::selection {
-  background: #171717;
-  color: #ffffff;
+  background: #f5f5f5;
+  color: #111111;
 }
 
 /* Shared entrance animation — used by the picker page; variants may reuse */

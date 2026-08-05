@@ -14,7 +14,7 @@ export const profile = {
   // Where the @ points — it's how people know you, so versions link it big.
   handleHref: "https://x.com/newomp4",
   email: "owen@contentrewards.com",
-  headline: "Hi im owen",
+  headline: "Hi, I'm Owen",
   // Short one-liner used under the name in some versions
   tagline: "I make things for the internet.",
   intro: [
