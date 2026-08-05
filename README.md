@@ -10,6 +10,17 @@ Built with Next.js (App Router) + Tailwind CSS v4 + TypeScript.
 
 The homepage is a temporary picker. Each route is a complete, standalone take on the same content.
 
+**Round 4 — five descendants of Slate, story-first** (wider column, prominent linked @, career
+path from `lib/content.ts` instead of projects):
+
+| Route | Name     | Personality                                                      |
+| ----- | -------- | ---------------------------------------------------------------- |
+| `/y1` | Slate II | Slate refined — wider, @ up top, companies not projects          |
+| `/y2` | Record   | Career chapters rest folded and breathe open on hover            |
+| `/y3` | Stills   | Slate plus a strip of set-down photographs · img                 |
+| `/y4` | Thread   | Roles, hostnames, and handles slide open inline on hover         |
+| `/y5` | Story    | The site as a short letter — the path woven into sentences       |
+
 **Round 3 — ten tighter merges of Nightlite × Quiet** (all dark; `img` = has image placeholder slots):
 
 | Route  | Name     | Personality                                                          |

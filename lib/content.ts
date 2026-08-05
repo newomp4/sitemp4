@@ -11,6 +11,8 @@ export const profile = {
   name: "Owen Opacki",
   firstName: "Owen",
   handle: "newomp4",
+  // Where the @ points — it's how people know you, so versions link it big.
+  handleHref: "https://x.com/newomp4",
   email: "owen@contentrewards.com",
   headline: "Hi, I'm Owen.",
   // Short one-liner used under the name in some versions
@@ -21,6 +23,43 @@ export const profile = {
   ],
   now: "Right now I'm heads-down on something new. More soon.",
 };
+
+// ── The path — how I got here, not a portfolio ──
+// Companies you've worked at / chapters of what you've been doing.
+// Newest first. Keep notes to one line; this is a story, not case studies.
+export type PathItem = {
+  years: string; // "2024 — now"
+  title: string; // company or chapter name
+  role?: string; // what you were / did there, a few words
+  note?: string; // one line of color, optional
+  href?: string; // optional link to the company/thing
+  external?: boolean;
+};
+
+export const path: PathItem[] = [
+  {
+    years: "2024 — now",
+    title: "Company One",
+    role: "Content & growth",
+    note: "The short version of what you actually do there.",
+    href: "https://example.com",
+    external: true,
+  },
+  {
+    years: "2023 — 2024",
+    title: "Company Two",
+    role: "Made videos",
+    note: "One line on what that chapter taught you.",
+    href: "https://example.com",
+    external: true,
+  },
+  {
+    years: "2022 — 2023",
+    title: "On my own",
+    role: "Building an audience",
+    note: "What you were figuring out before anyone paid you to.",
+  },
+];
 
 export type LinkItem = {
   year?: string;

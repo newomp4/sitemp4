@@ -1,0 +1,264 @@
+/* ── y4 "Thread" — Slate's calm column, Reveal's slide-open story ── */
+
+.root {
+  color-scheme: dark;
+}
+
+/* Orange 1 of 3 — text selection */
+.root ::selection {
+  background: #ec9d5d;
+  color: #111111;
+}
+
+.root :is(a, button):focus-visible {
+  outline: 2px solid #f5f5f5;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* ── Nav link: label lifts to white, 3px dot rises in beneath it ── */
+.navLink {
+  position: relative;
+  font-size: 14px;
+  line-height: 1;
+  color: #a3a3a3;
+  transition: color 150ms ease;
+}
+
+.navLink:hover,
+.navLink:focus-visible,
+.navLink:active {
+  color: #f5f5f5;
+}
+
+/* Orange 2 of 3 — the hover dot */
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  background: #ec9d5d;
+  opacity: 0;
+  transform: translate(-50%, 3px) scale(0);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.navLink:hover::after,
+.navLink:focus-visible::after,
+.navLink:active::after {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+  /* enters rising with a small overshoot; retract (rule above) stays plain */
+  transition:
+    opacity 150ms ease,
+    transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── The reveal (x8's mechanic) ──
+   Outer: inline-grid whose single column animates 0fr → 1fr.
+   Inner: clipped, nowrap, min-width 0 so it can collapse to nothing.
+   Revealed strings lead with U+00A0 — a normal space at the start of
+   the clipped cell would be collapsed away by whitespace processing. */
+.reveal {
+  display: inline-grid;
+  grid-template-columns: 0fr;
+  align-items: baseline;
+  transition: grid-template-columns 300ms ease;
+}
+
+.revealInner {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  /* leave: fade immediately while the column collapses */
+  transition: opacity 200ms ease;
+}
+
+/* Generic trigger — handle, link rows, socials */
+.trigger:hover .reveal,
+.trigger:focus-visible .reveal {
+  grid-template-columns: 1fr;
+}
+
+.trigger:hover .revealInner,
+.trigger:focus-visible .revealInner {
+  opacity: 1;
+  /* enter: trail the slide by a beat, fading as it slides */
+  transition: opacity 260ms ease 40ms;
+}
+
+/* ── The handle — the identity of the page ── */
+.handle {
+  color: #a3a3a3;
+  transition: color 200ms ease;
+}
+
+.handle:hover,
+.handle:focus-visible {
+  color: #f5f5f5;
+}
+
+/* underline draws left → right under the @ itself, not the revealed chunk */
+.handleText {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.handle:hover .handleText,
+.handle:focus-visible .handleText {
+  background-size: 100% 1px;
+}
+
+/* ── The path: sibling-dim from Slate — hovered row holds, rest recede ── */
+.pathList > li {
+  transition:
+    opacity 250ms ease,
+    transform 250ms ease;
+}
+
+.pathList:hover > li,
+.pathList:focus-within > li {
+  opacity: 0.45;
+}
+
+.pathList > li:hover,
+.pathList > li:focus-within {
+  opacity: 1;
+  transform: translateX(3px);
+  /* slide in with a small overshoot; settle back (rule above) is plain ease */
+  transition:
+    opacity 250ms ease,
+    transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Titles brighten in step with the slide */
+.pathTitle {
+  color: #d4d4d4;
+  transition: color 300ms ease;
+}
+
+.pathList > li:hover .pathTitle,
+.pathList > li:focus-within .pathTitle {
+  color: #f5f5f5;
+}
+
+/* Path rows open their reveal from the whole row, link or not */
+.pathList > li:hover .reveal,
+.pathList > li:focus-within .reveal {
+  grid-template-columns: 1fr;
+}
+
+.pathList > li:hover .revealInner,
+.pathList > li:focus-within .revealInner {
+  opacity: 1;
+  transition: opacity 260ms ease 40ms;
+}
+
+/* ── Second beat: the note rises in beneath, 40ms behind the role ── */
+.note {
+  opacity: 0;
+  transform: translateY(2px);
+  /* leave: retract at once, still eased */
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease;
+}
+
+.pathList > li:hover .note,
+.pathList > li:focus-within .note {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 260ms ease 40ms,
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1) 40ms;
+}
+
+/* ── Last in: the arrow follows everything, ~120ms behind ── */
+.pathArrow {
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.pathList > li:hover .pathArrow,
+.pathList > li:focus-within .pathArrow {
+  opacity: 1;
+  transform: translate(0, 0);
+  transition:
+    opacity 250ms ease 120ms,
+    transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 120ms;
+}
+
+/* ── Link rows: same mechanic, quieter ── */
+.linkTitle {
+  color: #a3a3a3;
+  transition: color 200ms ease;
+}
+
+.trigger:hover .linkTitle,
+.trigger:focus-visible .linkTitle {
+  color: #f5f5f5;
+}
+
+/* ── Social labels ── */
+.social {
+  color: #a3a3a3;
+  transition: color 200ms ease;
+}
+
+.social:hover,
+.social:focus-visible {
+  color: #f5f5f5;
+}
+
+/* Reduced motion: every reveal simply sits there, already open */
+@media (prefers-reduced-motion: reduce) {
+  .navLink,
+  .navLink::after,
+  .reveal,
+  .revealInner,
+  .handle,
+  .handleText,
+  .pathList > li,
+  .pathTitle,
+  .note,
+  .pathArrow,
+  .linkTitle,
+  .social {
+    transition: none;
+  }
+
+  .pathList > li:hover,
+  .pathList > li:focus-within {
+    transform: none;
+  }
+
+  .reveal {
+    grid-template-columns: 1fr;
+  }
+
+  .revealInner {
+    opacity: 1;
+  }
+
+  .note {
+    opacity: 1;
+    transform: none;
+  }
+
+  .pathArrow {
+    opacity: 1;
+    transform: none;
+  }
+}

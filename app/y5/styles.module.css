@@ -1,0 +1,177 @@
+/* ── y5 "Story" — the career as a short letter; x1's arrows shrunk to prose scale ── */
+
+.root {
+  color-scheme: dark;
+}
+
+/* Accent 1 of 2 — text selection */
+.root ::selection {
+  background: #ec9d5d;
+  color: #111111;
+}
+
+.root :is(a, button):focus-visible {
+  outline: 2px solid #f5f5f5;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* ── Byline handle: underline draws left → right, arrow nudges 60ms behind ── */
+.handle {
+  color: #d4d4d4;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition:
+    color 150ms ease,
+    background-size 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.handle:hover,
+.handle:focus-visible {
+  color: #f5f5f5;
+  background-size: 100% 1px;
+}
+
+/* Accent 2 of 2 — the @ people know him by */
+.at {
+  color: #ec9d5d;
+}
+
+.handleArrow {
+  transition: transform 150ms ease;
+}
+
+.handle:hover .handleArrow,
+.handle:focus-visible .handleArrow {
+  transform: translate(2px, -2px);
+  transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 60ms;
+}
+
+/* ── Inline prose link: quiet underline that brightens on hover ── */
+.proseLink {
+  color: #d4d4d4;
+  text-decoration: underline;
+  text-decoration-color: #3f3f3f;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 200ms ease;
+}
+
+.proseLink:hover,
+.proseLink:focus-visible {
+  text-decoration-color: #d4d4d4;
+}
+
+/* ── …and a miniature ↗ fades in up-right, 60ms behind the underline ── */
+.miniArrow {
+  /* inline-block also keeps the parent underline from running beneath it */
+  display: inline-block;
+  margin-left: 2px;
+  font-size: 11px;
+  line-height: 1;
+  color: #a3a3a3;
+  opacity: 0;
+  transform: translate(-3px, 3px);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.proseLink:hover .miniArrow,
+.proseLink:focus-visible .miniArrow {
+  opacity: 1;
+  transform: translate(0, 0);
+  transition:
+    opacity 200ms ease 60ms,
+    transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 60ms;
+}
+
+/* ── Copy feedback: both glyphs share one grid cell — no layout shift ── */
+.glyphCell {
+  display: inline-grid;
+  justify-items: start;
+}
+
+.check {
+  font-size: 11px;
+  line-height: 1;
+  color: #f5f5f5;
+  opacity: 0;
+}
+
+@keyframes glyphIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* After the hover rules, so "copied" wins while the cursor is still on it */
+.proseLink.copied .miniArrow {
+  opacity: 0;
+  transform: translate(-3px, 3px);
+  transition:
+    opacity 100ms ease,
+    transform 100ms ease;
+}
+
+.proseLink.copied .check {
+  opacity: 1;
+  animation: glyphIn 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Timeline footnote: rows brighten; the rest recede a touch ── */
+.timeline > li {
+  transition: opacity 200ms ease;
+}
+
+.timeline:hover > li,
+.timeline:focus-within > li {
+  opacity: 0.5;
+}
+
+.timeline > li:hover,
+.timeline > li:focus-within {
+  opacity: 1;
+}
+
+.timeLink {
+  color: #6e6e6e;
+  transition: color 150ms ease;
+}
+
+.timeLink:hover,
+.timeLink:focus-visible {
+  color: #d4d4d4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .handle,
+  .handleArrow,
+  .proseLink,
+  .miniArrow,
+  .timeline > li,
+  .timeLink {
+    transition: none;
+  }
+
+  .handle:hover .handleArrow,
+  .handle:focus-visible .handleArrow {
+    transform: none;
+  }
+
+  .proseLink:hover .miniArrow,
+  .proseLink:focus-visible .miniArrow {
+    transform: none;
+  }
+
+  .proseLink.copied .check {
+    animation: none;
+  }
+}
