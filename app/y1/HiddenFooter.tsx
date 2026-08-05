@@ -5,14 +5,13 @@ import { profile } from "@/lib/content";
 import styles from "./styles.module.css";
 
 /**
- * The hidden footer — Dia-style. An empty spacer sits at the very bottom
- * of the document; a fixed, bottom-anchored aurora layer scales up out of
- * the bottom edge exactly in step with scrolling into that dead space,
- * while the wordmark drifts up on the same progress. Blues sampled from
- * the profile photo's dusk sky and river, film grain on top.
- *
- * Decorative only (aria-hidden, pointer-events: none); under
- * prefers-reduced-motion the whole block is dropped via CSS.
+ * The hidden footer. An empty spacer sits at the document's very bottom;
+ * a fixed, bottom-anchored aurora rises from the bottom edge in step with
+ * scrolling into that space (translated, never squashed), in the electric
+ * blues sampled from the actual Twitter avatar (#0c1c46 → #0d61f0 →
+ * #0c8df9 → #2ad4ff), grain fading out with the color so the top edge
+ * dissolves into the page. A quote and the @ drift up with it.
+ * Dropped entirely under prefers-reduced-motion.
  */
 export default function HiddenFooter() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -33,6 +32,7 @@ export default function HiddenFooter() {
         Math.max(0, (window.innerHeight - rect.top) / rect.height),
       );
       root.style.setProperty("--reveal", progress.toFixed(4));
+      root.dataset.open = progress > 0.02 ? "true" : "false";
     };
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
@@ -52,7 +52,7 @@ export default function HiddenFooter() {
       {/* Dead space at the document's very bottom — scrolling into it drives the reveal */}
       <div ref={spacerRef} className={styles.revealSpacer} />
 
-      {/* The color, growing up out of the bottom edge */}
+      {/* The color, rising from the bottom edge */}
       <div className={styles.revealLayer}>
         <svg
           className="h-full w-full"
@@ -60,40 +60,56 @@ export default function HiddenFooter() {
           preserveAspectRatio="none"
         >
           <defs>
-            <linearGradient id="aurora-a" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0" stopColor="#9FC2E8" />
-              <stop offset="0.45" stopColor="#5B84B8" />
-              <stop offset="1" stopColor="#22405F" stopOpacity="0" />
+            <linearGradient id="aurora-deep" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0" stopColor="#1749b6" />
+              <stop offset="0.5" stopColor="#0c2a6e" />
+              <stop offset="1" stopColor="#0c1c46" stopOpacity="0" />
             </linearGradient>
-            <linearGradient id="aurora-b" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0" stopColor="#C9DCF2" />
-              <stop offset="0.5" stopColor="#7FA6D4" />
-              <stop offset="1" stopColor="#2E5077" stopOpacity="0" />
+            <linearGradient id="aurora-electric" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0" stopColor="#0e75ff" />
+              <stop offset="0.55" stopColor="#0d61f0" />
+              <stop offset="1" stopColor="#1749b6" stopOpacity="0" />
+            </linearGradient>
+            <linearGradient id="aurora-cyan" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0" stopColor="#2ad4ff" />
+              <stop offset="0.45" stopColor="#0c8df9" />
+              <stop offset="1" stopColor="#0e75ff" stopOpacity="0" />
             </linearGradient>
             <filter id="aurora-blur" x="-40%" y="-40%" width="180%" height="180%">
               <feGaussianBlur stdDeviation="26" />
             </filter>
           </defs>
           <g filter="url(#aurora-blur)">
-            <rect x="-40" y="277" width="200" height="323" fill="url(#aurora-a)" />
-            <rect x="101" y="210" width="200" height="390" fill="url(#aurora-b)" />
-            <rect x="242" y="140" width="200" height="460" fill="url(#aurora-a)" />
-            <rect x="383" y="60" width="200" height="540" fill="url(#aurora-b)" />
-            <rect x="524" y="16" width="200" height="584" fill="url(#aurora-a)" />
-            <rect x="665" y="60" width="200" height="540" fill="url(#aurora-b)" />
-            <rect x="806" y="140" width="200" height="460" fill="url(#aurora-a)" />
-            <rect x="947" y="210" width="200" height="390" fill="url(#aurora-b)" />
-            <rect x="1088" y="277" width="232" height="323" fill="url(#aurora-a)" />
+            <rect x="-40" y="277" width="200" height="323" fill="url(#aurora-deep)" />
+            <rect x="101" y="210" width="200" height="390" fill="url(#aurora-electric)" />
+            <rect x="242" y="140" width="200" height="460" fill="url(#aurora-deep)" />
+            <rect x="383" y="60" width="200" height="540" fill="url(#aurora-cyan)" />
+            <rect x="524" y="16" width="200" height="584" fill="url(#aurora-electric)" />
+            <rect x="665" y="60" width="200" height="540" fill="url(#aurora-cyan)" />
+            <rect x="806" y="140" width="200" height="460" fill="url(#aurora-deep)" />
+            <rect x="947" y="210" width="200" height="390" fill="url(#aurora-electric)" />
+            <rect x="1088" y="277" width="232" height="323" fill="url(#aurora-deep)" />
           </g>
         </svg>
-        {/* Film grain over the color */}
+        {/* Film grain, fading out with the color */}
         <div className={styles.revealGrain} />
       </div>
 
-      {/* The wordmark, drifting up as the color rises */}
+      {/* The words, drifting up as the color rises */}
       <div className={styles.revealText}>
-        <p className={styles.revealMark}>@{profile.handle}</p>
-        <p className={styles.revealSub}>see you on the internet</p>
+        <p className={styles.revealQuote}>
+          &ldquo;It won&rsquo;t fail because of me&rdquo;
+          <span className={styles.revealBy}> — tom sachs</span>
+        </p>
+        <a
+          href={profile.handleHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          tabIndex={-1}
+          className={styles.revealLink}
+        >
+          @{profile.handle}
+        </a>
       </div>
     </div>
   );

@@ -211,36 +211,12 @@
   transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 60ms;
 }
 
-/* ── The lightbox: backdrop fades, the photo card rises into place ── */
-@keyframes lightboxIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes lightboxCardIn {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
+/* ── The lightbox backdrop. All motion is driven from the component as a
+   shared-element morph between the print and the full photo. ── */
 .lightbox {
-  background: rgba(8, 8, 8, 0.78);
+  background: rgba(8, 8, 8, 0.82);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  animation: lightboxIn 280ms ease forwards;
-}
-
-.lightboxCard {
-  animation: lightboxCardIn 450ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .captionLink {
@@ -259,26 +235,26 @@
   text-decoration-color: #f5f5f5;
 }
 
-/* ── The hidden footer: fixed blue aurora scales up out of the bottom edge
-   as you scroll into the spacer; the wordmark drifts up on the same
-   progress. Purely decorative. ── */
+/* ── The hidden footer: a fixed aurora in the avatar's electric blues
+   rises from the bottom edge (translated, never squashed) as you scroll
+   into the spacer. Its top dissolves — gradients and grain both fade to
+   nothing — so there is no seam against the page. ── */
 .reveal {
   --reveal: 0;
 }
 
 .revealSpacer {
-  height: 55vh;
+  height: 52vh;
 }
 
 .revealLayer {
   position: fixed;
   inset-inline: 0;
   bottom: 0;
-  height: 55vh;
+  height: 52vh;
   z-index: 40;
   pointer-events: none;
-  transform-origin: bottom;
-  transform: scaleY(var(--reveal));
+  transform: translateY(calc((1 - var(--reveal)) * 103%));
   will-change: transform;
 }
 
@@ -288,7 +264,10 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 240px 240px;
   mix-blend-mode: overlay;
-  opacity: 0.28;
+  opacity: 0.3;
+  /* The grain must vanish where the color does, or its edge betrays the layer */
+  mask-image: linear-gradient(to top, black 45%, transparent 92%);
+  -webkit-mask-image: linear-gradient(to top, black 45%, transparent 92%);
 }
 
 .revealText {
@@ -297,28 +276,48 @@
   bottom: 0;
   z-index: 41;
   pointer-events: none;
+  visibility: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 6vh;
-  transform: translateY(calc((1 - var(--reveal)) * 26vh));
+  padding-bottom: 7vh;
+  transform: translateY(calc((1 - var(--reveal)) * 18vh));
   opacity: var(--reveal);
   will-change: transform, opacity;
 }
 
-.revealMark {
-  font-size: clamp(44px, 9vw, 104px);
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  color: #eef4fb;
-  text-shadow: 0 2px 24px rgba(20, 40, 65, 0.45);
+.reveal[data-open="true"] .revealText {
+  visibility: visible;
 }
 
-.revealSub {
-  margin-top: 12px;
+.revealQuote {
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  color: #eef4fb;
+  text-shadow: 0 1px 16px rgba(6, 20, 46, 0.5);
+}
+
+.revealBy {
+  color: rgba(238, 244, 251, 0.6);
+}
+
+.revealLink {
+  pointer-events: auto;
+  margin-top: 10px;
   font-size: 14px;
-  color: rgba(238, 244, 251, 0.78);
+  color: rgba(238, 244, 251, 0.85);
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition:
+    color 150ms ease,
+    background-size 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.revealLink:hover {
+  color: #ffffff;
+  background-size: 100% 1px;
 }
 
 /* ── Copied check pops in ── */
@@ -359,11 +358,6 @@
     display: none;
   }
 
-  .lightbox,
-  .lightboxCard {
-    animation: none;
-    opacity: 1;
-  }
 
   /* Notes stay open — no motion, no hidden content */
   .noteWrap {
