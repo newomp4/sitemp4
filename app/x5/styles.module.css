@@ -1,0 +1,151 @@
+/* ── x5 "Beam" — one orange dot that travels the nav ── */
+
+.root {
+  color-scheme: dark;
+}
+
+/* Orange appearance 1 of 2: text selection */
+.root ::selection {
+  background: #ec9d5d;
+  color: #111111;
+}
+
+.root :is(a, button):focus-visible {
+  outline: 1px solid #ededed;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ── Nav links: 13px, muted, no per-link dot — the shared one travels ── */
+.navLink {
+  font-size: 13px;
+  line-height: 1;
+  color: #6e6e6e;
+  transition: color 150ms ease;
+}
+
+.navLink:hover,
+.navLink:focus-visible,
+.navLink:active {
+  color: #ededed;
+}
+
+/* ── Orange appearance 2 of 2: the traveling dot ──
+   The track slides (overshoot bezier); the dot inside scales in/out. */
+.dotTrack {
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 0;
+  height: 0;
+  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+.dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  background: #ec9d5d;
+  transform: translateX(-50%) scale(0);
+  transition: transform 150ms ease;
+}
+
+.dot[data-shown] {
+  transform: translateX(-50%) scale(1);
+  transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Rows: left tick grows from the bottom, title and description
+   slide right on a small stagger. Hover and focus-within identical. ── */
+.row {
+  position: relative;
+}
+
+.tick {
+  position: absolute;
+  left: 0;
+  top: 2px;
+  bottom: 2px;
+  width: 2px;
+  background: #3f3f3f;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 250ms ease;
+}
+
+.row:hover .tick,
+.row:focus-within .tick {
+  transform: scaleY(1);
+}
+
+.rowTitle {
+  display: inline-block;
+  color: #d4d4d4;
+  transform: translateX(0);
+  transition:
+    transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 150ms ease;
+}
+
+.row:hover .rowTitle,
+.row:focus-within .rowTitle {
+  color: #f5f5f5;
+  transform: translateX(6px);
+}
+
+.rowDesc {
+  color: #737373;
+  transform: translateX(0);
+  transition:
+    transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 60ms,
+    color 150ms ease 60ms;
+}
+
+.row:hover .rowDesc,
+.row:focus-within .rowDesc {
+  color: #8c8c8c;
+  transform: translateX(2px);
+}
+
+/* ── Socials: underline draws left → right via background-size ── */
+.social {
+  color: #a3a3a3;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition:
+    background-size 250ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 150ms ease;
+}
+
+.social:hover,
+.social:focus-visible {
+  color: #ededed;
+  background-size: 100% 1px;
+}
+
+/* ── Reduced motion: everything appears in place, nothing travels ── */
+@media (prefers-reduced-motion: reduce) {
+  .navLink,
+  .dotTrack,
+  .dot,
+  .dot[data-shown],
+  .tick,
+  .rowTitle,
+  .rowDesc,
+  .social {
+    transition: none;
+  }
+
+  .row:hover .rowTitle,
+  .row:focus-within .rowTitle,
+  .row:hover .rowDesc,
+  .row:focus-within .rowDesc {
+    transform: translateX(0);
+  }
+}

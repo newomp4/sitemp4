@@ -6,19 +6,29 @@ Personal "what I do" site for [@newomp4](https://github.com/newomp4). Ultra-mini
 
 Built with Next.js (App Router) + Tailwind CSS v4 + TypeScript.
 
-## The five versions
+## The versions
 
-The homepage is a temporary picker. Each route is a complete, standalone take on the same content:
+The homepage is a temporary picker. Each route is a complete, standalone take on the same content.
 
-| Route | Name     | Personality                                                        |
-| ----- | -------- | ------------------------------------------------------------------ |
-| `/v1` | Lite     | The Figma template, faithfully — avatar, quiet type, ↗ links       |
-| `/v2` | Terminal | Dark `#111`, tiny, lowercase, anti-promotional                     |
-| `/v3` | Document | A Notion page — blocks, hover highlights, callout, a real toggle   |
-| `/v4` | Index    | Swiss grid, hairlines, huge type, rows that invert on hover        |
-| `/v5` | Letter   | 420px of warm cream paper, links woven into sentences, a glass dock |
+**Round 3 — ten tighter merges of Nightlite × Quiet** (all dark; `img` = has image placeholder slots):
 
-Once a winner is chosen: its page becomes `app/page.tsx`, the other `v*` folders get deleted.
+| Route  | Name     | Personality                                                          |
+| ------ | -------- | -------------------------------------------------------------------- |
+| `/x1`  | Slate    | The straightest merge — rows dim their neighbors on hover            |
+| `/x2`  | Frames   | Work as framed stills that breathe on hover · img                    |
+| `/x3`  | Decode   | Calm until touched — link titles unscramble character by character   |
+| `/x4`  | Portrait | A tilted photo shelf that straightens when you reach for it · img    |
+| `/x5`  | Beam     | One orange dot that travels the nav with a springy overshoot         |
+| `/x6`  | Ledger   | A folded index — rows breathe open to reveal their descriptions      |
+| `/x7`  | Peek     | Hover a project and its picture floats up under the cursor · img     |
+| `/x8`  | Reveal   | Years, hostnames, and handles slide open inline on demand            |
+| `/x9`  | Gallery  | Sticky intro left, image stills drifting past on the right · img     |
+| `/x10` | Morph    | Quiet's glyph chips, drawing themselves in ink on hover              |
+
+Earlier generations, kept for reference: `/m1` Nightlite + `/m2` Quiet (round-2 parents),
+`/m3` Dot Index, `/m4` Glow, `/m5` Prompt, and the round-1 originals `/v1` Lite + `/v2` Terminal.
+
+Once a winner is chosen: its page becomes `app/page.tsx`, the other variant folders get deleted.
 
 ## Editing content
 

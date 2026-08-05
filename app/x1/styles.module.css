@@ -1,0 +1,180 @@
+/* ── x1 "Slate" — the canonical merge: m1's voice, m2's restraint ── */
+
+.root {
+  color-scheme: dark;
+}
+
+/* Accent 1 of 2 — text selection */
+.root ::selection {
+  background: #ec9d5d;
+  color: #111111;
+}
+
+.root :is(a, button):focus-visible {
+  outline: 2px solid #f5f5f5;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* ── Nav link: label lifts to white, 3px dot rises in beneath it ── */
+.navLink {
+  position: relative;
+  font-size: 14px;
+  line-height: 1;
+  color: #a3a3a3;
+  transition: color 150ms ease;
+}
+
+.navLink:hover,
+.navLink:focus-visible,
+.navLink:active {
+  color: #f5f5f5;
+}
+
+/* Accent 2 of 2 — the hover dot */
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  background: #ec9d5d;
+  opacity: 0;
+  transform: translate(-50%, 3px) scale(0);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.navLink:hover::after,
+.navLink:focus-visible::after,
+.navLink:active::after {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+  /* enters rising with a small overshoot; retract (rule above) stays plain */
+  transition:
+    opacity 150ms ease,
+    transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Sibling-dim: the hovered/focused row holds, the rest recede ── */
+.list > li {
+  transition:
+    opacity 250ms ease,
+    transform 250ms ease;
+}
+
+.list:hover > li,
+.list:focus-within > li {
+  opacity: 0.45;
+}
+
+.list > li:hover,
+.list > li:focus-within {
+  opacity: 1;
+  transform: translateX(3px);
+  /* slide in with a small overshoot; settle back (rule above) is plain ease */
+  transition:
+    opacity 250ms ease,
+    transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Title underline draws left → right… ── */
+.title {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.list > li:hover .title,
+.list > li:focus-within .title {
+  background-size: 100% 1px;
+}
+
+/* ── …then the arrow follows it in, 75ms behind ── */
+.arrow {
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.list > li:hover .arrow,
+.list > li:focus-within .arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+  transition:
+    opacity 250ms ease 75ms,
+    transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 75ms;
+}
+
+/* ── Contact links: color lifts, underline draws, arrow nudges 60ms later ── */
+.social {
+  font-size: 15px;
+  color: #a3a3a3;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition:
+    color 150ms ease,
+    background-size 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.social:hover,
+.social:focus-visible {
+  color: #f5f5f5;
+  background-size: 100% 1px;
+}
+
+.socialArrow {
+  transition: transform 150ms ease;
+}
+
+.social:hover .socialArrow,
+.social:focus-visible .socialArrow {
+  transform: translate(2px, -2px);
+  transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 60ms;
+}
+
+/* ── Copied check pops in ── */
+@keyframes glyphIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.glyphIn {
+  animation: glyphIn 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navLink,
+  .navLink::after,
+  .list > li,
+  .title,
+  .arrow,
+  .social,
+  .socialArrow {
+    transition: none;
+  }
+
+  .list > li:hover,
+  .list > li:focus-within {
+    transform: none;
+  }
+
+  .glyphIn {
+    animation: none;
+  }
+}

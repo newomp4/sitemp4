@@ -1,0 +1,160 @@
+/* ── x2 "Frames" — work as framed stills; everything else bare text ── */
+
+.root {
+  color-scheme: dark;
+}
+
+/* Accent 1 of 2: text selection */
+.root ::selection {
+  background: #ec9d5d;
+  color: #111111;
+}
+
+.root :is(a, button):focus-visible {
+  outline: 1px solid #ededed;
+  outline-offset: 3px;
+}
+
+/* ── Nav link: tiny, muted, 3px dot below on hover ── */
+.navLink {
+  position: relative;
+  font-size: 13px;
+  line-height: 1;
+  color: #6e6e6e;
+  transition: color 150ms ease;
+}
+
+.navLink:hover,
+.navLink:focus-visible,
+.navLink:active {
+  color: #ededed;
+}
+
+/* Accent 2 of 2: the hover dot */
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  background: #ec9d5d;
+  opacity: 0;
+  transform: translateX(-50%) scale(0);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.navLink:hover::after,
+.navLink:focus-visible::after,
+.navLink:active::after {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* ── The frame ─────────────────────────────────────────────────
+   Choreography on hover / keyboard focus, in three beats:
+   beat 1 (0ms)    — art swells to 1.04 and "clears" (veil fades)
+   beat 2 (+60ms)  — border brightens, inset top highlight lights up
+   beat 3 (+120ms) — caption wakes: title brightens, arrow steps right
+   On leave the delays reset to 0 so everything settles together. */
+
+.frame {
+  position: relative;
+  display: block;
+  border: 1px solid #232323;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: border-color 250ms ease;
+}
+
+.frame:hover,
+.frame:focus-visible {
+  border-color: #333333;
+  transition-delay: 60ms;
+}
+
+/* Inset top highlight — painted above the art via a pseudo overlay */
+.frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+.frame:hover::after,
+.frame:focus-visible::after {
+  opacity: 1;
+  transition-delay: 60ms;
+}
+
+/* beat 1: the art */
+.art {
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.frame:hover .art,
+.frame:focus-visible .art {
+  transform: scale(1.04);
+}
+
+.veil {
+  transition: opacity 500ms ease;
+}
+
+.frame:hover .veil,
+.frame:focus-visible .veil {
+  opacity: 0;
+}
+
+/* beat 3: the caption */
+.title {
+  color: #d4d4d4;
+  transition: color 150ms ease;
+}
+
+.frame:hover .title,
+.frame:focus-visible .title {
+  color: #f5f5f5;
+  transition-delay: 120ms;
+}
+
+.arrow {
+  color: #525252;
+  transition:
+    transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    color 150ms ease;
+}
+
+.frame:hover .arrow,
+.frame:focus-visible .arrow {
+  color: #d4d4d4;
+  transform: translateX(4px);
+  transition-delay: 120ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navLink,
+  .navLink::after,
+  .frame,
+  .frame::after,
+  .art,
+  .veil,
+  .title,
+  .arrow {
+    transition: none;
+  }
+
+  .frame:hover .art,
+  .frame:focus-visible .art,
+  .frame:hover .arrow,
+  .frame:focus-visible .arrow {
+    transform: none;
+  }
+}

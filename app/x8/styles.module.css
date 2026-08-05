@@ -1,0 +1,88 @@
+/* ── x8 "Reveal" — nothing until you ask ── */
+
+.root {
+  color-scheme: dark;
+}
+
+/* Orange appearance 1 of 2: text selection */
+.root ::selection {
+  background: #ec9d5d;
+  color: #111111;
+}
+
+.root :is(a, button):focus-visible {
+  outline: 1px solid #ededed;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* ── The reveal ──
+   Outer: inline-grid whose single column animates 0fr → 1fr.
+   Inner: clipped, nowrap, min-width 0 so it can collapse to nothing. */
+.reveal {
+  display: inline-grid;
+  grid-template-columns: 0fr;
+  align-items: baseline;
+  transition: grid-template-columns 300ms ease;
+}
+
+.revealInner {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  /* leave: fade immediately while the column collapses */
+  transition: opacity 200ms ease;
+}
+
+.trigger:hover .reveal,
+.trigger:focus-visible .reveal {
+  grid-template-columns: 1fr;
+}
+
+.trigger:hover .revealInner,
+.trigger:focus-visible .revealInner {
+  opacity: 1;
+  /* enter: trail the slide by a beat, so it fades as it slides */
+  transition: opacity 260ms ease 40ms;
+}
+
+/* Row titles brighten in step with the slide */
+.title {
+  color: #d4d4d4;
+  transition: color 300ms ease;
+}
+
+.trigger:hover .title,
+.trigger:focus-visible .title {
+  color: #f5f5f5;
+}
+
+/* Social labels */
+.social {
+  color: #a3a3a3;
+  transition: color 300ms ease;
+}
+
+.social:hover,
+.social:focus-visible {
+  color: #ededed;
+}
+
+/* Reduced motion: everything simply sits there, already revealed */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    grid-template-columns: 1fr;
+    transition: none;
+  }
+
+  .revealInner {
+    opacity: 1;
+    transition: none;
+  }
+
+  .title,
+  .social {
+    transition: none;
+  }
+}

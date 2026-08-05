@@ -1,0 +1,139 @@
+/* ── x9 "Gallery" — scoped dark scheme, selection, focus ── */
+.root {
+  color-scheme: dark;
+}
+
+/* Orange appearance 1 of 3: text selection */
+.root ::selection {
+  background: #ec9d5d;
+  color: #111111;
+}
+
+.root :is(a, button):focus-visible {
+  outline: 1px solid #ededed;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ── Sidebar section link: lowercase 13px, 3px orange dot in the gutter ── */
+.navLink {
+  position: relative;
+  font-size: 13px;
+  line-height: 1;
+  color: #6e6e6e;
+  transition: color 150ms ease;
+}
+
+.navLink:hover,
+.navLink:focus-visible,
+.navLink:active {
+  color: #ededed;
+}
+
+/* Orange appearance 2 of 3: the hover dot */
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  background: #ec9d5d;
+  opacity: 0;
+  transform: translateY(-50%) scale(0);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.navLink:hover::after,
+.navLink:focus-visible::after,
+.navLink:active::after {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+/* ── Gallery item choreography — the signature hover ──
+   0ms   art drifts -1.5% → +1.5% (600ms), numeral recedes with it
+   60ms  frame border brightens to #333
+   120ms caption title brightens, underline draws left → right
+   200ms year brightens last
+   Symmetric transitions settle everything smoothly on leave. */
+
+/* .item is the hover scope on the whole link; display set per-use. */
+
+.frame {
+  transition: border-color 300ms ease 60ms;
+}
+
+.item:is(:hover, :focus-visible, :focus-within) .frame {
+  border-color: #333333;
+}
+
+/* Scaled 1.06 at rest so the ±1.5% drift never reveals an edge. */
+.art {
+  position: absolute;
+  inset: 0;
+  transform: scale(1.06) translateX(-1.5%);
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.item:is(:hover, :focus-visible, :focus-within) .art {
+  transform: scale(1.06) translateX(1.5%);
+}
+
+.numeral {
+  opacity: 0.1;
+  transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.item:is(:hover, :focus-visible, :focus-within) .numeral {
+  opacity: 0.04;
+}
+
+/* Underline draws via the background-size trick, in currentColor. */
+.title {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1px;
+  transition:
+    color 200ms ease 120ms,
+    background-size 350ms cubic-bezier(0.22, 1, 0.36, 1) 120ms;
+}
+
+.item:is(:hover, :focus-visible, :focus-within) .title {
+  color: #f5f5f5;
+  background-size: 100% 1px;
+}
+
+.year {
+  transition: color 250ms ease 200ms;
+}
+
+.item:is(:hover, :focus-visible, :focus-within) .year {
+  color: #8c8c8c;
+}
+
+/* ── Reduced motion: no pan, no stagger — simple border/title brighten ── */
+@media (prefers-reduced-motion: reduce) {
+  .navLink,
+  .navLink::after,
+  .frame,
+  .art,
+  .numeral,
+  .title,
+  .year {
+    transition: none;
+  }
+
+  .art,
+  .item:is(:hover, :focus-visible, :focus-within) .art {
+    transform: scale(1.06);
+  }
+
+  .item:is(:hover, :focus-visible, :focus-within) .numeral {
+    opacity: 0.1;
+  }
+}
