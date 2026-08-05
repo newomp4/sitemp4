@@ -16,21 +16,33 @@
   border-radius: 2px;
 }
 
-/* ── The identity, in the headline: underline draws, text brightens, arrow follows 70ms behind ── */
-.handle {
+/* ── The identity, in the headline: pfp circle + handle. On hover the text
+   brightens, the underline draws under the text only, the arrow slides in
+   70ms behind, and the circle's ring warms. ── */
+.handleLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  vertical-align: -4px;
   color: #a3a3a3;
+  transition: color 150ms ease;
+}
+
+.handleLink:hover,
+.handleLink:focus-visible {
+  color: #f5f5f5;
+}
+
+.handle {
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
   background-position: 0 100%;
   background-size: 0% 2px;
-  transition:
-    color 150ms ease,
-    background-size 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: background-size 300ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.handle:hover,
-.handle:focus-visible {
-  color: #f5f5f5;
+.handleLink:hover .handle,
+.handleLink:focus-visible .handle {
   background-size: 100% 2px;
 }
 
@@ -43,8 +55,8 @@
     transform 150ms ease;
 }
 
-.handle:hover .handleArrow,
-.handle:focus-visible .handleArrow {
+.handleLink:hover .handleArrow,
+.handleLink:focus-visible .handleArrow {
   opacity: 1;
   transform: translate(0, 0);
   transition:
@@ -97,14 +109,15 @@
   border-radius: 7px;
 }
 
-/* ── The note rests folded; hovering/focusing the row breathes it open ── */
+/* ── The note rests folded; hovering/focusing the row breathes it open.
+   Unhurried on purpose — a slow exhale, not a snap. ── */
 .noteWrap {
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
   transition:
-    grid-template-rows 300ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 250ms ease;
+    grid-template-rows 500ms cubic-bezier(0.25, 1, 0.5, 1),
+    opacity 450ms ease 60ms;
 }
 
 .noteInner {
@@ -122,8 +135,8 @@
 /* ── Sibling-dim: the hovered/focused row holds, the rest recede ── */
 .list > li {
   transition:
-    opacity 250ms ease,
-    transform 250ms ease;
+    opacity 400ms ease,
+    transform 400ms cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .list:hover > li,
@@ -135,10 +148,6 @@
 .list > li:focus-within {
   opacity: 1;
   transform: translateX(3px);
-  /* slide in with a small overshoot; settle back (rule above) is plain ease */
-  transition:
-    opacity 250ms ease,
-    transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ── Title underline draws left → right… ── */
@@ -147,7 +156,7 @@
   background-repeat: no-repeat;
   background-position: 0 100%;
   background-size: 0% 1px;
-  transition: background-size 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: background-size 350ms cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .list > li:hover .title,
@@ -169,8 +178,8 @@
   opacity: 1;
   transform: translate(0, 0);
   transition:
-    opacity 250ms ease 75ms,
-    transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 75ms;
+    opacity 350ms ease 90ms,
+    transform 350ms cubic-bezier(0.25, 1, 0.5, 1) 90ms;
 }
 
 /* ── Contact links: color lifts, underline draws, arrow nudges 60ms later ── */
@@ -202,6 +211,116 @@
   transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 60ms;
 }
 
+/* ── The lightbox: backdrop fades, the photo card rises into place ── */
+@keyframes lightboxIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes lightboxCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.lightbox {
+  background: rgba(8, 8, 8, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: lightboxIn 280ms ease forwards;
+}
+
+.lightboxCard {
+  animation: lightboxCardIn 450ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.captionLink {
+  color: #d4d4d4;
+  text-decoration: underline;
+  text-decoration-color: #3f3f3f;
+  text-underline-offset: 3px;
+  transition:
+    color 150ms ease,
+    text-decoration-color 150ms ease;
+}
+
+.captionLink:hover,
+.captionLink:focus-visible {
+  color: #f5f5f5;
+  text-decoration-color: #f5f5f5;
+}
+
+/* ── The hidden footer: fixed blue aurora scales up out of the bottom edge
+   as you scroll into the spacer; the wordmark drifts up on the same
+   progress. Purely decorative. ── */
+.reveal {
+  --reveal: 0;
+}
+
+.revealSpacer {
+  height: 55vh;
+}
+
+.revealLayer {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  height: 55vh;
+  z-index: 40;
+  pointer-events: none;
+  transform-origin: bottom;
+  transform: scaleY(var(--reveal));
+  will-change: transform;
+}
+
+.revealGrain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+  mix-blend-mode: overlay;
+  opacity: 0.28;
+}
+
+.revealText {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 41;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 6vh;
+  transform: translateY(calc((1 - var(--reveal)) * 26vh));
+  opacity: var(--reveal);
+  will-change: transform, opacity;
+}
+
+.revealMark {
+  font-size: clamp(44px, 9vw, 104px);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: #eef4fb;
+  text-shadow: 0 2px 24px rgba(20, 40, 65, 0.45);
+}
+
+.revealSub {
+  margin-top: 12px;
+  font-size: 14px;
+  color: rgba(238, 244, 251, 0.78);
+}
+
 /* ── Copied check pops in ── */
 @keyframes glyphIn {
   from {
@@ -220,6 +339,7 @@
 
 /* ── Reduced motion: the print renders straight and in full color, nothing moves ── */
 @media (prefers-reduced-motion: reduce) {
+  .handleLink,
   .handle,
   .handleArrow,
   .print,
@@ -232,6 +352,17 @@
   .social,
   .socialArrow {
     transition: none;
+  }
+
+  /* The hidden footer is dropped entirely — no scroll-driven motion */
+  .reveal {
+    display: none;
+  }
+
+  .lightbox,
+  .lightboxCard {
+    animation: none;
+    opacity: 1;
   }
 
   /* Notes stay open — no motion, no hidden content */

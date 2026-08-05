@@ -9,7 +9,9 @@ import {
   type LinkItem,
   type PathItem,
 } from "@/lib/content";
+import Avatar from "./Avatar";
 import CopyHandle from "./copy-handle";
+import HiddenFooter from "./HiddenFooter";
 import Print from "./Print";
 import styles from "./styles.module.css";
 
@@ -137,12 +139,13 @@ export default function SlateTwoPage() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`@${profile.handle} on X`}
-              className={styles.handle}
+              className={`${styles.handleLink} group/handle`}
             >
-              @{profile.handle}
+              <Avatar />
+              <span className={styles.handle}>@{profile.handle}</span>
               <span
                 aria-hidden="true"
-                className={`${styles.handleArrow} ml-1.5 inline-block text-[20px]`}
+                className={`${styles.handleArrow} inline-block text-[20px]`}
               >
                 ↗
               </span>
@@ -247,6 +250,9 @@ export default function SlateTwoPage() {
           </p>
         </footer>
       </div>
+
+      {/* ── The hidden footer — scroll past the end and the blues rise ── */}
+      <HiddenFooter />
 
       {/* ── Version badge ── */}
       <Link
