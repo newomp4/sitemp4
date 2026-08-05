@@ -18,7 +18,7 @@ export const profile = {
   // Short one-liner used under the name in some versions
   tagline: "I make things for the internet.",
   intro: [
-    "I make things for the internet: content, small tools, and the systems that connect the two.",
+    "Nineteen, from Boston, MA. I make things for the internet: content, small tools, and the systems that connect the two.",
     "This site is the index. What I'm building, what I've shipped, where to find me. No case studies. Just the links.",
   ],
   now: "Right now I'm head of creative at Content Rewards.",
@@ -26,13 +26,14 @@ export const profile = {
 
 // ── The path — how I got here, not a portfolio ──
 // Companies you've worked at / chapters of what you've been doing.
-// Newest first. Keep notes to one line; this is a story, not case studies.
+// Newest first. Notes may contain [markdown links](https://...) —
+// the page renders them as real anchors.
 export type PathItem = {
-  years: string; // "2024 — now"
+  years: string; // "2024 – now"
   title: string; // company or chapter name
-  role?: string; // what you were / did there, a few words
-  note?: string; // one line of color, optional
-  href?: string; // optional link to the company/thing
+  role?: string; // plain descriptor of what it was, a few words
+  note?: string; // the story, any length; [links](url) allowed
+  href?: string; // optional link on the title
   external?: boolean;
 };
 
@@ -41,41 +42,43 @@ export const path: PathItem[] = [
     years: "2026 – present",
     title: "Content Rewards",
     role: "Head of creative",
-    note: "Running creative at contentrewards.com, @contentrewards everywhere else. The thing worth dropping out for.",
+    note: "I lead creative at [Content Rewards](https://contentrewards.com), the platform where brands pay creators for the content they post about them. I work on the brand, the campaigns, and the content itself alongside the [@contentrewards](https://x.com/contentrewards) team.",
     href: "https://contentrewards.com",
     external: true,
   },
   {
     years: "2025 – 2026",
     title: "Bryant University",
-    role: "Business administration",
-    note: "A concentration in digital marketing and a minor in sales. Dropped out in March 2026 to go all in on Content Rewards.",
+    role: "BA with a concentration in digital marketing",
+    note: "Plus a minor in sales. I dropped out in March 2026 to go all in on [Content Rewards](https://contentrewards.com).",
+    href: "https://www.bryant.edu",
+    external: true,
   },
   {
     years: "2025",
     title: "Real estate marketing",
-    role: "Co-founder",
-    note: "Started with a friend from high school the summer before college. We serviced 30+ realtors across the state and grew to a team of 13 working full and part time. I never loved working with realtors, and college needed the focus, so we wound down operations. My co-founder still runs it to this day.",
+    role: "Marketing for realtors",
+    note: "A summer business with a friend from high school. We handled marketing for 30+ realtors and had 13 people working with us at the peak. I didn't love the work and school was starting, so I stepped back. He still runs it today.",
   },
   {
     years: "2024 – 2025",
     title: "TikTok Shop",
-    role: "Seller",
-    note: "Multiple accounts doing a combined ~$250k in GMV, Ruby seller level. Also started netwrk, a community and coaching program that never really took off, but I coached a few people along the way.",
+    role: "Short-form e-commerce",
+    note: "Multiple accounts doing a combined ~$250k in GMV, up to the Ruby seller level. I also started netwrk, a small community and coaching program. It never really took off, but I coached a few people along the way.",
   },
   {
     years: "2023 – 2025",
     title: "Polygon Media",
-    role: "Founder",
-    note: "Freelance editing that grew into an agency, now @polyviral. Edited for some of the top earners on whop.com, including Chase Chappell of Ads Mastery, then made content for Whop itself. They still follow me on X.",
+    role: "Video editing and motion design agency",
+    note: "Freelance editing that grew into an agency, now [@polyviral](https://x.com/polyviral). We edited for some of the top earners on [whop.com](https://whop.com), including [Chase Chappell](https://www.chasechappell.com) of Ads Mastery, and later I made content for Whop itself. They still follow me on X.",
     href: "https://whop.com/poly",
     external: true,
   },
   {
     years: "– 2023",
     title: "Music video VFX",
-    role: "Freelance",
-    note: "VFX and compositing for underground artists like Tana, autumn, and UnoTheActivist, with 10M+ combined views on videos I worked on. Credited as head of VFX on the last one I cut (@vfxnewo).",
+    role: "VFX and compositing",
+    note: "Music videos for underground artists like Tana, autumn, and UnoTheActivist, with 10M+ combined views on videos I worked on. Credited as head of VFX on [the last one I cut](https://youtu.be/E-KVGKqMLZ4), from my VFX account @vfxnewo.",
     href: "https://youtu.be/E-KVGKqMLZ4",
     external: true,
   },
@@ -117,21 +120,15 @@ export const work: LinkItem[] = [
 // Misc links — writing, clips, favorite stuff, whatever you want to point at
 export const links: LinkItem[] = [
   {
-    title: "Some link",
-    description: "A thing worth clicking.",
-    href: "https://example.com",
-    external: true,
+    title: "Photos",
+    description: "Some photos I like.",
+    href: "/y1/photos",
   },
   {
-    title: "Another link",
-    description: "Also worth clicking.",
-    href: "https://example.com",
-    external: true,
-  },
-  {
-    title: "A third link",
-    description: "You get the idea.",
-    href: "https://example.com",
+    title: "Certifications",
+    description:
+      "Certified in most of the Adobe apps, plus OSHA 10 and HubSpot social media marketing.",
+    href: "https://www.credly.com/users/owen-o",
     external: true,
   },
 ];

@@ -113,11 +113,14 @@ export default function HiddenFooter() {
           on the page's own #111 so its top edge is invisible. */}
       <div className={styles.revealLayer}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/footer-aurora.png" alt="" className={styles.auroraImg} />
+        {/* A mirrored copy drifting slowly across the first: the color
+            breathes instead of standing still */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/footer-aurora.png"
           alt=""
-          className="h-full w-full"
-          style={{ objectFit: "fill" }}
+          className={`${styles.auroraImg} ${styles.auroraDrift}`}
         />
         {/* Film grain, animated, pooled over the blue */}
         <div className={styles.revealGrain} />
