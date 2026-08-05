@@ -14,7 +14,7 @@ export const profile = {
   // Where the @ points — it's how people know you, so versions link it big.
   handleHref: "https://x.com/newomp4",
   email: "owen@contentrewards.com",
-  headline: "Hi, I'm Owen.",
+  headline: "Hi im owen",
   // Short one-liner used under the name in some versions
   tagline: "I make things for the internet.",
   intro: [
@@ -57,7 +57,7 @@ export const path: PathItem[] = [
     years: "2022 — 2023",
     title: "On my own",
     role: "Building an audience",
-    note: "What you were figuring out before anyone paid you to.",
+    note: "What you were figuring out before anyone paid you to. This entry is deliberately longer to show the layout stretches with you — write two, three, four sentences about a chapter and the row simply grows to fit. No truncation, no cut-off text, just more story where you want more story.",
   },
 ];
 
@@ -127,7 +127,5 @@ export const socials: Social[] = [
   { label: "Twitter", handle: "@newomp4", href: "https://x.com/newomp4" },
   { label: "Instagram", handle: "@newomp4", href: "https://instagram.com/newomp4" },
   { label: "YouTube", handle: "@newomp4", href: "https://youtube.com/@newomp4" },
-  { label: "GitHub", handle: "@newomp4", href: "https://github.com/newomp4" },
   { label: "Discord", handle: "newomp4", copyToClipboard: true },
-  { label: "Email", handle: "owen@contentrewards.com", href: "mailto:owen@contentrewards.com" },
 ];

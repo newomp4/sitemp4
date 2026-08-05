@@ -110,32 +110,11 @@ export default function SlateTwoPage() {
   return (
     <div className={`${styles.root} min-h-dvh w-full bg-[#111111]`}>
       <div className="mx-auto w-full max-w-[42rem] px-6 py-16 sm:py-24">
-        {/* ── Nav ── */}
-        <header
-          className="rise flex items-center justify-between"
-          style={rise(0)}
-        >
-          <span className="text-[14px] font-semibold text-[#F5F5F5]">
-            {profile.name}
-          </span>
-          <nav aria-label="Site" className="flex items-center gap-7">
-            <a href="#path" className={styles.navLink}>
-              Path
-            </a>
-            <a href="#elsewhere" className={styles.navLink}>
-              Elsewhere
-            </a>
-            <a href="#contact" className={styles.navLink}>
-              Contact
-            </a>
-          </nav>
-        </header>
-
         {/* ── Hero ── */}
         <section
           aria-labelledby="intro-heading"
-          className="rise mt-16 sm:mt-20"
-          style={rise(1)}
+          className="rise"
+          style={rise(0)}
         >
           {/* A single portrait, set down above the headline */}
           <Print />
@@ -143,10 +122,10 @@ export default function SlateTwoPage() {
             id="intro-heading"
             className="mt-7 text-[26px] font-semibold tracking-tight text-[#F5F5F5]"
           >
-            {profile.headline}
-          </h1>
-          {/* The identity — where people actually know him from */}
-          <p className="mt-3">
+            {profile.headline}{" "}
+            <span aria-hidden="true" className="font-normal text-[#3F3F3F]">
+              /
+            </span>{" "}
             <a
               href={profile.handleHref}
               target="_blank"
@@ -154,15 +133,15 @@ export default function SlateTwoPage() {
               aria-label={`@${profile.handle} on X`}
               className={styles.handle}
             >
-              @{profile.handle}{" "}
+              @{profile.handle}
               <span
                 aria-hidden="true"
-                className={`${styles.handleArrow} inline-block`}
+                className={`${styles.handleArrow} ml-1.5 inline-block text-[20px]`}
               >
                 ↗
               </span>
             </a>
-          </p>
+          </h1>
           {profile.intro.map((paragraph) => (
             <p
               key={paragraph}
@@ -182,7 +161,7 @@ export default function SlateTwoPage() {
             id="path"
             aria-labelledby="path-heading"
             className="rise scroll-mt-10 pt-24"
-            style={rise(2)}
+            style={rise(1)}
           >
             <h2
               id="path-heading"
@@ -202,7 +181,7 @@ export default function SlateTwoPage() {
             id="elsewhere"
             aria-labelledby="elsewhere-heading"
             className="rise scroll-mt-10 pt-24"
-            style={rise(3)}
+            style={rise(2)}
           >
             <h2
               id="elsewhere-heading"
@@ -223,7 +202,7 @@ export default function SlateTwoPage() {
           id="contact"
           aria-labelledby="contact-heading"
           className="rise scroll-mt-10 pt-24 pb-8"
-          style={rise(4)}
+          style={rise(3)}
         >
           <h2
             id="contact-heading"
