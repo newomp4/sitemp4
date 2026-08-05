@@ -8,7 +8,8 @@
  */
 
 export const profile = {
-  name: "Owen",
+  name: "Owen Opacki",
+  firstName: "Owen",
   handle: "newomp4",
   email: "owen@contentrewards.com",
   headline: "Hi, I'm Owen.",

@@ -13,9 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Owen — newomp4",
-  description:
-    "Owen makes things for the internet. Building, filming, shipping — mostly at the same time.",
+  title: "Owen Opacki — newomp4",
+  description: "Owen Opacki makes things for the internet. @newomp4 everywhere.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
