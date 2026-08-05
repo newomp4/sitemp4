@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { CSSProperties, ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   profile,
@@ -55,6 +56,17 @@ function richText(text: string) {
 function PathRow({ item }: { item: PathItem }) {
   const heading = (
     <h3 className="text-[16px] leading-6 font-semibold text-[#F5F5F5]">
+      {item.logo && (
+        <span className={`${styles.logoBox} mr-2.5`} aria-hidden="true">
+          <Image
+            src={item.logo}
+            alt=""
+            width={22}
+            height={22}
+            className="h-full w-full object-cover"
+          />
+        </span>
+      )}
       <span className={styles.title}>{item.title}</span>
       {item.role && (
         <span className="font-normal text-[#A3A3A3]"> · {item.role}</span>
@@ -187,12 +199,9 @@ export default function SlateTwoPage() {
               key={paragraph}
               className="mt-3 text-[15px] leading-relaxed text-[#A3A3A3]"
             >
-              {paragraph}
+              {richText(paragraph)}
             </p>
           ))}
-          <p className="mt-5 text-xs tracking-[0.01em] text-[#6E6E6E]">
-            {profile.now}
-          </p>
         </section>
 
         <main>

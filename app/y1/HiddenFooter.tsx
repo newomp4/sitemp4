@@ -112,16 +112,60 @@ export default function HiddenFooter() {
           baked in (scratchpad aurora.js → sharp) so it cannot band, opaque
           on the page's own #111 so its top edge is invisible. */}
       <div className={styles.revealLayer}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/footer-aurora.png" alt="" className={styles.auroraImg} />
-        {/* A mirrored copy drifting slowly across the first: the color
-            breathes instead of standing still */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/footer-aurora.png"
-          alt=""
-          className={`${styles.auroraImg} ${styles.auroraDrift}`}
-        />
+        {/* Live aurora: nine blurred curtains, each swaying on its own
+            slow clock so the color is always gently moving */}
+        <svg
+          className="h-full w-full"
+          viewBox="0 0 1280 600"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <linearGradient id="aurora-deep" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0" stopColor="#1750c2" />
+              <stop offset="0.2" stopColor="#1447ad" stopOpacity="0.96" />
+              <stop offset="0.38" stopColor="#10388f" stopOpacity="0.8" />
+              <stop offset="0.55" stopColor="#0d2c74" stopOpacity="0.58" />
+              <stop offset="0.7" stopColor="#0c2563" stopOpacity="0.36" />
+              <stop offset="0.84" stopColor="#0c2054" stopOpacity="0.17" />
+              <stop offset="0.94" stopColor="#0c1d4b" stopOpacity="0.05" />
+              <stop offset="1" stopColor="#0c1c46" stopOpacity="0" />
+            </linearGradient>
+            <linearGradient id="aurora-electric" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0" stopColor="#0e75ff" />
+              <stop offset="0.18" stopColor="#0d6bf8" stopOpacity="0.96" />
+              <stop offset="0.36" stopColor="#0d5ce4" stopOpacity="0.8" />
+              <stop offset="0.54" stopColor="#1150d0" stopOpacity="0.58" />
+              <stop offset="0.7" stopColor="#124bbc" stopOpacity="0.36" />
+              <stop offset="0.84" stopColor="#1244aa" stopOpacity="0.17" />
+              <stop offset="0.94" stopColor="#12409f" stopOpacity="0.05" />
+              <stop offset="1" stopColor="#123f9e" stopOpacity="0" />
+            </linearGradient>
+            <linearGradient id="aurora-cyan" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0" stopColor="#2ad4ff" />
+              <stop offset="0.2" stopColor="#1cb6fc" stopOpacity="0.94" />
+              <stop offset="0.38" stopColor="#0f97f9" stopOpacity="0.76" />
+              <stop offset="0.55" stopColor="#0c8df9" stopOpacity="0.55" />
+              <stop offset="0.7" stopColor="#0d7ff4" stopOpacity="0.34" />
+              <stop offset="0.84" stopColor="#0e6fe9" stopOpacity="0.16" />
+              <stop offset="0.94" stopColor="#0d66e4" stopOpacity="0.05" />
+              <stop offset="1" stopColor="#0d61f0" stopOpacity="0" />
+            </linearGradient>
+            <filter id="aurora-blur" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="30" />
+            </filter>
+          </defs>
+          <g filter="url(#aurora-blur)">
+            <rect className={styles.curtainA} x="-40" y="277" width="200" height="380" fill="url(#aurora-deep)" />
+            <rect className={styles.curtainB} x="101" y="210" width="200" height="450" fill="url(#aurora-electric)" />
+            <rect className={styles.curtainC} x="242" y="140" width="200" height="520" fill="url(#aurora-deep)" />
+            <rect className={styles.curtainA} x="383" y="60" width="200" height="600" fill="url(#aurora-cyan)" />
+            <rect className={styles.curtainB} x="524" y="16" width="200" height="644" fill="url(#aurora-electric)" />
+            <rect className={styles.curtainC} x="665" y="60" width="200" height="600" fill="url(#aurora-cyan)" />
+            <rect className={styles.curtainA} x="806" y="140" width="200" height="520" fill="url(#aurora-deep)" />
+            <rect className={styles.curtainB} x="947" y="210" width="200" height="450" fill="url(#aurora-electric)" />
+            <rect className={styles.curtainC} x="1088" y="277" width="232" height="380" fill="url(#aurora-deep)" />
+          </g>
+        </svg>
         {/* Film grain, animated, pooled over the blue */}
         <div className={styles.revealGrain} />
       </div>

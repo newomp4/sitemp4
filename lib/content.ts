@@ -18,8 +18,9 @@ export const profile = {
   // Short one-liner used under the name in some versions
   tagline: "I make things for the internet.",
   intro: [
-    "Nineteen, from Boston, MA. I make things for the internet: content, small tools, and the systems that connect the two.",
-    "This site is the index. What I'm building, what I've shipped, where to find me. No case studies. Just the links.",
+    "Nineteen, from Boston. I work at the intersection of content and commerce.",
+    "Recently dropped out of college (Bryant '29) to be head of creative at [Content Rewards](https://contentrewards.com), the platform where brands pay creators to post.",
+    "Prev: co-founded a real estate marketing company (13-person team), did ~$250k GMV on TikTok Shop, and ran [Polygon Media](https://whop.com/poly), editing for whop.com's top earners.",
   ],
   now: "Right now I'm head of creative at Content Rewards.",
 };
@@ -35,6 +36,7 @@ export type PathItem = {
   note?: string; // the story, any length; [links](url) allowed
   href?: string; // optional link on the title
   external?: boolean;
+  logo?: string; // optional square logo in /public, shown beside the title
 };
 
 export const path: PathItem[] = [
@@ -42,35 +44,37 @@ export const path: PathItem[] = [
     years: "2026 – present",
     title: "Content Rewards",
     role: "Head of creative",
-    note: "I lead creative at [Content Rewards](https://contentrewards.com), the platform where brands pay creators for the content they post about them. I work on the brand, the campaigns, and the content itself alongside the [@contentrewards](https://x.com/contentrewards) team.",
+    note: "Creative at [Content Rewards](https://contentrewards.com): the platform where brands pay creators for the content they post.",
     href: "https://contentrewards.com",
     external: true,
+    logo: "/logos/content-rewards.png",
   },
   {
     years: "2025 – 2026",
     title: "Bryant University",
-    role: "BA with a concentration in digital marketing",
-    note: "Plus a minor in sales. I dropped out in March 2026 to go all in on [Content Rewards](https://contentrewards.com).",
+    role: "BA, digital marketing",
+    note: "Minor in sales. Dropped out in March 2026 for [Content Rewards](https://contentrewards.com).",
     href: "https://www.bryant.edu",
     external: true,
+    logo: "/logos/bryant.png",
   },
   {
     years: "2025",
     title: "Real estate marketing",
     role: "Marketing for realtors",
-    note: "A summer business with a friend from high school. We handled marketing for 30+ realtors and had 13 people working with us at the peak. I didn't love the work and school was starting, so I stepped back. He still runs it today.",
+    note: "A summer business with a friend from high school: 30+ realtors, a team of 13 at the peak. I stepped back for school; he still runs it.",
   },
   {
     years: "2024 – 2025",
     title: "TikTok Shop",
     role: "Short-form e-commerce",
-    note: "Multiple accounts doing a combined ~$250k in GMV, up to the Ruby seller level. I also started netwrk, a small community and coaching program. It never really took off, but I coached a few people along the way.",
+    note: "Multiple accounts, ~$250k combined GMV, Ruby seller level. Also ran netwrk, a small coaching community.",
   },
   {
     years: "2023 – 2025",
     title: "Polygon Media",
     role: "Video editing and motion design agency",
-    note: "Freelance editing that grew into an agency, now [@polyviral](https://x.com/polyviral). We edited for some of the top earners on [whop.com](https://whop.com), including [Chase Chappell](https://www.chasechappell.com) of Ads Mastery, and later I made content for Whop itself. They still follow me on X.",
+    note: "Freelance editing turned agency, now [@polyviral](https://x.com/polyviral). Edited for top [whop.com](https://whop.com) earners like [Chase Chappell](https://www.chasechappell.com), then made content for Whop itself.",
     href: "https://whop.com/poly",
     external: true,
   },
@@ -78,7 +82,7 @@ export const path: PathItem[] = [
     years: "– 2023",
     title: "Music video VFX",
     role: "VFX and compositing",
-    note: "Music videos for underground artists like Tana, autumn, and UnoTheActivist, with 10M+ combined views on videos I worked on. Credited as head of VFX on [the last one I cut](https://youtu.be/E-KVGKqMLZ4), from my VFX account @vfxnewo.",
+    note: "Music videos for Tana, autumn, UnoTheActivist and more: 10M+ combined views. Head of VFX on [the last one I cut](https://youtu.be/E-KVGKqMLZ4).",
     href: "https://youtu.be/E-KVGKqMLZ4",
     external: true,
   },
