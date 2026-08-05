@@ -214,9 +214,23 @@
 /* ── The lightbox backdrop. All motion is driven from the component as a
    shared-element morph between the print and the full photo. ── */
 .lightbox {
-  background: rgba(8, 8, 8, 0.82);
+  background: rgba(8, 8, 8, 0.86);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+}
+
+/* Gallery photos rest low and lift into place once the hero has landed */
+.galleryItem {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 600ms ease,
+    transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lightbox[data-ready] .galleryItem {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .captionLink {
@@ -258,16 +272,49 @@
   will-change: transform;
 }
 
+/* Film grain: strong enough to read as film, animated like a projector,
+   and doubling as dither over the gradients so they don't band. It fades
+   exactly where the color fades so it never betrays the layer's edge. */
+@keyframes grainJitter {
+  0% {
+    background-position: 0 0;
+  }
+  12.5% {
+    background-position: -32px 18px;
+  }
+  25% {
+    background-position: 24px -26px;
+  }
+  37.5% {
+    background-position: -18px -34px;
+  }
+  50% {
+    background-position: 36px 22px;
+  }
+  62.5% {
+    background-position: -28px 8px;
+  }
+  75% {
+    background-position: 14px -18px;
+  }
+  87.5% {
+    background-position: -8px 30px;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
 .revealGrain {
   position: absolute;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 240px 240px;
   mix-blend-mode: overlay;
-  opacity: 0.3;
-  /* The grain must vanish where the color does, or its edge betrays the layer */
-  mask-image: linear-gradient(to top, black 45%, transparent 92%);
-  -webkit-mask-image: linear-gradient(to top, black 45%, transparent 92%);
+  opacity: 0.55;
+  animation: grainJitter 0.85s steps(1) infinite;
+  mask-image: linear-gradient(to top, black 40%, transparent 96%);
+  -webkit-mask-image: linear-gradient(to top, black 40%, transparent 96%);
 }
 
 .revealText {
@@ -277,11 +324,7 @@
   z-index: 41;
   pointer-events: none;
   visibility: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 7vh;
-  transform: translateY(calc((1 - var(--reveal)) * 18vh));
+  transform: translateY(calc((1 - var(--reveal)) * 14vh));
   opacity: var(--reveal);
   will-change: transform, opacity;
 }
@@ -290,21 +333,32 @@
   visibility: visible;
 }
 
+/* One quiet line on the page's own column: quote left, the @ right */
+.revealRow {
+  margin-inline: auto;
+  max-width: 42rem;
+  padding-inline: 24px;
+  padding-bottom: 26px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
 .revealQuote {
-  font-size: 17px;
+  font-size: 13px;
   letter-spacing: -0.01em;
-  color: #eef4fb;
-  text-shadow: 0 1px 16px rgba(6, 20, 46, 0.5);
+  color: rgba(238, 244, 251, 0.92);
+  text-shadow: 0 1px 12px rgba(6, 20, 46, 0.5);
 }
 
 .revealBy {
-  color: rgba(238, 244, 251, 0.6);
+  color: rgba(238, 244, 251, 0.55);
 }
 
 .revealLink {
   pointer-events: auto;
-  margin-top: 10px;
-  font-size: 14px;
+  font-size: 13px;
   color: rgba(238, 244, 251, 0.85);
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
@@ -356,6 +410,17 @@
   /* The hidden footer is dropped entirely — no scroll-driven motion */
   .reveal {
     display: none;
+  }
+
+  /* Gallery photos are simply visible — no lift-in */
+  .galleryItem {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .revealGrain {
+    animation: none;
   }
 
 

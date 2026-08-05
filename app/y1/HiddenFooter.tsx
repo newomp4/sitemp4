@@ -5,13 +5,14 @@ import { profile } from "@/lib/content";
 import styles from "./styles.module.css";
 
 /**
- * The hidden footer. An empty spacer sits at the document's very bottom;
- * a fixed, bottom-anchored aurora rises from the bottom edge in step with
- * scrolling into that space (translated, never squashed), in the electric
- * blues sampled from the actual Twitter avatar (#0c1c46 → #0d61f0 →
- * #0c8df9 → #2ad4ff), grain fading out with the color so the top edge
- * dissolves into the page. A quote and the @ drift up with it.
- * Dropped entirely under prefers-reduced-motion.
+ * The hidden footer, Dia-style. An empty spacer sits at the document's
+ * very bottom; a fixed aurora in the avatar's electric blues rises from
+ * the bottom edge in step with scrolling into it. It is deliberately a
+ * peek, not a resting state: on desktop, once you stop scrolling with
+ * the reveal open, the page smooth-scrolls back and the color retracts —
+ * the elastic behavior. Gradients carry many easing stops and animated
+ * film grain dithers them so nothing bands. Dropped under
+ * prefers-reduced-motion.
  */
 export default function HiddenFooter() {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -23,26 +24,59 @@ export default function HiddenFooter() {
     const spacer = spacerRef.current;
     if (!root || !spacer) return;
 
+    const progressRef = { current: 0 };
     let raf = 0;
+    let idleTimer = 0;
+    let retracting = false;
+    const canSnap = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
     const update = () => {
       raf = 0;
       const rect = spacer.getBoundingClientRect();
-      const progress = Math.min(
+      const p = Math.min(
         1,
         Math.max(0, (window.innerHeight - rect.top) / rect.height),
       );
-      root.style.setProperty("--reveal", progress.toFixed(4));
-      root.dataset.open = progress > 0.02 ? "true" : "false";
+      progressRef.current = p;
+      root.style.setProperty("--reveal", p.toFixed(4));
+      root.dataset.open = p > 0.02 ? "true" : "false";
+      if (retracting && p < 0.01) retracting = false;
     };
+
+    /* The peek: stopped scrolling with the reveal open → glide back shut. */
+    const snapBack = () => {
+      if (retracting || progressRef.current <= 0.03) return;
+      const rect = spacer.getBoundingClientRect();
+      const targetY = window.scrollY + rect.top - window.innerHeight;
+      retracting = true;
+      window.scrollTo({ top: targetY, behavior: "smooth" });
+      window.setTimeout(() => {
+        retracting = false;
+      }, 1200);
+    };
+
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
+      if (canSnap && !retracting) {
+        window.clearTimeout(idleTimer);
+        idleTimer = window.setTimeout(snapBack, 190);
+      }
     };
+    const cancelRetract = () => {
+      retracting = false;
+    };
+
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
+    window.addEventListener("wheel", cancelRetract, { passive: true });
+    window.addEventListener("touchstart", cancelRetract, { passive: true });
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      window.removeEventListener("wheel", cancelRetract);
+      window.removeEventListener("touchstart", cancelRetract);
+      window.clearTimeout(idleTimer);
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);
@@ -61,22 +95,28 @@ export default function HiddenFooter() {
         >
           <defs>
             <linearGradient id="aurora-deep" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0" stopColor="#1749b6" />
-              <stop offset="0.5" stopColor="#0c2a6e" />
+              <stop offset="0" stopColor="#1750c2" />
+              <stop offset="0.35" stopColor="#123f9e" stopOpacity="0.9" />
+              <stop offset="0.6" stopColor="#0d2c74" stopOpacity="0.55" />
+              <stop offset="0.82" stopColor="#0c2158" stopOpacity="0.22" />
               <stop offset="1" stopColor="#0c1c46" stopOpacity="0" />
             </linearGradient>
             <linearGradient id="aurora-electric" x1="0" y1="1" x2="0" y2="0">
               <stop offset="0" stopColor="#0e75ff" />
-              <stop offset="0.55" stopColor="#0d61f0" />
-              <stop offset="1" stopColor="#1749b6" stopOpacity="0" />
+              <stop offset="0.3" stopColor="#0d61f0" stopOpacity="0.92" />
+              <stop offset="0.58" stopColor="#1150d0" stopOpacity="0.6" />
+              <stop offset="0.8" stopColor="#1246a8" stopOpacity="0.25" />
+              <stop offset="1" stopColor="#123f9e" stopOpacity="0" />
             </linearGradient>
             <linearGradient id="aurora-cyan" x1="0" y1="1" x2="0" y2="0">
               <stop offset="0" stopColor="#2ad4ff" />
-              <stop offset="0.45" stopColor="#0c8df9" />
-              <stop offset="1" stopColor="#0e75ff" stopOpacity="0" />
+              <stop offset="0.35" stopColor="#0c8df9" stopOpacity="0.85" />
+              <stop offset="0.6" stopColor="#0e75ff" stopOpacity="0.5" />
+              <stop offset="0.82" stopColor="#0e63e0" stopOpacity="0.2" />
+              <stop offset="1" stopColor="#0d61f0" stopOpacity="0" />
             </linearGradient>
             <filter id="aurora-blur" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="26" />
+              <feGaussianBlur stdDeviation="28" />
             </filter>
           </defs>
           <g filter="url(#aurora-blur)">
@@ -91,25 +131,27 @@ export default function HiddenFooter() {
             <rect x="1088" y="277" width="232" height="323" fill="url(#aurora-deep)" />
           </g>
         </svg>
-        {/* Film grain, fading out with the color */}
+        {/* Film grain — animated, dithering the gradients so they never band */}
         <div className={styles.revealGrain} />
       </div>
 
-      {/* The words, drifting up as the color rises */}
+      {/* One small footer line: quote left, the @ right */}
       <div className={styles.revealText}>
-        <p className={styles.revealQuote}>
-          &ldquo;It won&rsquo;t fail because of me&rdquo;
-          <span className={styles.revealBy}> — tom sachs</span>
-        </p>
-        <a
-          href={profile.handleHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          tabIndex={-1}
-          className={styles.revealLink}
-        >
-          @{profile.handle}
-        </a>
+        <div className={styles.revealRow}>
+          <p className={styles.revealQuote}>
+            &ldquo;It won&rsquo;t fail because of me&rdquo;
+            <span className={styles.revealBy}> — tom sachs</span>
+          </p>
+          <a
+            href={profile.handleHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            tabIndex={-1}
+            className={styles.revealLink}
+          >
+            @{profile.handle}
+          </a>
+        </div>
       </div>
     </div>
   );
