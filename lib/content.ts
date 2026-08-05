@@ -21,7 +21,7 @@ export const profile = {
     "I make things for the internet: content, small tools, and the systems that connect the two.",
     "This site is the index. What I'm building, what I've shipped, where to find me. No case studies. Just the links.",
   ],
-  now: "Right now I'm heads-down on something new. More soon.",
+  now: "Right now I'm head of creative at Content Rewards.",
 };
 
 // ── The path — how I got here, not a portfolio ──
@@ -38,26 +38,46 @@ export type PathItem = {
 
 export const path: PathItem[] = [
   {
-    years: "2024 – now",
-    title: "Company One",
-    role: "Content & growth",
-    note: "The short version of what you actually do there.",
-    href: "https://example.com",
+    years: "2026 – present",
+    title: "Content Rewards",
+    role: "Head of creative",
+    note: "Running creative at contentrewards.com, @contentrewards everywhere else. The thing worth dropping out for.",
+    href: "https://contentrewards.com",
     external: true,
   },
   {
-    years: "2023 – 2024",
-    title: "Company Two",
-    role: "Made videos",
-    note: "One line on what that chapter taught you.",
-    href: "https://example.com",
+    years: "2025 – 2026",
+    title: "Bryant University",
+    role: "Business administration",
+    note: "A concentration in digital marketing and a minor in sales. Dropped out in March 2026 to go all in on Content Rewards.",
+  },
+  {
+    years: "2025",
+    title: "Real estate marketing",
+    role: "Co-founder",
+    note: "Started with a friend from high school the summer before college. We serviced 30+ realtors across the state and grew to a team of 13 working full and part time. I never loved working with realtors, and college needed the focus, so we wound down operations. My co-founder still runs it to this day.",
+  },
+  {
+    years: "2024 – 2025",
+    title: "TikTok Shop",
+    role: "Seller",
+    note: "Multiple accounts doing a combined ~$250k in GMV, Ruby seller level. Also started netwrk, a community and coaching program that never really took off, but I coached a few people along the way.",
+  },
+  {
+    years: "2023 – 2025",
+    title: "Polygon Media",
+    role: "Founder",
+    note: "Freelance editing that grew into an agency, now @polyviral. Edited for some of the top earners on whop.com, including Chase Chappell of Ads Mastery, then made content for Whop itself. They still follow me on X.",
+    href: "https://whop.com/poly",
     external: true,
   },
   {
-    years: "2022 – 2023",
-    title: "On my own",
-    role: "Building an audience",
-    note: "What you were figuring out before anyone paid you to. This entry is deliberately longer to show the layout stretches with you: write two, three, four sentences about a chapter and the row simply grows to fit. No truncation, no cut-off text, just more story where you want more story.",
+    years: "– 2023",
+    title: "Music video VFX",
+    role: "Freelance",
+    note: "VFX and compositing for underground artists like Tana, autumn, and UnoTheActivist, with 10M+ combined views on videos I worked on. Credited as head of VFX on the last one I cut (@vfxnewo).",
+    href: "https://youtu.be/E-KVGKqMLZ4",
+    external: true,
   },
 ];
 
@@ -124,7 +144,7 @@ export type Social = {
 };
 
 export const socials: Social[] = [
-  { label: "Twitter", handle: "@newomp4", href: "https://x.com/newomp4" },
+  { label: "X", handle: "@newomp4", href: "https://x.com/newomp4" },
   { label: "Instagram", handle: "@newomp4", href: "https://instagram.com/newomp4" },
   { label: "YouTube (I don't post haha)", handle: "@newomp4", href: "https://youtube.com/@newomp4" },
   { label: "Discord", handle: "newomp4", copyToClipboard: true },

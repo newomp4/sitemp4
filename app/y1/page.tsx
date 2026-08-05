@@ -27,7 +27,7 @@ const rise = (step: number): CSSProperties =>
    Hover/focus breathes the note open beneath it. ── */
 function PathRow({ item }: { item: PathItem }) {
   const body = (
-    <div className="grid grid-cols-[92px_1fr] gap-x-4">
+    <div className="grid grid-cols-[112px_1fr] gap-x-4">
       <p className="text-[12px] leading-6 tracking-[0.01em] text-[#6E6E6E]">
         {item.years}
       </p>

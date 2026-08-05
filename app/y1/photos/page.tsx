@@ -121,7 +121,7 @@ export default function PhotosPage() {
             Photos
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-[#A3A3A3]">
-            Six frames, mostly New York and Paris. All shot on film.
+            Some photos I like.
           </p>
         </header>
 
