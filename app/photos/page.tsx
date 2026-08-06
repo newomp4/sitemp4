@@ -36,12 +36,12 @@ type Photo = {
 
 const PHOTOS: Photo[] = [
   {
-    src: "/photos/owen-nyc.jpg",
+    src: "/photos/owen-nyc-full.jpg",
     blur:
-      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAUABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAIFBv/EACMQAAICAQIGAwAAAAAAAAAAAAECAwQABRESEyExQXEGQoH/xAAVAQEBAAAAAAAAAAAAAAAAAAACAf/EABcRAQEBAQAAAAAAAAAAAAAAAAABESH/2gAMAwEAAhEDEQA/AHtagK9GQIA/M2Uk/X3j6RrDJXZRXaQKAWKnt0yRZt8MSwoFMjsuxbsPeUtIjNtraTJF4HEvUecM0uMxMzOQzkkkecr/ABZmF+QAnblk7fuGGWDX/9k=",
-    width: 970,
-    height: 1200,
-    alt: "Owen in front of the Williamsburg Bridge at dusk",
+      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAwQFBv/EACMQAAICAQIGAwAAAAAAAAAAAAECAxEABBIFExQVITFBUaH/xAAVAQEBAAAAAAAAAAAAAAAAAAABAv/EABURAQEAAAAAAAAAAAAAAAAAAAAh/9oADAMBAAIRAxEAPwAuh16RTQLGjPZYkBqvx9fOVe9Rb3QaeVyhpthVq/cxfDJH7lpW3G91e8Xnnl6iY8xrLEE378nJpj//2Q==",
+    width: 1818,
+    height: 1228,
+    alt: "Owen, Galileo, and Ariel on a rooftop in front of the Williamsburg Bridge at dusk",
     caption: (
       <>
         Williamsburg, NYC @ <Cap href="https://whop.com">whop.com</Cap>&rsquo;s
