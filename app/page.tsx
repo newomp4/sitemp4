@@ -254,7 +254,7 @@ export default function Home() {
               id="elsewhere-heading"
               className="mb-5 text-[14px] font-semibold text-[#F5F5F5]"
             >
-              Elsewhere
+              Other things
             </h2>
             <ul className={`${styles.list} space-y-5`}>
               {links.map((item) => (

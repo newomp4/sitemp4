@@ -16,7 +16,7 @@ export const profile = {
   tagline: "I make things for the internet.",
   intro: [
     "I'm 19, from Boston, and I make things for the internet.",
-    "Recently dropped out of [college](#bryant) (class of 2029) to be head of creative at [Content Rewards](https://contentrewards.com), the platform where brands pay creators to post.",
+    "Recently dropped out of [college](#bryant) (class of 2029) to be head of creative at [Content Rewards](https://contentrewards.com), The Marketplace for Virality.",
     "Prev: co-founded a real estate marketing company (13-person team), did ~$250k GMV on TikTok Shop, and ran [polyviral](https://polyviral.org), editing for [whop.com](https://whop.com)'s top earners.",
   ],
 };
@@ -74,7 +74,7 @@ export const path: PathItem[] = [
     years: "2023 – 2025",
     title: "polyviral",
     role: "Video editing and motion design agency",
-    note: "Freelance editing turned agency, formerly Polygon Media. Edited for top [whop.com](https://whop.com) earners like [Chase Chappell](https://www.chasechappell.com), then made content for Whop itself.",
+    note: "Freelance editing turned agency, formerly Polygon Media. Edited for top [whop.com](https://whop.com) earners like [Chase Chappell](https://www.instagram.com/realchasechappell) and [Ads Mastery](https://www.chasechappell.com/ads-mastery-mentorship), then made content for Whop itself.",
     href: "https://polyviral.org",
     external: true,
     logo: "/logos/polyviral.png",
@@ -83,7 +83,7 @@ export const path: PathItem[] = [
     years: "– 2023",
     title: "Music video VFX",
     role: "VFX and compositing",
-    note: "VFX and compositing on music videos for Tana, autumn, UnoTheActivist and more, editing for directors around the world like [@tinytapes](https://instagram.com/tinytapes) and [@dotcomnirvan](https://instagram.com/dotcomnirvan). 10M+ combined views; head of VFX on [the last one I cut](https://youtu.be/E-KVGKqMLZ4).",
+    note: "VFX and compositing on music videos for Tana, autumn, UnoTheActivist and more, editing for directors around the world like [@tinytapes](https://instagram.com/tinytapes) and [@dotcomnirvan](https://instagram.com/dotcomnirvan). 10M+ combined views. [The last music video I ever edited](https://youtu.be/E-KVGKqMLZ4).",
     href: "https://youtu.be/E-KVGKqMLZ4",
     external: true,
   },
