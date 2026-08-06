@@ -1,9 +1,7 @@
 /**
  * ─────────────────────────────────────────────────────────────
  *  SITE CONTENT — single source of truth.
- *  Every version of the site (v1–v5) reads from this file, so
- *  edit your copy, links, and socials here and all of them update.
- *  All copy below is PLACEHOLDER — rewrite it in your own voice.
+ *  Edit copy, the path, links, and socials here; the site updates.
  * ─────────────────────────────────────────────────────────────
  */
 
@@ -11,18 +9,16 @@ export const profile = {
   name: "Owen Opacki",
   firstName: "Owen",
   handle: "newomp4",
-  // Where the @ points — it's how people know you, so versions link it big.
+  // Where the @ points — it's how people know him, so the site links it big.
   handleHref: "https://x.com/newomp4",
   email: "owen@contentrewards.com",
   headline: "Hi, I'm Owen",
-  // Short one-liner used under the name in some versions
   tagline: "I make things for the internet.",
   intro: [
     "I'm 19, from Boston, and I make things for the internet.",
     "Recently dropped out of [college](#bryant) (class of 2029) to be head of creative at [Content Rewards](https://contentrewards.com), the platform where brands pay creators to post.",
     "Prev: co-founded a real estate marketing company (13-person team), did ~$250k GMV on TikTok Shop, and ran [polyviral](https://polyviral.org), editing for [whop.com](https://whop.com)'s top earners.",
   ],
-  now: "Right now I'm head of creative at Content Rewards.",
 };
 
 // ── The path — how I got here, not a portfolio ──
@@ -101,37 +97,12 @@ export type LinkItem = {
   external?: boolean;
 };
 
-// "What I do / have made" — placeholder entries, swap in your real stuff
-export const work: LinkItem[] = [
-  {
-    year: "2025 – now",
-    title: "Project One",
-    description: "A one-liner about what this is and why it exists.",
-    href: "https://example.com",
-    external: true,
-  },
-  {
-    year: "2024 – now",
-    title: "Project Two",
-    description: "The outcome, a success metric, or a cheesy tagline.",
-    href: "https://example.com",
-    external: true,
-  },
-  {
-    year: "2023",
-    title: "Project Three",
-    description: "Something you shipped, sold, or sunset. It counts.",
-    href: "https://example.com",
-    external: true,
-  },
-];
-
 // Misc links — writing, clips, favorite stuff, whatever you want to point at
 export const links: LinkItem[] = [
   {
     title: "Photos",
     description: "Some photos I like.",
-    href: "/y1/photos",
+    href: "/photos",
   },
   {
     title: "Certifications",

@@ -111,7 +111,7 @@ export default function PhotosPage() {
     <div className={`${styles.root} min-h-dvh w-full bg-[#111111]`}>
       <div className="mx-auto w-full max-w-[42rem] px-6 py-12 sm:py-16">
         <header className="rise" style={rise(0)}>
-          <Link href="/y1" className={styles.backLink}>
+          <Link href="/" className={styles.backLink}>
             <span aria-hidden="true" className={styles.backArrow}>
               ←
             </span>{" "}
@@ -160,7 +160,7 @@ export default function PhotosPage() {
         </ul>
 
         <footer className="rise mt-16 pb-8" style={rise(7)}>
-          <Link href="/y1" className={styles.backLink}>
+          <Link href="/" className={styles.backLink}>
             <span aria-hidden="true" className={styles.backArrow}>
               ←
             </span>{" "}

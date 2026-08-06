@@ -9,7 +9,7 @@ import styles from "./styles.module.css";
 export default function Print() {
   return (
     <Link
-      href="/y1/photos"
+      href="/photos"
       aria-label="See the photo gallery"
       className={`${styles.print} block`}
     >

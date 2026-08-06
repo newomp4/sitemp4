@@ -1,4 +1,4 @@
-/* ── y1 "Slate II" — Slate, wider and with the story: handle up top, the path below ── */
+/* ── The site: handle up top, the path below ── */
 
 .root {
   color-scheme: dark;
@@ -153,7 +153,7 @@
 
 /* ── Deep-linked chapter (e.g. "college" in the intro → #bryant): the
    AnchorLink glide lands the row upper-middle with its note unfolded.
-   scroll-margin covers direct /y1#bryant visits; :target and
+   scroll-margin covers direct /#bryant visits; :target and
    [data-unfold] both open the note, no flash. ── */
 .list > li[id] {
   scroll-margin-top: 32vh;

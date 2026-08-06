@@ -1,125 +1,316 @@
+import type { CSSProperties, ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import {
+  profile,
+  path,
+  links,
+  socials,
+  type LinkItem,
+  type PathItem,
+} from "@/lib/content";
+import AnchorLink from "./AnchorLink";
+import Avatar from "./Avatar";
+import CopyHandle from "./copy-handle";
+import HiddenFooter from "./HiddenFooter";
+import Print from "./Print";
+import styles from "./styles.module.css";
 
-/**
- * Version picker — temporary homepage while choosing a direction.
- * Round 4: five descendants of Slate, told as a story instead of a
- * portfolio — wider column, prominent @, career path over projects.
- * Once a version wins, its page.tsx replaces this file.
- */
+const rise = (step: number): CSSProperties =>
+  ({ "--rise-delay": `${step * 0.06}s` }) as CSSProperties;
 
-const versions = [
-  {
-    n: "1",
-    slug: "/y1",
-    name: "Slate II",
-    blurb: "Slate, refined: wider column, the @ up top, companies not projects.",
-  },
-  {
-    n: "2",
-    slug: "/y2",
-    name: "Record",
-    blurb: "Slate's calm with Ledger's move. Career chapters breathe open.",
-  },
-  {
-    n: "3",
-    slug: "/y3",
-    name: "Stills",
-    blurb: "Slate with a strip of set-down photographs. Drop your images in.",
-  },
-  {
-    n: "4",
-    slug: "/y4",
-    name: "Thread",
-    blurb: "Slate with Reveal's move. Roles and handles slide open inline.",
-  },
-  {
-    n: "5",
-    slug: "/y5",
-    name: "Story",
-    blurb: "The whole thing as a short letter, the path woven into sentences.",
-  },
-];
+/* Render [text](url) in copy as real links. */
+function richText(text: string) {
+  const parts: ReactNode[] = [];
+  const re = /\[([^\]]+)\]\(([^)]+)\)/g;
+  let last = 0;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text))) {
+    if (m.index > last) parts.push(text.slice(last, m.index));
+    parts.push(
+      m[2].startsWith("#") ? (
+        <AnchorLink key={m.index} href={m[2]} className={styles.captionLink}>
+          {m[1]}
+        </AnchorLink>
+      ) : (
+        <a
+          key={m.index}
+          href={m[2]}
+          {...(m[2].startsWith("http")
+            ? { target: "_blank", rel: "noopener noreferrer" }
+            : {})}
+          className={styles.captionLink}
+        >
+          {m[1]}
+        </a>
+      ),
+    );
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) parts.push(text.slice(last));
+  return parts;
+}
 
-const earlier = [
-  { slug: "/x1", name: "Slate", note: "parent" },
-  { slug: "/x4", name: "Portrait", note: "donor" },
-  { slug: "/x6", name: "Ledger", note: "donor" },
-  { slug: "/x8", name: "Reveal", note: "donor" },
-];
+/* ── A chapter of the path: one compact line at rest — years, title, role.
+   Hover/focus breathes the note open beneath it. The title alone is the
+   row's link, so notes can carry their own links. ── */
+function PathRow({ item }: { item: PathItem }) {
+  const heading = (
+    <h3 className="text-[16px] leading-6 font-semibold text-[#F5F5F5]">
+      {item.logo && (
+        <span
+          className={`${styles.logoBox} mr-2.5 ${
+            item.logoShape === "circle" ? styles.logoCircle : ""
+          }`}
+          aria-hidden="true"
+        >
+          <Image
+            src={item.logo}
+            alt=""
+            width={22}
+            height={22}
+            className="h-full w-full object-cover"
+          />
+        </span>
+      )}
+      <span className={styles.title}>{item.title}</span>
+      {item.role && (
+        <span className="font-normal text-[#A3A3A3]"> · {item.role}</span>
+      )}
+      {item.href && (
+        <>
+          {" "}
+          <span
+            aria-hidden="true"
+            className={`${styles.arrow} inline-block text-[#A3A3A3]`}
+          >
+            ↗
+          </span>
+        </>
+      )}
+    </h3>
+  );
+
+  const external = item.href
+    ? (item.external ?? /^https?:/.test(item.href))
+    : false;
+
+  return (
+    <li id={item.anchor} {...(item.href ? {} : { tabIndex: 0 })}>
+      <div className="grid grid-cols-[112px_1fr] gap-x-4">
+        <p className="text-[12px] leading-6 tracking-[0.01em] text-[#6E6E6E]">
+          {item.years}
+        </p>
+        <div>
+          {item.href ? (
+            <a
+              href={item.href}
+              {...(external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+              className="block"
+            >
+              {heading}
+            </a>
+          ) : (
+            heading
+          )}
+          {item.note && (
+            <div className={styles.noteWrap}>
+              <div className={styles.noteInner}>
+                <p className="pt-1 text-[14px] leading-relaxed text-[#8A8A8A]">
+                  {richText(item.note)}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </li>
+  );
+}
+
+function Row({ item }: { item: LinkItem }) {
+  const external = item.external ?? /^https?:/.test(item.href);
+  const body = (
+    <>
+      {item.year && <p className="text-[12px] text-[#6E6E6E]">{item.year}</p>}
+      <h3
+        className={`text-[16px] font-semibold text-[#F5F5F5] ${
+          item.year ? "mt-1" : ""
+        }`}
+      >
+        <span className={styles.title}>{item.title}</span>{" "}
+        <span
+          aria-hidden="true"
+          className={`${styles.arrow} inline-block text-[#A3A3A3]`}
+        >
+          ↗
+        </span>
+      </h3>
+      {item.description && (
+        <p className="mt-1 text-[15px] leading-relaxed text-[#A3A3A3]">
+          {item.description}
+        </p>
+      )}
+    </>
+  );
+  return (
+    <li>
+      {external ? (
+        <a
+          href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block"
+        >
+          {body}
+        </a>
+      ) : (
+        <Link href={item.href} className="block">
+          {body}
+        </Link>
+      )}
+    </li>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="min-h-dvh bg-[#0E0E0E] text-[#EDEDED]">
-      <main className="mx-auto w-full max-w-2xl px-6 py-24">
-        <header className="rise" style={{ "--rise-delay": "0s" } as React.CSSProperties}>
-          <h1 className="text-sm font-semibold tracking-tight">
-            owen opacki / newomp4
-          </h1>
-          <p className="mt-2 text-sm text-[#8A8A8A]">
-            Round four: five takes on Slate. Wider, story-first, @ up front.
-            Pick one and we refine from there.
-          </p>
-        </header>
-
-        <ul className="mt-16">
-          {versions.map((v, i) => (
-            <li
-              key={v.slug}
-              className="rise border-t border-[#242424] last:border-b"
-              style={{ "--rise-delay": `${0.08 * (i + 1)}s` } as React.CSSProperties}
+    <div className={`${styles.root} min-h-dvh w-full bg-[#111111]`}>
+      <div className="mx-auto w-full max-w-[42rem] px-6 py-12 sm:py-16">
+        {/* ── Hero ── */}
+        <section
+          aria-labelledby="intro-heading"
+          className="rise"
+          style={rise(0)}
+        >
+          {/* A single portrait, set down above the headline */}
+          <Print />
+          <h1
+            id="intro-heading"
+            className="mt-7 text-[26px] font-semibold tracking-tight text-[#F5F5F5]"
+          >
+            {profile.headline}{" "}
+            <span aria-hidden="true" className="font-normal text-[#3F3F3F]">
+              /
+            </span>{" "}
+            <a
+              href={profile.handleHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`@${profile.handle} on X`}
+              className={`${styles.handleLink} group/handle`}
             >
-              <Link
-                href={v.slug}
-                className="group flex items-baseline gap-6 py-5 transition-colors duration-200 hover:bg-[#161616]"
+              <Avatar />
+              <span className={styles.handle}>@{profile.handle}</span>
+              <span
+                aria-hidden="true"
+                className={`${styles.handleArrow} inline-block text-[20px]`}
               >
-                <span className="w-8 shrink-0 text-xs text-[#5A5A5A] transition-colors duration-200 group-hover:text-[#EDEDED]">
-                  {v.n}
-                </span>
-                <span className="flex-1">
-                  <span className="block text-sm font-medium tracking-tight">
-                    {v.name}
-                  </span>
-                  <span className="mt-0.5 block text-sm text-[#8A8A8A]">
-                    {v.blurb}
-                  </span>
-                </span>
-                <span
-                  aria-hidden
-                  className="shrink-0 text-[#3A3A3A] transition-all duration-200 group-hover:translate-x-1 group-hover:text-[#EDEDED]"
-                >
-                  →
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        <div
-          className="rise mt-12 flex flex-wrap items-baseline gap-x-6 gap-y-2"
-          style={{ "--rise-delay": "0.56s" } as React.CSSProperties}
-        >
-          {earlier.map((p) => (
-            <Link
-              key={p.slug}
-              href={p.slug}
-              className="group text-xs text-[#5A5A5A] transition-colors duration-200 hover:text-[#EDEDED]"
-            >
-              {p.name}{" "}
-              <span className="text-[#3A3A3A] transition-colors duration-200 group-hover:text-[#8A8A8A]">
-                · {p.note}
+                ↗
               </span>
-            </Link>
+            </a>
+          </h1>
+          {profile.intro.map((paragraph) => (
+            <p
+              key={paragraph}
+              className="mt-3 text-[15px] leading-relaxed text-[#A3A3A3]"
+            >
+              {richText(paragraph)}
+            </p>
           ))}
-        </div>
+        </section>
 
+        <main>
+          {/* ── The path ── */}
+          <section
+            id="path"
+            aria-labelledby="path-heading"
+            className="rise scroll-mt-10 pt-14"
+            style={rise(1)}
+          >
+            <h2
+              id="path-heading"
+              className="mb-5 text-[14px] font-semibold text-[#F5F5F5]"
+            >
+              So far
+            </h2>
+            <ul className={`${styles.list} space-y-5`}>
+              {path.map((item) => (
+                <PathRow key={item.title} item={item} />
+              ))}
+            </ul>
+          </section>
+
+          {/* ── Elsewhere ── */}
+          <section
+            id="elsewhere"
+            aria-labelledby="elsewhere-heading"
+            className="rise scroll-mt-10 pt-14"
+            style={rise(2)}
+          >
+            <h2
+              id="elsewhere-heading"
+              className="mb-5 text-[14px] font-semibold text-[#F5F5F5]"
+            >
+              Elsewhere
+            </h2>
+            <ul className={`${styles.list} space-y-5`}>
+              {links.map((item) => (
+                <Row key={item.title} item={item} />
+              ))}
+            </ul>
+          </section>
+        </main>
+
+        {/* ── Contact ── */}
         <footer
-          className="rise mt-16 text-xs text-[#5A5A5A]"
-          style={{ "--rise-delay": "0.64s" } as React.CSSProperties}
+          id="contact"
+          aria-labelledby="contact-heading"
+          className="rise scroll-mt-10 pt-14 pb-6"
+          style={rise(3)}
         >
-          The career path, intro, links, and socials all live in
-          lib/content.ts, and they are real now.
+          <h2
+            id="contact-heading"
+            className="mb-5 text-[14px] font-semibold text-[#F5F5F5]"
+          >
+            Contact
+          </h2>
+          <ul className="flex flex-wrap gap-x-5 gap-y-3">
+            {socials.map((social) => (
+              <li key={social.label}>
+                {social.href ? (
+                  <a
+                    href={social.href}
+                    {...(social.href.startsWith("http")
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    aria-label={`${social.label} · ${social.handle}`}
+                    className={styles.social}
+                  >
+                    {social.label}{" "}
+                    <span
+                      aria-hidden="true"
+                      className={`${styles.socialArrow} inline-block`}
+                    >
+                      ↗
+                    </span>
+                  </a>
+                ) : (
+                  <CopyHandle label={social.label} handle={social.handle} />
+                )}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-8 text-[13px] text-[#6E6E6E]">
+            © 2026 {profile.name}
+          </p>
         </footer>
-      </main>
+      </div>
+
+      {/* ── The hidden footer — tug past the end and the blues rise ── */}
+      <HiddenFooter />
     </div>
   );
 }
