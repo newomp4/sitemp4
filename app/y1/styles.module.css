@@ -152,29 +152,15 @@
 }
 
 /* ── Deep-linked chapter (e.g. "college" in the intro → #bryant): the
-   page glides down, the row lands upper-middle, its note unfolds, and a
-   soft wash sweeps over it and fades ── */
+   AnchorLink glide lands the row upper-middle with its note unfolded.
+   scroll-margin covers direct /y1#bryant visits; :target and
+   [data-unfold] both open the note, no flash. ── */
 .list > li[id] {
   scroll-margin-top: 32vh;
 }
 
-@keyframes targetWash {
-  from {
-    background-color: rgba(245, 245, 245, 0.08);
-    box-shadow: 0 0 0 14px rgba(245, 245, 245, 0.08);
-  }
-  to {
-    background-color: transparent;
-    box-shadow: 0 0 0 14px transparent;
-  }
-}
-
-.list > li:target {
-  border-radius: 6px;
-  animation: targetWash 1.8s ease-out 0.35s both;
-}
-
-.list > li:target .noteWrap {
+.list > li:target .noteWrap,
+.list > li[data-unfold] .noteWrap {
   grid-template-rows: 1fr;
   opacity: 1;
 }
@@ -736,10 +722,6 @@
   .list > li:hover,
   .list > li:focus-within {
     transform: none;
-  }
-
-  .list > li:target {
-    animation: none;
   }
 
   .captionLink {

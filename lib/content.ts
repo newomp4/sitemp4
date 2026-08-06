@@ -19,7 +19,7 @@ export const profile = {
   tagline: "I make things for the internet.",
   intro: [
     "I'm 19, from Boston, and I make things for the internet.",
-    "Recently dropped out of [college](#bryant) (Bryant '29) to be head of creative at [Content Rewards](https://contentrewards.com), the platform where brands pay creators to post.",
+    "Recently dropped out of [college](#bryant) (class of 2029) to be head of creative at [Content Rewards](https://contentrewards.com), the platform where brands pay creators to post.",
     "Prev: co-founded a real estate marketing company (13-person team), did ~$250k GMV on TikTok Shop, and ran [polyviral](https://polyviral.org), editing for [whop.com](https://whop.com)'s top earners.",
   ],
   now: "Right now I'm head of creative at Content Rewards.",

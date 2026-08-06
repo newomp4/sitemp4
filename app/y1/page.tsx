@@ -10,6 +10,7 @@ import {
   type LinkItem,
   type PathItem,
 } from "@/lib/content";
+import AnchorLink from "./AnchorLink";
 import Avatar from "./Avatar";
 import CopyHandle from "./copy-handle";
 import HiddenFooter from "./HiddenFooter";
@@ -33,16 +34,22 @@ function richText(text: string) {
   while ((m = re.exec(text))) {
     if (m.index > last) parts.push(text.slice(last, m.index));
     parts.push(
-      <a
-        key={m.index}
-        href={m[2]}
-        {...(m[2].startsWith("http")
-          ? { target: "_blank", rel: "noopener noreferrer" }
-          : {})}
-        className={styles.captionLink}
-      >
-        {m[1]}
-      </a>,
+      m[2].startsWith("#") ? (
+        <AnchorLink key={m.index} href={m[2]} className={styles.captionLink}>
+          {m[1]}
+        </AnchorLink>
+      ) : (
+        <a
+          key={m.index}
+          href={m[2]}
+          {...(m[2].startsWith("http")
+            ? { target: "_blank", rel: "noopener noreferrer" }
+            : {})}
+          className={styles.captionLink}
+        >
+          {m[1]}
+        </a>
+      ),
     );
     last = m.index + m[0].length;
   }
