@@ -233,7 +233,7 @@ export default function SlateTwoPage() {
               id="path-heading"
               className="mb-5 text-[14px] font-semibold text-[#F5F5F5]"
             >
-              The path
+              So far
             </h2>
             <ul className={`${styles.list} space-y-5`}>
               {path.map((item) => (

@@ -54,7 +54,7 @@ export const path: PathItem[] = [
     years: "2025 – 2026",
     title: "Bryant University",
     role: "Student, briefly",
-    note: "I was going for a master's in business administration with a concentration in digital marketing and a minor in sales and psychology. Dropped out in March 2026 for [Content Rewards](https://contentrewards.com).",
+    note: "I was going for a master's in business administration with a concentration in digital marketing and a minor in sales and psychology. Dropped out during my second semester in March 2026 for [Content Rewards](https://contentrewards.com).",
     href: "https://www.bryant.edu",
     external: true,
     logo: "/logos/bryant.png",
