@@ -583,24 +583,17 @@
   visibility: visible;
 }
 
-/* One quiet line on the page's own column: quote left, the @ right */
+/* The quote, centered on the glow, attribution beneath */
 .revealRow {
   margin-inline: auto;
   max-width: 42rem;
   padding-inline: 24px;
-  padding-bottom: 26px;
+  padding-bottom: 30px;
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-/* On narrow viewports the fixed version badge lives bottom-right —
-   clear it so the @ never sits underneath it */
-@media (max-width: 780px) {
-  .revealRow {
-    padding-right: 84px;
-  }
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  text-align: center;
 }
 
 /* While the footer is shut, its animations idle — no cost on a page
@@ -620,25 +613,8 @@
 }
 
 .revealBy {
+  font-size: 12px;
   color: rgba(238, 244, 251, 0.55);
-}
-
-.revealLink {
-  pointer-events: auto;
-  font-size: 13px;
-  color: rgba(238, 244, 251, 0.85);
-  background-image: linear-gradient(currentColor, currentColor);
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 0% 1px;
-  transition:
-    color 150ms ease,
-    background-size 300ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.revealLink:hover {
-  color: #ffffff;
-  background-size: 100% 1px;
 }
 
 /* ── Copied check pops in ── */

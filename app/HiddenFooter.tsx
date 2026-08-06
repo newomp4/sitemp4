@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { profile } from "@/lib/content";
 import styles from "./styles.module.css";
 
 /**
@@ -119,22 +118,13 @@ export default function HiddenFooter() {
         </div>
       </div>
 
-      {/* One small footer line: quote left, the @ right */}
+      {/* The quote, centered, attribution beneath */}
       <div className={styles.revealText}>
         <div className={styles.revealRow}>
           <p className={styles.revealQuote}>
             &ldquo;It won&rsquo;t fail because of me&rdquo;
-            <span className={styles.revealBy}> - tom sachs</span>
           </p>
-          <a
-            href={profile.handleHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            tabIndex={-1}
-            className={styles.revealLink}
-          >
-            @{profile.handle}
-          </a>
+          <p className={styles.revealBy}>tom sachs</p>
         </div>
       </div>
     </div>
