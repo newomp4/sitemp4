@@ -20,9 +20,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* No visible scrollbars anywhere — the page scrolls, the chrome doesn't show */
+/* No visible scrollbars anywhere — the page scrolls, the chrome doesn't show.
+   No rubber-band overscroll either: bouncing past the end would expose the
+   page background beneath the fixed footer glow. */
 html {
   scrollbar-width: none;
+  overscroll-behavior-y: none;
 }
 
 ::-webkit-scrollbar {

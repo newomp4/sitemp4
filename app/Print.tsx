@@ -20,6 +20,8 @@ export default function Print() {
         sizes="128px"
         quality={90}
         preload
+        placeholder="blur"
+        blurDataURL="data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAUABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAUGA//EACAQAAIBBAMAAwAAAAAAAAAAAAECAwAEERIhMVEGE3H/xAAVAQEBAAAAAAAAAAAAAAAAAAACAf/EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAwDAQACEQMRAD8A3uDAlgFlKgtKpAP5T6K6gKKRNEcgcbioi4uEcxRuoZhljs2oAx7Ty3t447AXRQMv0Z04Jz353R2liPlHCnJJPtPZmKfHIwpIwMd+miirBf/Z"
         className={`${styles.printImg} object-cover`}
       />
     </Link>

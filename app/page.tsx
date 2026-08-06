@@ -12,6 +12,7 @@ import {
 import AnchorLink from "./AnchorLink";
 import Avatar from "./Avatar";
 import CopyHandle from "./copy-handle";
+import FoldRow from "./FoldRow";
 import HiddenFooter from "./HiddenFooter";
 import Print from "./Print";
 import styles from "./styles.module.css";
@@ -96,42 +97,33 @@ function PathRow({ item }: { item: PathItem }) {
     : false;
 
   return (
-    <li
+    <FoldRow
       id={item.anchor}
-      // No-href rows are focusable to unfold their notes; anchored rows
-      // take programmatic focus when a deep link glides to them.
-      {...(item.href ? (item.anchor ? { tabIndex: -1 } : {}) : { tabIndex: 0 })}
-    >
-      <div className="grid grid-cols-[112px_1fr] gap-x-4">
-        <p className="text-[12px] leading-6 tracking-[0.01em] text-[#7D7D7D]">
-          {item.years}
-        </p>
-        <div>
-          {item.href ? (
-            <a
-              href={item.href}
-              {...(external
-                ? { target: "_blank", rel: "noopener noreferrer" }
-                : {})}
-              className="block"
-            >
-              {heading}
-            </a>
-          ) : (
-            heading
-          )}
-          {item.note && (
-            <div className={styles.noteWrap}>
-              <div className={styles.noteInner}>
-                <p className="pt-1 text-[14px] leading-relaxed text-[#8A8A8A]">
-                  {richText(item.note)}
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </li>
+      hasLink={Boolean(item.href)}
+      years={item.years}
+      heading={
+        item.href ? (
+          <a
+            href={item.href}
+            {...(external
+              ? { target: "_blank", rel: "noopener noreferrer" }
+              : {})}
+            className="block"
+          >
+            {heading}
+          </a>
+        ) : (
+          heading
+        )
+      }
+      note={
+        item.note ? (
+          <p className="pt-1 text-[14px] leading-relaxed text-[#8A8A8A]">
+            {richText(item.note)}
+          </p>
+        ) : null
+      }
+    />
   );
 }
 

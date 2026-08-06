@@ -121,11 +121,29 @@
   overflow: hidden;
 }
 
-.list > li:hover .noteWrap,
-.list > li:focus-within .noteWrap,
-.list > li:focus .noteWrap {
+@media (hover: hover) {
+  .list > li:hover .noteWrap,
+  .list > li:focus-within .noteWrap,
+  .list > li:focus .noteWrap {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
+
+/* Touch: FoldRow drives the fold with a tap (data-open), and the row's
+   ↗ and underline appear as its open-state affordances */
+.list > li[data-open="true"] .noteWrap {
   grid-template-rows: 1fr;
   opacity: 1;
+}
+
+.list > li[data-open="true"] .arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.list > li[data-open="true"] .title {
+  background-size: 100% 1px;
 }
 
 /* ── Deep-linked chapter (e.g. "college" in the intro → #bryant): the
@@ -149,15 +167,17 @@
     transform 400ms cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.list:hover > li,
-.list:focus-within > li {
-  opacity: 0.45;
-}
+@media (hover: hover) {
+  .list:hover > li,
+  .list:focus-within > li {
+    opacity: 0.45;
+  }
 
-.list > li:hover,
-.list > li:focus-within {
-  opacity: 1;
-  transform: translateX(3px);
+  .list > li:hover,
+  .list > li:focus-within {
+    opacity: 1;
+    transform: translateX(3px);
+  }
 }
 
 /* ── The little logo square beside a chapter title: rests quiet, does a
@@ -175,10 +195,12 @@
     border-color 250ms ease;
 }
 
-.list > li:hover .logoBox,
-.list > li:focus-within .logoBox {
-  transform: translateY(-1px) rotate(-4deg) scale(1.1);
-  border-color: #3f3f3f;
+@media (hover: hover) {
+  .list > li:hover .logoBox,
+  .list > li:focus-within .logoBox {
+    transform: translateY(-1px) rotate(-4deg) scale(1.1);
+    border-color: #3f3f3f;
+  }
 }
 
 /* Some marks are circles (Bryant's seal); same behavior, round crop */
@@ -195,9 +217,11 @@
   transition: background-size 350ms cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.list > li:hover .title,
-.list > li:focus-within .title {
-  background-size: 100% 1px;
+@media (hover: hover) {
+  .list > li:hover .title,
+  .list > li:focus-within .title {
+    background-size: 100% 1px;
+  }
 }
 
 /* ── …then the arrow follows it in, 75ms behind ── */
@@ -209,47 +233,14 @@
     transform 150ms ease;
 }
 
-.list > li:hover .arrow,
-.list > li:focus-within .arrow {
-  opacity: 1;
-  transform: translate(0, 0);
-  transition:
-    opacity 350ms ease 90ms,
-    transform 350ms cubic-bezier(0.25, 1, 0.5, 1) 90ms;
-}
-
-/* Touch devices have no hover: notes render open and none of the hover
-   choreography runs (it would fire on tap and stick after navigation).
-   This block must FOLLOW every rule it overrides. */
-@media (hover: none) {
-  .noteWrap {
-    grid-template-rows: 1fr;
-    opacity: 1;
-  }
-
-  .list:hover > li,
-  .list:focus-within > li,
-  .list > li:hover,
-  .list > li:focus-within {
-    opacity: 1;
-    transform: none;
-  }
-
-  .list > li:hover .logoBox,
-  .list > li:focus-within .logoBox {
-    transform: none;
-    border-color: #262626;
-  }
-
-  .list > li:hover .title,
-  .list > li:focus-within .title {
-    background-size: 0% 1px;
-  }
-
+@media (hover: hover) {
   .list > li:hover .arrow,
   .list > li:focus-within .arrow {
-    opacity: 0;
-    transform: translate(-4px, 4px);
+    opacity: 1;
+    transform: translate(0, 0);
+    transition:
+      opacity 350ms ease 90ms,
+      transform 350ms cubic-bezier(0.25, 1, 0.5, 1) 90ms;
   }
 }
 
@@ -386,7 +377,26 @@
   height: 52vh;
   z-index: 40;
   pointer-events: none;
-  overflow: hidden;
+}
+
+/* Browsers that still rubber-band (older iOS ignores overscroll-behavior)
+   see this bleed below the viewport instead of bare background — it echoes
+   the aurora's bottom edge so the glow never has a hard cutoff */
+.revealLayer::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 30vh;
+  background: linear-gradient(
+    90deg,
+    #16449c,
+    #0d61f0 30%,
+    #1f9df2 50%,
+    #0d61f0 70%,
+    #16449c
+  );
 }
 
 /* ── Glow stack: the reveal is split by depth across two springs — mid

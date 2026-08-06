@@ -31,11 +31,14 @@ type Photo = {
   height: number;
   alt: string;
   caption: ReactNode;
+  blur: string; // tiny base64 preview shown while the scan loads
 };
 
 const PHOTOS: Photo[] = [
   {
     src: "/photos/owen-nyc-full.jpg",
+    blur:
+      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAwQFBv/EACMQAAICAQIGAwAAAAAAAAAAAAECAxEABBIFExQVITFBUaH/xAAVAQEBAAAAAAAAAAAAAAAAAAABAv/EABURAQEAAAAAAAAAAAAAAAAAAAAh/9oADAMBAAIRAxEAPwAuh16RTQLGjPZYkBqvx9fOVe9Rb3QaeVyhpthVq/cxfDJH7lpW3G91e8Xnnl6iY8xrLEE378nJpj//2Q==",
     width: 1818,
     height: 1228,
     alt: "Owen, Galileo, and Ariel on a rooftop in front of the Williamsburg Bridge at dusk",
@@ -50,6 +53,8 @@ const PHOTOS: Photo[] = [
   },
   {
     src: "/photos/gallery/paris-eiffel.jpg",
+    blur:
+      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAUG/8QAIRAAAgEDBAMBAAAAAAAAAAAAAQIDAAQREiExQQUTUYH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFREBAQAAAAAAAAAAAAAAAAAAABH/2gAMAwEAAhEDEQA/AAW9peCFbonClgwOsZ27A/a048zZxQr75AJQo1LjO/HVQ5II45kVVAVIiyj4ciksigEBQBtwMdUo/9k=",
     width: 1818,
     height: 1228,
     alt: "Three friends in front of the Eiffel Tower",
@@ -63,6 +68,8 @@ const PHOTOS: Photo[] = [
   },
   {
     src: "/photos/gallery/soho-asspizza.jpg",
+    blur:
+      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAVABADASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAQBAgX/xAAjEAACAQQBBAMBAAAAAAAAAAABAgMABBEFBhIhMUGR/8QAFgEBAQEAAAAAAAAAAAAAAAAAAgAB/8QAGBEBAQEBAQAAAAAAAAAAAAAAAQARIUH/2gAMAwEAAhEDEQA/AL8hYC8lgDuUOpydDjyf5T3EW8drbNEriTuJLAEfH3Sb3EjLlWYv5GcAD1U2M0plURksWGzqR0x7/etLPYrmFjNM55Irk6741B6eKZ427kE0pGO2M4oorNaQ5f/Z",
     width: 945,
     height: 1227,
     alt: "Owen and Austin Babbitt in front of a graffiti-covered wall",
@@ -75,6 +82,8 @@ const PHOTOS: Photo[] = [
   },
   {
     src: "/photos/gallery/chinatown.jpg",
+    blur:
+      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAIF/8QAIBAAAgEDBQEBAAAAAAAAAAAAAQIRAAMEEiEiMVFhcf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFxEAAwEAAAAAAAAAAAAAAAAAAAESEf/aAAwDAQACEQMRAD8AysS7eu23YIvAATI2gfTSXv5DY7s2PbCKBBQ6Z6976FFsclGrf9qcvYQABPgik6Smf//Z",
     width: 1818,
     height: 1228,
     alt: "A graffiti-covered van parked on a Chinatown street",
@@ -82,6 +91,8 @@ const PHOTOS: Photo[] = [
   },
   {
     src: "/photos/gallery/paris-team-dinner.jpg",
+    blur:
+      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABQME/8QAIRAAAgEEAgIDAAAAAAAAAAAAAQIDAAQREgUxIWEycZH/xAAUAQEAAAAAAAAAAAAAAAAAAAAC/8QAFhEBAQEAAAAAAAAAAAAAAAAAAAEh/9oADAMBAAIRAxEAPwDFyXF29rOVtZQyIE3BbJGez9dftGyWxUMVcMqfIq3j1Tt7EknKjdQd4o9veSc1GYCCwvGiAQsFU4HYzijCuP/Z",
     width: 1818,
     height: 1228,
     alt: "The Content Rewards team at dinner in Paris",
@@ -94,6 +105,8 @@ const PHOTOS: Photo[] = [
   },
   {
     src: "/photos/gallery/team-danvsl.jpg",
+    blur:
+      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAALABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABQT/xAAgEAACAQMEAwAAAAAAAAAAAAABAgMABBEFBhIhMUGR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAH/xAAVEQEBAAAAAAAAAAAAAAAAAAAAEf/aAAwDAQACEQMRAD8AO0qAX0ohjZY5SOsLilL1LVIn5dccDx7NB7fYrqcZB7JOfhqOWWRizlzyLHJqEf/Z",
     width: 1818,
     height: 1228,
     alt: "Dan and the Content Rewards team in a hotel room",
@@ -146,6 +159,8 @@ export default function PhotosPage() {
                     unoptimized
                     preload={i === 0}
                     loading={i === 0 ? "eager" : "lazy"}
+                    placeholder="blur"
+                    blurDataURL={photo.blur}
                     className={`${styles.photoImg} h-auto w-full`}
                   />
                 </div>
