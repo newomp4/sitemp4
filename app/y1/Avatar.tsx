@@ -10,7 +10,9 @@ import { profile } from "@/lib/content";
  * pfp on Twitter updates the site automatically. If that service is ever
  * unreachable, it falls back to the snapshot committed in /public.
  */
-const LIVE = `https://unavatar.io/x/${profile.handle}`;
+/* fallback=false makes unavatar 404 on a failed lookup instead of serving
+   its own gray placeholder with a 200 — so onError can actually fire. */
+const LIVE = `https://unavatar.io/x/${profile.handle}?fallback=false`;
 const SNAPSHOT = "/photos/avatar.jpg";
 
 export default function Avatar() {

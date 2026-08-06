@@ -116,8 +116,8 @@ export default function Home() {
           className="rise mt-16 text-xs text-[#5A5A5A]"
           style={{ "--rise-delay": "0.64s" } as React.CSSProperties}
         >
-          The career path, links, and socials all live in lib/content.ts. The
-          path is real now; the intro and links are still placeholder.
+          The career path, intro, links, and socials all live in
+          lib/content.ts, and they are real now.
         </footer>
       </main>
     </div>

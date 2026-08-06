@@ -126,33 +126,45 @@ function PathRow({ item }: { item: PathItem }) {
 
 function Row({ item }: { item: LinkItem }) {
   const external = item.external ?? /^https?:/.test(item.href);
+  const body = (
+    <>
+      {item.year && <p className="text-[12px] text-[#6E6E6E]">{item.year}</p>}
+      <h3
+        className={`text-[16px] font-semibold text-[#F5F5F5] ${
+          item.year ? "mt-1" : ""
+        }`}
+      >
+        <span className={styles.title}>{item.title}</span>{" "}
+        <span
+          aria-hidden="true"
+          className={`${styles.arrow} inline-block text-[#A3A3A3]`}
+        >
+          ↗
+        </span>
+      </h3>
+      {item.description && (
+        <p className="mt-1 text-[15px] leading-relaxed text-[#A3A3A3]">
+          {item.description}
+        </p>
+      )}
+    </>
+  );
   return (
     <li>
-      <a
-        href={item.href}
-        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-        className="block"
-      >
-        {item.year && <p className="text-[12px] text-[#6E6E6E]">{item.year}</p>}
-        <h3
-          className={`text-[16px] font-semibold text-[#F5F5F5] ${
-            item.year ? "mt-1" : ""
-          }`}
+      {external ? (
+        <a
+          href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block"
         >
-          <span className={styles.title}>{item.title}</span>{" "}
-          <span
-            aria-hidden="true"
-            className={`${styles.arrow} inline-block text-[#A3A3A3]`}
-          >
-            ↗
-          </span>
-        </h3>
-        {item.description && (
-          <p className="mt-1 text-[15px] leading-relaxed text-[#A3A3A3]">
-            {item.description}
-          </p>
-        )}
-      </a>
+          {body}
+        </a>
+      ) : (
+        <Link href={item.href} className="block">
+          {body}
+        </Link>
+      )}
     </li>
   );
 }

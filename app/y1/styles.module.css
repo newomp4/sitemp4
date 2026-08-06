@@ -10,7 +10,7 @@
   color: #111111;
 }
 
-.root :is(a, button):focus-visible {
+.root :is(a, button, [tabindex]):focus-visible {
   outline: 2px solid #f5f5f5;
   outline-offset: 4px;
   border-radius: 2px;
@@ -130,6 +130,25 @@
 .list > li:focus .noteWrap {
   grid-template-rows: 1fr;
   opacity: 1;
+}
+
+/* Touch devices have no hover: notes render open and nothing dims,
+   otherwise linked rows would navigate before their note could ever show */
+@media (hover: none) {
+  .noteWrap {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .list:hover > li,
+  .list:focus-within > li {
+    opacity: 1;
+  }
+
+  .list > li:hover,
+  .list > li:focus-within {
+    transform: none;
+  }
 }
 
 /* ── Sibling-dim: the hovered/focused row holds, the rest recede ── */
@@ -460,6 +479,23 @@
   gap: 16px;
 }
 
+/* On narrow viewports the fixed version badge lives bottom-right —
+   clear it so the @ never sits underneath it */
+@media (max-width: 780px) {
+  .revealRow {
+    padding-right: 84px;
+  }
+}
+
+/* While the footer is shut, its animations idle — no cost on a page
+   that is just sitting there */
+.reveal[data-open="false"] .curtainA,
+.reveal[data-open="false"] .curtainB,
+.reveal[data-open="false"] .curtainC,
+.reveal[data-open="false"] .revealGrain {
+  animation-play-state: paused;
+}
+
 .revealQuote {
   font-size: 13px;
   letter-spacing: -0.01em;
@@ -567,17 +603,17 @@
     opacity: 0;
   }
 
-  .printImg {
-    filter: none;
-  }
-
   .list > li:hover,
   .list > li:focus-within {
     transform: none;
   }
 
-  .handle:hover .handleArrow,
-  .handle:focus-visible .handleArrow {
+  .captionLink {
+    transition: none;
+  }
+
+  .handleLink:hover .handleArrow,
+  .handleLink:focus-visible .handleArrow {
     transform: none;
   }
 

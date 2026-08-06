@@ -24,20 +24,24 @@ export default function HiddenFooter() {
     const spacer = spacerRef.current;
     if (!root || !spacer) return;
 
-    const progressRef = { current: 0 };
     let raf = 0;
     let idleTimer = 0;
     let retractRaf = 0;
+    let lastWrittenY = -1; // what the glide last wrote; -1 = not gliding
     const canSnap = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-    const update = () => {
-      raf = 0;
+    const measure = () => {
       const rect = spacer.getBoundingClientRect();
       const p = Math.min(
         1,
         Math.max(0, (window.innerHeight - rect.top) / rect.height),
       );
-      progressRef.current = p;
+      return { rect, p };
+    };
+
+    const update = () => {
+      raf = 0;
+      const { p } = measure();
       root.style.setProperty("--reveal", p.toFixed(4));
       // The color rises on an eased curve while the text tracks linearly:
       // the slight lag between them reads as depth.
@@ -50,16 +54,25 @@ export default function HiddenFooter() {
         cancelAnimationFrame(retractRaf);
         retractRaf = 0;
       }
+      lastWrittenY = -1;
+    };
+
+    const armIdle = () => {
+      if (!canSnap) return;
+      window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(retract, 450);
     };
 
     /* The elastic: a half-open peek slowly eases itself shut (a long,
        gentle glide, not a snap). Commit past ~70% or ride to the very
        bottom and it stays — a resting state you chose on purpose. */
     const retract = () => {
-      const p = progressRef.current;
+      const { rect, p } = measure(); // fresh, never a stale cached value
       if (p <= 0.03 || p >= 0.7) return;
-      const rect = spacer.getBoundingClientRect();
-      const targetY = window.scrollY + rect.top - window.innerHeight;
+      const targetY = Math.max(
+        0,
+        window.scrollY + rect.top - window.innerHeight,
+      );
       const startY = window.scrollY;
       const dist = targetY - startY;
       if (Math.abs(dist) < 2) return;
@@ -68,34 +81,57 @@ export default function HiddenFooter() {
       const ease = (t: number) => 1 - Math.pow(1 - t, 3);
       const step = (now: number) => {
         const t = Math.min(1, (now - t0) / DURATION);
-        window.scrollTo(0, startY + dist * ease(t));
+        const y = Math.round(startY + dist * ease(t));
+        lastWrittenY = y;
+        window.scrollTo(0, y);
         retractRaf = t < 1 ? requestAnimationFrame(step) : 0;
+        if (!retractRaf) lastWrittenY = -1;
       };
       retractRaf = requestAnimationFrame(step);
     };
 
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update);
-      if (canSnap && !retractRaf) {
-        window.clearTimeout(idleTimer);
-        idleTimer = window.setTimeout(retract, 450);
+      if (retractRaf) {
+        // A scroll the glide didn't write (find-in-page, autoscroll,
+        // anchor jump…) belongs to the user — let them win.
+        if (
+          lastWrittenY >= 0 &&
+          Math.abs(window.scrollY - lastWrittenY) > 1
+        ) {
+          cancelRetract();
+          armIdle();
+        }
+        return;
       }
+      armIdle();
     };
     const onUserInput = () => {
-      cancelRetract();
+      // Cancel the glide but always re-arm — never park half-open.
+      if (retractRaf) {
+        cancelRetract();
+        armIdle();
+      }
+    };
+    const onResize = () => {
+      cancelRetract(); // geometry changed; let the idle timer re-decide
+      if (!raf) raf = requestAnimationFrame(update);
+      armIdle();
     };
 
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
     window.addEventListener("wheel", onUserInput, { passive: true });
     window.addEventListener("touchstart", onUserInput, { passive: true });
+    window.addEventListener("pointerdown", onUserInput, { passive: true });
     window.addEventListener("keydown", onUserInput);
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("resize", onResize);
       window.removeEventListener("wheel", onUserInput);
       window.removeEventListener("touchstart", onUserInput);
+      window.removeEventListener("pointerdown", onUserInput);
       window.removeEventListener("keydown", onUserInput);
       window.clearTimeout(idleTimer);
       cancelRetract();

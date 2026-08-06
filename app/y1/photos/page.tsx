@@ -142,7 +142,7 @@ export default function PhotosPage() {
                     width={photo.width}
                     height={photo.height}
                     unoptimized
-                    priority={i === 0}
+                    preload={i === 0}
                     className={`${styles.photoImg} h-auto w-full`}
                   />
                 </div>

@@ -19,7 +19,7 @@ export default function Print() {
         fill
         sizes="128px"
         quality={90}
-        priority
+        preload
         className={`${styles.printImg} object-cover`}
       />
     </Link>
