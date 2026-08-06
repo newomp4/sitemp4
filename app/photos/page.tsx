@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const rise = (step: number): CSSProperties =>
-  ({ "--rise-delay": `${step * 0.07}s` }) as CSSProperties;
+  ({ "--rise-delay": `${step * 0.1}s` }) as CSSProperties;
 
 function Cap({ href, children }: { href: string; children: ReactNode }) {
   return (

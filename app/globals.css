@@ -40,7 +40,7 @@ html {
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -50,7 +50,7 @@ html {
 
 .rise {
   opacity: 0;
-  animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: var(--rise-delay, 0s);
 }
 

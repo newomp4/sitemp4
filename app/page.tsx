@@ -17,7 +17,7 @@ import Print from "./Print";
 import styles from "./styles.module.css";
 
 const rise = (step: number): CSSProperties =>
-  ({ "--rise-delay": `${step * 0.06}s` }) as CSSProperties;
+  ({ "--rise-delay": `${step * 0.1}s` }) as CSSProperties;
 
 /* Render [text](url) in copy as real links. */
 function richText(text: string) {
