@@ -346,7 +346,7 @@
 }
 
 .revealSpacer {
-  height: 52vh;
+  height: 68vh;
 }
 
 .revealLayer {
@@ -357,46 +357,143 @@
   z-index: 40;
   pointer-events: none;
   overflow: hidden;
-  transform: translateY(calc((1 - var(--revealE, var(--reveal))) * 103%));
+}
+
+/* ── Glow stack: the reveal is split by depth across two springs — mid
+   and front ride the tense one, the back wash rides the soft one and
+   visibly lags, so opening has parallax and a layered settle ── */
+.gsLiftSoft {
+  position: absolute;
+  inset: 0;
+  transform: translateY(calc((1 - var(--revealSoft, var(--reveal, 0))) * 103%));
   will-change: transform;
 }
 
-/* ── The curtains sway: three clocks, out of phase, always moving ── */
-@keyframes curtainSway {
-  0% {
-    transform: translateY(0) scaleY(1);
-    opacity: 0.9;
-  }
-  50% {
-    transform: translateY(-26px) scaleY(1.05);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(10px) scaleY(0.97);
-    opacity: 0.82;
-  }
+.gsLiftTense {
+  position: absolute;
+  inset: 0;
+  transform: translateY(calc((1 - var(--revealE, var(--reveal, 0))) * 103%));
+  will-change: transform;
 }
 
-.curtainA,
-.curtainB,
-.curtainC {
-  transform-origin: bottom;
-  transform-box: fill-box;
+/* Glows overscan the container so a ±4% drift never shows an edge */
+.gsGlow {
+  position: absolute;
+  inset: 0 -10% -8% -10%;
   will-change: transform, opacity;
 }
 
-.curtainA {
-  animation: curtainSway 9s ease-in-out infinite alternate;
+@keyframes gsDriftBack {
+  0% {
+    transform: translateX(-4%);
+    opacity: 0.92;
+  }
+  50% {
+    transform: translateX(1.5%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(4%);
+    opacity: 0.9;
+  }
 }
 
-.curtainB {
-  animation: curtainSway 13s ease-in-out infinite alternate-reverse;
-  animation-delay: -5s;
+@keyframes gsDriftMid {
+  0% {
+    transform: translateX(3.5%);
+    opacity: 0.88;
+  }
+  50% {
+    transform: translateX(-1%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-4%);
+    opacity: 0.9;
+  }
 }
 
-.curtainC {
-  animation: curtainSway 17s ease-in-out infinite alternate;
-  animation-delay: -9s;
+@keyframes gsDriftFront {
+  0% {
+    transform: translateX(-3%);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateX(1.8%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(3.5%);
+    opacity: 0.88;
+  }
+}
+
+/* Back — the wide indigo/navy wash */
+.gsBack {
+  background: radial-gradient(
+    115% 120% at 50% 103%,
+    rgba(23, 73, 182, 0.95) 0%,
+    rgba(21, 67, 172, 0.84) 14%,
+    rgba(18, 58, 152, 0.68) 29%,
+    rgba(16, 49, 128, 0.5) 45%,
+    rgba(14, 40, 104, 0.33) 60%,
+    rgba(13, 33, 86, 0.18) 74%,
+    rgba(12, 28, 70, 0.07) 87%,
+    rgba(12, 28, 70, 0) 100%
+  );
+  animation: gsDriftBack 25s ease-in-out -9s infinite alternate;
+}
+
+/* Mid — twin electric-blue cores */
+.gsMid {
+  background:
+    radial-gradient(
+      72% 96% at 38% 104%,
+      rgba(13, 97, 240, 0.88) 0%,
+      rgba(13, 92, 231, 0.72) 18%,
+      rgba(13, 84, 214, 0.54) 36%,
+      rgba(14, 74, 190, 0.36) 53%,
+      rgba(15, 64, 163, 0.2) 69%,
+      rgba(16, 56, 142, 0.08) 84%,
+      rgba(16, 56, 142, 0) 100%
+    ),
+    radial-gradient(
+      60% 80% at 68% 105%,
+      rgba(14, 117, 255, 0.8) 0%,
+      rgba(14, 110, 246, 0.64) 20%,
+      rgba(13, 99, 230, 0.46) 40%,
+      rgba(13, 88, 209, 0.28) 58%,
+      rgba(13, 77, 185, 0.14) 75%,
+      rgba(13, 70, 168, 0.05) 88%,
+      rgba(13, 70, 168, 0) 100%
+    );
+  animation: gsDriftMid 17s ease-in-out -6s infinite alternate;
+}
+
+/* Front — smaller, brighter cyan highlights, softly melted */
+.gsFront {
+  background:
+    radial-gradient(
+      40% 58% at 44% 105%,
+      rgba(42, 212, 255, 0.72) 0%,
+      rgba(35, 193, 254, 0.56) 20%,
+      rgba(26, 168, 252, 0.4) 39%,
+      rgba(18, 145, 250, 0.25) 57%,
+      rgba(13, 126, 246, 0.12) 74%,
+      rgba(12, 116, 242, 0.04) 88%,
+      rgba(12, 116, 242, 0) 100%
+    ),
+    radial-gradient(
+      28% 40% at 63% 106%,
+      rgba(42, 212, 255, 0.55) 0%,
+      rgba(32, 186, 253, 0.4) 24%,
+      rgba(22, 158, 251, 0.26) 46%,
+      rgba(15, 136, 248, 0.13) 66%,
+      rgba(12, 122, 245, 0.05) 84%,
+      rgba(12, 122, 245, 0) 100%
+    );
+  filter: blur(18px);
+  animation: gsDriftFront 11s ease-in-out -3s infinite alternate;
 }
 
 /* Film grain: strong enough to read as film, animated like a projector,
@@ -494,9 +591,9 @@
 
 /* While the footer is shut, its animations idle — no cost on a page
    that is just sitting there */
-.reveal[data-open="false"] .curtainA,
-.reveal[data-open="false"] .curtainB,
-.reveal[data-open="false"] .curtainC,
+.reveal[data-open="false"] .gsBack,
+.reveal[data-open="false"] .gsMid,
+.reveal[data-open="false"] .gsFront,
 .reveal[data-open="false"] .revealGrain {
   animation-play-state: paused;
 }
