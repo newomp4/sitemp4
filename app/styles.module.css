@@ -407,6 +407,20 @@
   inset: 0;
   transform: translateY(calc((1 - var(--revealSoft, var(--reveal, 0))) * 103%));
   will-change: transform;
+  /* The plane's own top dissolves — travels with the glow, so no residual
+     gradient alpha can ever draw a hard line at its edge */
+  mask-image: linear-gradient(
+    to top,
+    black 72%,
+    rgba(0, 0, 0, 0.5) 86%,
+    transparent 99%
+  );
+  -webkit-mask-image: linear-gradient(
+    to top,
+    black 72%,
+    rgba(0, 0, 0, 0.5) 86%,
+    transparent 99%
+  );
 }
 
 .gsLiftTense {
@@ -414,6 +428,18 @@
   inset: 0;
   transform: translateY(calc((1 - var(--reveal, 0)) * 103%));
   will-change: transform;
+  mask-image: linear-gradient(
+    to top,
+    black 72%,
+    rgba(0, 0, 0, 0.5) 86%,
+    transparent 99%
+  );
+  -webkit-mask-image: linear-gradient(
+    to top,
+    black 72%,
+    rgba(0, 0, 0, 0.5) 86%,
+    transparent 99%
+  );
 }
 
 /* Glows overscan the container so a ±4% drift never shows an edge */
