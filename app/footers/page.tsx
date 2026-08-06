@@ -40,32 +40,83 @@ export default function FootersPage() {
   const stageRef = useRef<HTMLDivElement>(null);
   const spacerRef = useRef<HTMLDivElement>(null);
 
-  /* Scroll → --reveal / --revealE on the stage (same driver as production) */
+  /* Scroll → springs → --reveal / --revealE / --revealSoft on the stage.
+     The scroll position only sets a TARGET; two springs chase it with
+     weight and a slight overshoot when you stop — the tension/friction
+     that a raw linear mapping can never have. --revealSoft is a lazier
+     spring so layered variants get elastic depth between their planes. */
   useEffect(() => {
     const stage = stageRef.current;
     const spacer = spacerRef.current;
     if (!stage || !spacer) return;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     let raf = 0;
-    const update = () => {
-      raf = 0;
+    let running = false;
+    let lastT = 0;
+    let target = 0;
+    const s1 = { x: 0, v: 0, k: 170, c: 18 }; // tense, ~5% overshoot
+    const s2 = { x: 0, v: 0, k: 80, c: 13 }; // soft, lags behind
+
+    const measure = () => {
       const rect = spacer.getBoundingClientRect();
-      const p = Math.min(
+      target = Math.min(
         1,
         Math.max(0, (window.innerHeight - rect.top) / rect.height),
       );
-      stage.style.setProperty("--reveal", p.toFixed(4));
-      stage.style.setProperty("--revealE", (1 - Math.pow(1 - p, 2)).toFixed(4));
-      stage.dataset.open = p > 0.02 ? "true" : "false";
     };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
+    const apply = () => {
+      stage.style.setProperty("--reveal", s1.x.toFixed(4));
+      stage.style.setProperty("--revealE", s1.x.toFixed(4));
+      stage.style.setProperty("--revealSoft", s2.x.toFixed(4));
+      stage.dataset.open = Math.max(target, s1.x) > 0.02 ? "true" : "false";
     };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
+    const stepSpring = (s: { x: number; v: number; k: number; c: number }, dt: number) => {
+      const a = s.k * (target - s.x) - s.c * s.v;
+      s.v += a * dt;
+      s.x += s.v * dt;
+    };
+    const settled = (s: { x: number; v: number }) =>
+      Math.abs(s.x - target) < 0.0004 && Math.abs(s.v) < 0.002;
+    const tick = (now: number) => {
+      const dt = Math.min(0.032, (now - lastT) / 1000 || 0.016);
+      lastT = now;
+      stepSpring(s1, dt);
+      stepSpring(s2, dt);
+      apply();
+      if (settled(s1) && settled(s2)) {
+        s1.x = target;
+        s2.x = target;
+        s1.v = 0;
+        s2.v = 0;
+        apply();
+        running = false;
+        return;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    const kick = () => {
+      measure();
+      if (reduced) {
+        s1.x = target;
+        s2.x = target;
+        apply();
+        return;
+      }
+      if (!running) {
+        running = true;
+        lastT = performance.now();
+        raf = requestAnimationFrame(tick);
+      }
+    };
+    kick();
+    window.addEventListener("scroll", kick, { passive: true });
+    window.addEventListener("resize", kick, { passive: true });
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("scroll", kick);
+      window.removeEventListener("resize", kick);
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);

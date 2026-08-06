@@ -11,12 +11,13 @@
   overflow: hidden;
 }
 
-/* The reveal, split by depth: back rises linearly, mid/front eased —
-   the lag between them is the parallax */
+/* The reveal, split by depth across two springs: mid/front ride the
+   tense spring, the back wash rides the soft one and visibly lags —
+   elastic depth while opening, a layered settle when you stop */
 .liftLin {
   position: absolute;
   inset: 0;
-  transform: translateY(calc((1 - var(--reveal, 0)) * 103%));
+  transform: translateY(calc((1 - var(--revealSoft, var(--reveal, 0))) * 103%));
   will-change: transform;
 }
 
