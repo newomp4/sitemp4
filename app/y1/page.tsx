@@ -95,7 +95,7 @@ function PathRow({ item }: { item: PathItem }) {
     : false;
 
   return (
-    <li {...(item.href ? {} : { tabIndex: 0 })}>
+    <li id={item.anchor} {...(item.href ? {} : { tabIndex: 0 })}>
       <div className="grid grid-cols-[112px_1fr] gap-x-4">
         <p className="text-[12px] leading-6 tracking-[0.01em] text-[#6E6E6E]">
           {item.years}

@@ -19,8 +19,8 @@ export const profile = {
   tagline: "I make things for the internet.",
   intro: [
     "I'm 19, from Boston, and I make things for the internet.",
-    "Recently dropped out of college (Bryant '29) to be head of creative at [Content Rewards](https://contentrewards.com), the platform where brands pay creators to post.",
-    "Prev: co-founded a real estate marketing company (13-person team), did ~$250k GMV on TikTok Shop, and ran [polyviral](https://polyviral.org), editing for whop.com's top earners.",
+    "Recently dropped out of [college](#bryant) (Bryant '29) to be head of creative at [Content Rewards](https://contentrewards.com), the platform where brands pay creators to post.",
+    "Prev: co-founded a real estate marketing company (13-person team), did ~$250k GMV on TikTok Shop, and ran [polyviral](https://polyviral.org), editing for [whop.com](https://whop.com)'s top earners.",
   ],
   now: "Right now I'm head of creative at Content Rewards.",
 };
@@ -38,6 +38,7 @@ export type PathItem = {
   external?: boolean;
   logo?: string; // optional logo in /public, shown beside the title
   logoShape?: "square" | "circle"; // default square
+  anchor?: string; // optional id so copy can deep-link to this chapter
 };
 
 export const path: PathItem[] = [
@@ -59,6 +60,7 @@ export const path: PathItem[] = [
     external: true,
     logo: "/logos/bryant.png",
     logoShape: "circle",
+    anchor: "bryant",
   },
   {
     years: "2025",
