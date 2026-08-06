@@ -62,7 +62,7 @@ export const path: PathItem[] = [
     years: "2025",
     title: "Real estate marketing",
     role: "Media agency for realtors",
-    note: "Co-founded and grew to 30+ realtor clients across the state, with a team of 13 at the peak.",
+    note: "Co-founded and grew to 70+ realtor clients across the state, with a team of 13 at the peak.",
   },
   {
     years: "2024 – 2025",
