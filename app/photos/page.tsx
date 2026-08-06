@@ -36,12 +36,12 @@ type Photo = {
 
 const PHOTOS: Photo[] = [
   {
-    src: "/photos/owen-nyc-full.jpg",
+    src: "/photos/owen-nyc.jpg",
     blur:
-      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAwQFBv/EACMQAAICAQIGAwAAAAAAAAAAAAECAxEABBIFExQVITFBUaH/xAAVAQEBAAAAAAAAAAAAAAAAAAABAv/EABURAQEAAAAAAAAAAAAAAAAAAAAh/9oADAMBAAIRAxEAPwAuh16RTQLGjPZYkBqvx9fOVe9Rb3QaeVyhpthVq/cxfDJH7lpW3G91e8Xnnl6iY8xrLEE378nJpj//2Q==",
-    width: 1818,
-    height: 1228,
-    alt: "Owen, Galileo, and Ariel on a rooftop in front of the Williamsburg Bridge at dusk",
+      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAUABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAUGA//EACAQAAIBBAMAAwAAAAAAAAAAAAECAwAEERIhMVEGE3H/xAAVAQEBAAAAAAAAAAAAAAAAAAACAf/EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAwDAQACEQMRAD8A3uDAlgFlKgtKpAP5T6K6gKKRNEcgcbioi4uEcxRuoZhljs2oAx7Ty3t447AXRQMv0Z04Jz353R2liPlHCnJJPtPZmKfHIwpIwMd+miirBf/Z",
+    width: 900,
+    height: 1125,
+    alt: "Owen in front of the Williamsburg Bridge at dusk",
     caption: (
       <>
         Williamsburg, NYC @ <Cap href="https://whop.com">whop.com</Cap>&rsquo;s
@@ -128,7 +128,7 @@ export default function PhotosPage() {
             <span aria-hidden="true" className={styles.backArrow}>
               ←
             </span>{" "}
-            owen opacki
+            Back
           </Link>
           <h1 className="mt-8 text-[26px] font-semibold tracking-tight text-[#F5F5F5]">
             Photos
@@ -182,7 +182,7 @@ export default function PhotosPage() {
             <span aria-hidden="true" className={styles.backArrow}>
               ←
             </span>{" "}
-            back
+            Back
           </Link>
         </footer>
       </div>

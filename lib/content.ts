@@ -73,7 +73,7 @@ export const path: PathItem[] = [
     years: "2023 – 2025",
     title: "polyviral",
     role: "Video editing and motion design agency",
-    note: "Freelance editing turned agency, formerly Polygon Media. Edited for top [whop.com](https://whop.com) earners like [Chase Chappell](https://www.instagram.com/realchasechappell) and [Ads Mastery](https://www.adsmastery.com/), then made content for Whop itself.",
+    note: "Full-service editing agency. Edited for top [whop.com](https://whop.com) earners like [Chase Chappell](https://www.instagram.com/realchasechappell) and [Ads Mastery](https://www.adsmastery.com/), then made content for Whop itself.",
     href: "https://polyviral.org",
     external: true,
     logo: "/logos/polyviral.png",
@@ -100,7 +100,6 @@ export type LinkItem = {
 export const links: LinkItem[] = [
   {
     title: "Photos",
-    description: "Some photos I like.",
     href: "/photos",
   },
   {

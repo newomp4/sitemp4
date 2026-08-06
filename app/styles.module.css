@@ -468,10 +468,11 @@
   }
 }
 
-/* Back — the wide indigo/navy wash */
+/* Back — the wide indigo/navy wash. Extra-wide so the falloff at the
+   screen edges is gentle instead of compressed into visible bands */
 .gsBack {
   background: radial-gradient(
-    115% 120% at 50% 103%,
+    160% 125% at 50% 103%,
     rgba(23, 73, 182, 0.95) 0%,
     rgba(21, 67, 172, 0.84) 14%,
     rgba(18, 58, 152, 0.68) 29%,
@@ -577,19 +578,19 @@
   mix-blend-mode: overlay;
   opacity: 0.55;
   animation: grainJitter 0.85s steps(1) infinite;
-  /* Shaped to the aurora: strongest at bottom-center where the blue is,
-     fading radially so it never reads as a gray wash over the page */
-  mask-image: radial-gradient(
-    130% 108% at 50% 100%,
-    black 30%,
-    rgba(0, 0, 0, 0.55) 54%,
-    transparent 78%
+  /* Full-width across the glow (the edges band without dither), fading
+     out vertically before the color does so it never grays the bare page */
+  mask-image: linear-gradient(
+    to top,
+    black 48%,
+    rgba(0, 0, 0, 0.5) 68%,
+    transparent 86%
   );
-  -webkit-mask-image: radial-gradient(
-    130% 108% at 50% 100%,
-    black 30%,
-    rgba(0, 0, 0, 0.55) 54%,
-    transparent 78%
+  -webkit-mask-image: linear-gradient(
+    to top,
+    black 48%,
+    rgba(0, 0, 0, 0.5) 68%,
+    transparent 86%
   );
 }
 
@@ -614,7 +615,7 @@
   margin-inline: auto;
   max-width: 42rem;
   padding-inline: 24px;
-  padding-bottom: 52px;
+  padding-bottom: 76px;
   display: flex;
   flex-direction: column;
   align-items: center;
