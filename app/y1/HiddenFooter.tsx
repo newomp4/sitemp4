@@ -13,14 +13,15 @@ import styles from "./styles.module.css";
  * Motion: scrolling only sets a TARGET; two underdamped springs chase it
  * (a tense one for mid/front + text, a lazy one for the back wash), so
  * the reveal opens with weight, the planes stretch apart, and everything
- * settles with a slight overshoot when you stop. Deliberately reluctant:
- * the spacer is deep and the reveal tops out below full, so even at the
- * page's very bottom the glow sits low.
+ * settles with a slight overshoot when you stop. The dead zone is a
+ * short tug: at the page's natural bottom you see almost nothing, one
+ * small extra pull and the gradient sweeps in, and it still rests a
+ * little low even fully open.
  *
  * Dropped entirely under prefers-reduced-motion.
  */
 
-const REVEAL_MAX = 0.86; // even fully scrolled, it stays a little down
+const REVEAL_MAX = 0.9; // even fully tugged, it stays a touch down
 
 export default function HiddenFooter() {
   const rootRef = useRef<HTMLDivElement>(null);
