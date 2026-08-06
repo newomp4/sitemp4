@@ -41,8 +41,8 @@ export const path: PathItem[] = [
   {
     years: "2026 – present",
     title: "Content Rewards",
-    role: "Head of creative",
-    note: "Head of creative at [Content Rewards](https://contentrewards.com): the platform where brands pay creators for the content they post.",
+    role: "Head of Creative",
+    note: "Head of Creative at [Content Rewards](https://contentrewards.com): the platform where brands pay creators for the content they post.",
     href: "https://contentrewards.com",
     external: true,
     logo: "/logos/content-rewards.png",
@@ -105,8 +105,6 @@ export const links: LinkItem[] = [
   },
   {
     title: "Certifications",
-    description:
-      "Certified in most of the Adobe apps, plus OSHA 10 and HubSpot social media marketing.",
     href: "https://www.credly.com/users/owen-o",
     external: true,
   },
