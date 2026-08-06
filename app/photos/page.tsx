@@ -136,6 +136,8 @@ export default function PhotosPage() {
                       : "w-full"
                   }`}
                 >
+                  {/* Hero loads immediately; the rest of the roll only
+                      fetches as it approaches the viewport */}
                   <Image
                     src={photo.src}
                     alt={photo.alt}
@@ -143,6 +145,7 @@ export default function PhotosPage() {
                     height={photo.height}
                     unoptimized
                     preload={i === 0}
+                    loading={i === 0 ? "eager" : "lazy"}
                     className={`${styles.photoImg} h-auto w-full`}
                   />
                 </div>
