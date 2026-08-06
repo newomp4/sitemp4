@@ -18,9 +18,9 @@ export const profile = {
   // Short one-liner used under the name in some versions
   tagline: "I make things for the internet.",
   intro: [
-    "Nineteen, from Boston. I work at the intersection of content and commerce.",
+    "I'm 19, from Boston, and I make things for the internet.",
     "Recently dropped out of college (Bryant '29) to be head of creative at [Content Rewards](https://contentrewards.com), the platform where brands pay creators to post.",
-    "Prev: co-founded a real estate marketing company (13-person team), did ~$250k GMV on TikTok Shop, and ran [Polygon Media](https://whop.com/poly), editing for whop.com's top earners.",
+    "Prev: co-founded a real estate marketing company (13-person team), did ~$250k GMV on TikTok Shop, and ran [polyviral](https://polyviral.org), editing for whop.com's top earners.",
   ],
   now: "Right now I'm head of creative at Content Rewards.",
 };
@@ -36,7 +36,8 @@ export type PathItem = {
   note?: string; // the story, any length; [links](url) allowed
   href?: string; // optional link on the title
   external?: boolean;
-  logo?: string; // optional square logo in /public, shown beside the title
+  logo?: string; // optional logo in /public, shown beside the title
+  logoShape?: "square" | "circle"; // default square
 };
 
 export const path: PathItem[] = [
@@ -57,6 +58,7 @@ export const path: PathItem[] = [
     href: "https://www.bryant.edu",
     external: true,
     logo: "/logos/bryant.png",
+    logoShape: "circle",
   },
   {
     years: "2025",
@@ -72,11 +74,12 @@ export const path: PathItem[] = [
   },
   {
     years: "2023 – 2025",
-    title: "Polygon Media",
+    title: "polyviral",
     role: "Video editing and motion design agency",
-    note: "Freelance editing turned agency, now [@polyviral](https://x.com/polyviral). Edited for top [whop.com](https://whop.com) earners like [Chase Chappell](https://www.chasechappell.com), then made content for Whop itself.",
-    href: "https://whop.com/poly",
+    note: "Freelance editing turned agency, formerly Polygon Media. Edited for top [whop.com](https://whop.com) earners like [Chase Chappell](https://www.chasechappell.com), then made content for Whop itself.",
+    href: "https://polyviral.org",
     external: true,
+    logo: "/logos/polyviral.png",
   },
   {
     years: "– 2023",

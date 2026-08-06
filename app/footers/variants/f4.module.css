@@ -1,0 +1,218 @@
+/* ── f4 "Glow stack" — three drifting radial-glow depth layers with
+   linear/eased reveal parallax ── */
+
+.layer {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  height: 52vh;
+  z-index: 40;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* The reveal, split by depth: back rises linearly, mid/front eased —
+   the lag between them is the parallax */
+.liftLin {
+  position: absolute;
+  inset: 0;
+  transform: translateY(calc((1 - var(--reveal, 0)) * 103%));
+  will-change: transform;
+}
+
+.liftEase {
+  position: absolute;
+  inset: 0;
+  transform: translateY(calc((1 - var(--revealE, 0)) * 103%));
+  will-change: transform;
+}
+
+/* Glows overscan the container so a ±4% drift never shows an edge */
+.glow {
+  position: absolute;
+  inset: 0 -10% -8% -10%;
+  will-change: transform, opacity;
+}
+
+@keyframes f4-driftBack {
+  0% {
+    transform: translateX(-4%);
+    opacity: 0.92;
+  }
+  50% {
+    transform: translateX(1.5%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(4%);
+    opacity: 0.9;
+  }
+}
+
+@keyframes f4-driftMid {
+  0% {
+    transform: translateX(3.5%);
+    opacity: 0.88;
+  }
+  50% {
+    transform: translateX(-1%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-4%);
+    opacity: 0.9;
+  }
+}
+
+@keyframes f4-driftFront {
+  0% {
+    transform: translateX(-3%);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateX(1.8%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(3.5%);
+    opacity: 0.88;
+  }
+}
+
+/* Back — the wide indigo/navy wash (#1749b6 → #0c1c46, alpha eased out) */
+.back {
+  background: radial-gradient(
+    115% 120% at 50% 103%,
+    rgba(23, 73, 182, 0.95) 0%,
+    rgba(21, 67, 172, 0.84) 14%,
+    rgba(18, 58, 152, 0.68) 29%,
+    rgba(16, 49, 128, 0.5) 45%,
+    rgba(14, 40, 104, 0.33) 60%,
+    rgba(13, 33, 86, 0.18) 74%,
+    rgba(12, 28, 70, 0.07) 87%,
+    rgba(12, 28, 70, 0) 100%
+  );
+  animation: f4-driftBack 25s ease-in-out -9s infinite alternate;
+}
+
+/* Mid — twin electric-blue cores (#0d61f0 / #0e75ff) */
+.mid {
+  background:
+    radial-gradient(
+      72% 96% at 38% 104%,
+      rgba(13, 97, 240, 0.88) 0%,
+      rgba(13, 92, 231, 0.72) 18%,
+      rgba(13, 84, 214, 0.54) 36%,
+      rgba(14, 74, 190, 0.36) 53%,
+      rgba(15, 64, 163, 0.2) 69%,
+      rgba(16, 56, 142, 0.08) 84%,
+      rgba(16, 56, 142, 0) 100%
+    ),
+    radial-gradient(
+      60% 80% at 68% 105%,
+      rgba(14, 117, 255, 0.8) 0%,
+      rgba(14, 110, 246, 0.64) 20%,
+      rgba(13, 99, 230, 0.46) 40%,
+      rgba(13, 88, 209, 0.28) 58%,
+      rgba(13, 77, 185, 0.14) 75%,
+      rgba(13, 70, 168, 0.05) 88%,
+      rgba(13, 70, 168, 0) 100%
+    );
+  animation: f4-driftMid 17s ease-in-out -6s infinite alternate;
+}
+
+/* Front — smaller, brighter cyan highlights (#2ad4ff), softly melted */
+.front {
+  background:
+    radial-gradient(
+      40% 58% at 44% 105%,
+      rgba(42, 212, 255, 0.72) 0%,
+      rgba(35, 193, 254, 0.56) 20%,
+      rgba(26, 168, 252, 0.4) 39%,
+      rgba(18, 145, 250, 0.25) 57%,
+      rgba(13, 126, 246, 0.12) 74%,
+      rgba(12, 116, 242, 0.04) 88%,
+      rgba(12, 116, 242, 0) 100%
+    ),
+    radial-gradient(
+      28% 40% at 63% 106%,
+      rgba(42, 212, 255, 0.55) 0%,
+      rgba(32, 186, 253, 0.4) 24%,
+      rgba(22, 158, 251, 0.26) 46%,
+      rgba(15, 136, 248, 0.13) 66%,
+      rgba(12, 122, 245, 0.05) 84%,
+      rgba(12, 122, 245, 0) 100%
+    );
+  filter: blur(18px);
+  animation: f4-driftFront 11s ease-in-out -3s infinite alternate;
+}
+
+/* ── Film grain: dither + projector flicker, pooled where the light is ── */
+@keyframes f4-flicker {
+  0% {
+    background-position: 0 0;
+  }
+  12.5% {
+    background-position: -32px 14px;
+  }
+  25% {
+    background-position: 20px -30px;
+  }
+  37.5% {
+    background-position: -14px -34px;
+  }
+  50% {
+    background-position: 36px 24px;
+  }
+  62.5% {
+    background-position: -28px 4px;
+  }
+  75% {
+    background-position: 10px -22px;
+  }
+  87.5% {
+    background-position: -4px 30px;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g4'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g4)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+  animation: f4-flicker 0.9s steps(1) infinite;
+  mask-image: radial-gradient(
+    128% 110% at 50% 100%,
+    #000 32%,
+    rgba(0, 0, 0, 0.55) 56%,
+    transparent 80%
+  );
+  -webkit-mask-image: radial-gradient(
+    128% 110% at 50% 100%,
+    #000 32%,
+    rgba(0, 0, 0, 0.55) 56%,
+    transparent 80%
+  );
+}
+
+/* Shut footer costs nothing */
+:global([data-open="false"]) .back,
+:global([data-open="false"]) .mid,
+:global([data-open="false"]) .front,
+:global([data-open="false"]) .grain {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back,
+  .mid,
+  .front,
+  .grain {
+    animation: none;
+  }
+}

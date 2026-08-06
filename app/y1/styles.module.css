@@ -190,6 +190,11 @@
   border-color: #3f3f3f;
 }
 
+/* Some marks are circles (Bryant's seal); same behavior, round crop */
+.logoCircle {
+  border-radius: 9999px;
+}
+
 /* ── Title underline draws left → right… ── */
 .title {
   background-image: linear-gradient(currentColor, currentColor);

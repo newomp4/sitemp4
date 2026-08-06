@@ -1,0 +1,259 @@
+/* ── f3 "Hue drift" — seven blurred hue-spread bars under one slow
+   hue-rotate pendulum: a single coherent color-weather system ── */
+
+.layer {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  height: 52vh;
+  z-index: 40;
+  pointer-events: none;
+  overflow: hidden;
+  transform: translateY(calc((1 - var(--revealE, 0)) * 103%));
+  will-change: transform;
+}
+
+/* The weather: every bar shares one drifting hue clock (grain excluded) */
+@keyframes f3-hue {
+  from {
+    filter: hue-rotate(-10deg);
+  }
+  to {
+    filter: hue-rotate(12deg);
+  }
+}
+
+.wrap {
+  position: absolute;
+  inset: 0;
+  animation: f3-hue 21s ease-in-out infinite alternate;
+  will-change: filter;
+}
+
+/* ── The bars: bottom-anchored, overshooting the bottom edge so the blur
+   never lifts it; alpha eases out well before their tops ── */
+.bar {
+  position: absolute;
+  bottom: -9%;
+  transform-origin: bottom;
+  filter: blur(46px);
+  will-change: transform;
+}
+
+@keyframes f3-swayA {
+  0% {
+    transform: translateX(-2.5%) scaleY(0.96);
+  }
+  55% {
+    transform: translateX(1.5%) scaleY(1.06);
+  }
+  100% {
+    transform: translateX(2.5%) scaleY(0.95);
+  }
+}
+
+@keyframes f3-swayB {
+  0% {
+    transform: translateX(2.4%) scaleY(1.05);
+  }
+  45% {
+    transform: translateX(-1.2%) scaleY(0.96);
+  }
+  100% {
+    transform: translateX(-2.5%) scaleY(1.03);
+  }
+}
+
+/* #123f9e — indigo anchor at the left edge */
+.b1 {
+  left: -7%;
+  width: 30%;
+  height: 66%;
+  background: linear-gradient(
+    to top,
+    #123f9e 0%,
+    rgba(18, 63, 158, 0.92) 13%,
+    rgba(18, 63, 158, 0.74) 28%,
+    rgba(18, 63, 158, 0.5) 44%,
+    rgba(18, 63, 158, 0.28) 58%,
+    rgba(18, 63, 158, 0.11) 69%,
+    rgba(18, 63, 158, 0) 78%
+  );
+  animation: f3-swayA 15s ease-in-out -2s infinite alternate;
+}
+
+/* #1749b6 — royal */
+.b2 {
+  left: 11%;
+  width: 22%;
+  height: 82%;
+  background: linear-gradient(
+    to top,
+    #1749b6 0%,
+    rgba(23, 73, 182, 0.92) 13%,
+    rgba(23, 73, 182, 0.74) 28%,
+    rgba(23, 73, 182, 0.5) 44%,
+    rgba(23, 73, 182, 0.28) 58%,
+    rgba(23, 73, 182, 0.11) 69%,
+    rgba(23, 73, 182, 0) 78%
+  );
+  animation: f3-swayB 11s ease-in-out -7s infinite alternate;
+}
+
+/* #0d61f0 — electric */
+.b3 {
+  left: 26%;
+  width: 18%;
+  height: 92%;
+  background: linear-gradient(
+    to top,
+    #0d61f0 0%,
+    rgba(13, 97, 240, 0.92) 13%,
+    rgba(13, 97, 240, 0.74) 28%,
+    rgba(13, 97, 240, 0.5) 44%,
+    rgba(13, 97, 240, 0.28) 58%,
+    rgba(13, 97, 240, 0.11) 69%,
+    rgba(13, 97, 240, 0) 78%
+  );
+  animation: f3-swayA 9s ease-in-out -4s infinite alternate;
+}
+
+/* #0e75ff — the tall bright core */
+.b4 {
+  left: 39%;
+  width: 24%;
+  height: 100%;
+  background: linear-gradient(
+    to top,
+    #0e75ff 0%,
+    rgba(14, 117, 255, 0.92) 13%,
+    rgba(14, 117, 255, 0.74) 28%,
+    rgba(14, 117, 255, 0.5) 44%,
+    rgba(14, 117, 255, 0.28) 58%,
+    rgba(14, 117, 255, 0.11) 69%,
+    rgba(14, 117, 255, 0) 78%
+  );
+  animation: f3-swayB 17s ease-in-out -11s infinite alternate;
+}
+
+/* #2ad4ff — cyan flare */
+.b5 {
+  left: 55%;
+  width: 16%;
+  height: 96%;
+  background: linear-gradient(
+    to top,
+    #2ad4ff 0%,
+    rgba(42, 212, 255, 0.92) 13%,
+    rgba(42, 212, 255, 0.74) 28%,
+    rgba(42, 212, 255, 0.5) 44%,
+    rgba(42, 212, 255, 0.28) 58%,
+    rgba(42, 212, 255, 0.11) 69%,
+    rgba(42, 212, 255, 0) 78%
+  );
+  animation: f3-swayA 13s ease-in-out -6s infinite alternate;
+}
+
+/* #0c8df9 — azure */
+.b6 {
+  left: 65%;
+  width: 20%;
+  height: 84%;
+  background: linear-gradient(
+    to top,
+    #0c8df9 0%,
+    rgba(12, 141, 249, 0.92) 13%,
+    rgba(12, 141, 249, 0.74) 28%,
+    rgba(12, 141, 249, 0.5) 44%,
+    rgba(12, 141, 249, 0.28) 58%,
+    rgba(12, 141, 249, 0.11) 69%,
+    rgba(12, 141, 249, 0) 78%
+  );
+  animation: f3-swayB 19s ease-in-out -3s infinite alternate;
+}
+
+/* #1553c6 — deep royal settling the right edge */
+.b7 {
+  left: 80%;
+  width: 27%;
+  height: 62%;
+  background: linear-gradient(
+    to top,
+    #1553c6 0%,
+    rgba(21, 83, 198, 0.92) 13%,
+    rgba(21, 83, 198, 0.74) 28%,
+    rgba(21, 83, 198, 0.5) 44%,
+    rgba(21, 83, 198, 0.28) 58%,
+    rgba(21, 83, 198, 0.11) 69%,
+    rgba(21, 83, 198, 0) 78%
+  );
+  animation: f3-swayA 23s ease-in-out -14s infinite alternate;
+}
+
+/* ── Film grain: dither + projector flicker, pooled at bottom center ── */
+@keyframes f3-flicker {
+  0% {
+    background-position: 0 0;
+  }
+  12.5% {
+    background-position: -30px 20px;
+  }
+  25% {
+    background-position: 26px -24px;
+  }
+  37.5% {
+    background-position: -20px -32px;
+  }
+  50% {
+    background-position: 34px 18px;
+  }
+  62.5% {
+    background-position: -24px 10px;
+  }
+  75% {
+    background-position: 16px -16px;
+  }
+  87.5% {
+    background-position: -10px 28px;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g3'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g3)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+  animation: f3-flicker 0.85s steps(1) infinite;
+  mask-image: radial-gradient(
+    132% 112% at 50% 100%,
+    #000 30%,
+    rgba(0, 0, 0, 0.55) 56%,
+    transparent 80%
+  );
+  -webkit-mask-image: radial-gradient(
+    132% 112% at 50% 100%,
+    #000 30%,
+    rgba(0, 0, 0, 0.55) 56%,
+    transparent 80%
+  );
+}
+
+/* Shut footer costs nothing */
+:global([data-open="false"]) .wrap,
+:global([data-open="false"]) .bar,
+:global([data-open="false"]) .grain {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wrap,
+  .bar,
+  .grain {
+    animation: none;
+  }
+}

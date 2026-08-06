@@ -57,7 +57,12 @@ function PathRow({ item }: { item: PathItem }) {
   const heading = (
     <h3 className="text-[16px] leading-6 font-semibold text-[#F5F5F5]">
       {item.logo && (
-        <span className={`${styles.logoBox} mr-2.5`} aria-hidden="true">
+        <span
+          className={`${styles.logoBox} mr-2.5 ${
+            item.logoShape === "circle" ? styles.logoCircle : ""
+          }`}
+          aria-hidden="true"
+        >
           <Image
             src={item.logo}
             alt=""

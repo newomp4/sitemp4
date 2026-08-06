@@ -1,0 +1,123 @@
+/* ── Footer bake-off harness ── */
+
+.root {
+  color-scheme: dark;
+}
+
+.root ::selection {
+  background: #f5f5f5;
+  color: #111111;
+}
+
+/* Variant switcher — fixed top center */
+.switcher {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid #262626;
+  background: rgba(17, 17, 17, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.pill {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  font-size: 12px;
+  color: #8a8a8a;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease,
+    background 150ms ease;
+}
+
+.pill:hover {
+  color: #f5f5f5;
+  border-color: #3f3f3f;
+}
+
+.pillActive {
+  color: #111111;
+  background: #f5f5f5;
+}
+
+.pillActive:hover {
+  color: #111111;
+}
+
+.variantName {
+  margin-left: 6px;
+  padding-left: 10px;
+  border-left: 1px solid #262626;
+  font-size: 12px;
+  color: #a3a3a3;
+  white-space: nowrap;
+}
+
+/* The shared quote/@ row every variant shows */
+.textLayer {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 41;
+  pointer-events: none;
+  visibility: hidden;
+  transform: translateY(calc((1 - var(--reveal, 0)) * 14vh));
+  opacity: var(--reveal, 0);
+}
+
+.rootStage[data-open="true"] .textLayer {
+  visibility: visible;
+}
+
+.textRow {
+  margin-inline: auto;
+  max-width: 42rem;
+  padding-inline: 24px;
+  padding-bottom: 26px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.quote {
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  color: rgba(238, 244, 251, 0.92);
+  text-shadow: 0 1px 12px rgba(6, 20, 46, 0.5);
+}
+
+.by {
+  color: rgba(238, 244, 251, 0.55);
+}
+
+.at {
+  pointer-events: auto;
+  font-size: 13px;
+  color: rgba(238, 244, 251, 0.85);
+}
+
+.spacer {
+  height: 52vh;
+}
+
+.hint {
+  position: fixed;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 70;
+  font-size: 11px;
+  color: #5a5a5a;
+}

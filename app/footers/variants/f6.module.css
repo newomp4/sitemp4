@@ -1,0 +1,214 @@
+/* ── f6 "Counterspin" — two counter-rotating conic discs, hue weather ── */
+
+.layer {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  height: 52vh;
+  z-index: 40;
+  pointer-events: none;
+  overflow: hidden;
+  transform: translateY(calc((1 - var(--revealE, 0)) * 103%));
+  will-change: transform;
+}
+
+/* Everything colored lives under this wrapper, whose mask eases all
+   alpha to nothing before the container's top edge — the dissolve into
+   #111 is by construction, never a line. 8 eased stops. */
+.fade {
+  position: absolute;
+  inset: 0;
+  mask-image: linear-gradient(
+    to top,
+    #000 0%,
+    #000 36%,
+    rgba(0, 0, 0, 0.88) 50%,
+    rgba(0, 0, 0, 0.68) 62%,
+    rgba(0, 0, 0, 0.45) 73%,
+    rgba(0, 0, 0, 0.24) 83%,
+    rgba(0, 0, 0, 0.08) 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to top,
+    #000 0%,
+    #000 36%,
+    rgba(0, 0, 0, 0.88) 50%,
+    rgba(0, 0, 0, 0.68) 62%,
+    rgba(0, 0, 0, 0.45) 73%,
+    rgba(0, 0, 0, 0.24) 83%,
+    rgba(0, 0, 0, 0.08) 92%,
+    transparent 100%
+  );
+}
+
+/* The discs: ~160vw square (with a vh floor so portrait phones still get
+   a full arc), centers ~30vh below the bottom edge — only upper arcs
+   show, and the rim never enters the frame. Hue travels around each
+   disc, indigo → royal → electric → azure → cyan → a transparent sector
+   → back to indigo, endpoints matched so the wrap is seamless. */
+.disc {
+  position: absolute;
+  left: 50%;
+  border-radius: 50%;
+  filter: blur(64px);
+  will-change: transform;
+}
+
+.discA {
+  width: max(160vw, 130vh);
+  aspect-ratio: 1;
+  margin-left: calc(max(160vw, 130vh) / -2);
+  bottom: calc(-30vh - max(160vw, 130vh) / 2);
+  opacity: 0.9;
+  background: conic-gradient(
+    from 210deg,
+    #0c1c46 0deg,
+    #123f9e 58deg,
+    #1749b6 96deg,
+    #0d61f0 148deg,
+    #0c8df9 196deg,
+    #2ad4ff 238deg,
+    rgba(42, 212, 255, 0) 284deg,
+    rgba(12, 28, 70, 0) 330deg,
+    #0c1c46 360deg
+  );
+  animation: f6spin 72s linear infinite;
+  animation-delay: -26s;
+}
+
+.discB {
+  width: max(148vw, 118vh);
+  aspect-ratio: 1;
+  margin-left: calc(max(148vw, 118vh) / -2);
+  bottom: calc(-26vh - max(148vw, 118vh) / 2);
+  opacity: 0.7;
+  mix-blend-mode: screen;
+  background: conic-gradient(
+    from 30deg,
+    #0c1c46 0deg,
+    #0e75ff 66deg,
+    #2ad4ff 128deg,
+    #0c8df9 172deg,
+    #1749b6 224deg,
+    rgba(23, 73, 182, 0) 272deg,
+    rgba(12, 28, 70, 0) 334deg,
+    #0c1c46 360deg
+  );
+  animation: f6spin 50s linear infinite reverse;
+  animation-delay: -12s;
+}
+
+@keyframes f6spin {
+  from {
+    transform: rotate(0turn);
+  }
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* A small cyan heart at bottom center, breathing on its own clock */
+.ember {
+  position: absolute;
+  left: 50%;
+  bottom: -14vh;
+  width: min(48vw, 560px);
+  height: 30vh;
+  margin-left: calc(min(48vw, 560px) / -2);
+  filter: blur(24px);
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(42, 212, 255, 0.5) 0%,
+    rgba(42, 212, 255, 0.34) 28%,
+    rgba(12, 141, 249, 0.19) 54%,
+    rgba(12, 141, 249, 0.07) 76%,
+    rgba(12, 141, 249, 0) 100%
+  );
+  animation: f6breathe 9s ease-in-out infinite alternate;
+  animation-delay: -3.5s;
+  will-change: transform, opacity;
+}
+
+@keyframes f6breathe {
+  from {
+    transform: scale(0.92);
+    opacity: 0.55;
+  }
+  to {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* Film grain, dither and texture in one: overlay-blended, pooled over
+   the color by a radial mask so it never grays the bare page, jumping
+   between positions in steps() like projector flicker. */
+.grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g6'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g6)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+  mask-image: radial-gradient(
+    130% 110% at 50% 100%,
+    #000 32%,
+    rgba(0, 0, 0, 0.55) 56%,
+    transparent 80%
+  );
+  -webkit-mask-image: radial-gradient(
+    130% 110% at 50% 100%,
+    #000 32%,
+    rgba(0, 0, 0, 0.55) 56%,
+    transparent 80%
+  );
+  animation: f6grain 0.9s steps(1) infinite;
+}
+
+@keyframes f6grain {
+  0% {
+    background-position: 0 0;
+  }
+  12.5% {
+    background-position: -32px 18px;
+  }
+  25% {
+    background-position: 24px -26px;
+  }
+  37.5% {
+    background-position: -18px -34px;
+  }
+  50% {
+    background-position: 36px 22px;
+  }
+  62.5% {
+    background-position: -28px 8px;
+  }
+  75% {
+    background-position: 14px -18px;
+  }
+  87.5% {
+    background-position: -8px 30px;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+/* Shut footer = idle footer */
+:global([data-open="false"]) .discA,
+:global([data-open="false"]) .discB,
+:global([data-open="false"]) .ember,
+:global([data-open="false"]) .grain {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .discA,
+  .discB,
+  .ember,
+  .grain {
+    animation: none;
+  }
+}
