@@ -21,10 +21,19 @@ npm run dev
 
 ## Deploy (Vercel + Namecheap)
 
+Domains: **owenopacki.com** and **newomp4.com**, both pointing at this site.
+
 1. Push to GitHub (done — this repo).
-2. Go to [vercel.com/new](https://vercel.com/new), import the repo, hit Deploy. Defaults are correct.
-3. In the Vercel project → Settings → Domains, add the domain.
-4. In Namecheap → Domain → Advanced DNS, add the records Vercel shows
-   (an `A` record `@ → 76.76.21.21` and a `CNAME` `www → cname.vercel-dns.com`).
+2. Go to [vercel.com/new](https://vercel.com/new), import `newomp4/sitemp4`, hit Deploy. Defaults are correct.
+3. In the Vercel project → Settings → Domains, add all four:
+   `owenopacki.com`, `www.owenopacki.com`, `newomp4.com`, `www.newomp4.com`.
+   Pick one as the primary (e.g. `owenopacki.com`); Vercel will offer to redirect
+   the others to it — accept. One canonical URL is better for sharing and search.
+4. In Namecheap, for **each** domain → Advanced DNS, add:
+   - `A` record, host `@`, value `76.76.21.21`
+   - `CNAME` record, host `www`, value `cname.vercel-dns.com`
+   (Delete any parking-page records Namecheap pre-filled.)
+5. Back in Vercel → Domains, wait for both to show "Valid Configuration"
+   (DNS can take a few minutes to a few hours).
 
 Every push to `main` auto-deploys after that.

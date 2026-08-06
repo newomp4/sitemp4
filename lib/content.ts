@@ -7,7 +7,6 @@
 
 export const profile = {
   name: "Owen Opacki",
-  firstName: "Owen",
   handle: "newomp4",
   // Where the @ points — it's how people know him, so the site links it big.
   handleHref: "https://x.com/newomp4",
@@ -74,7 +73,7 @@ export const path: PathItem[] = [
     years: "2023 – 2025",
     title: "polyviral",
     role: "Video editing and motion design agency",
-    note: "Freelance editing turned agency, formerly Polygon Media. Edited for top [whop.com](https://whop.com) earners like [Chase Chappell](https://www.instagram.com/realchasechappell) and [Ads Mastery](https://www.chasechappell.com/ads-mastery-mentorship), then made content for Whop itself.",
+    note: "Freelance editing turned agency, formerly Polygon Media. Edited for top [whop.com](https://whop.com) earners like [Chase Chappell](https://www.instagram.com/realchasechappell) and [Ads Mastery](https://www.adsmastery.com/), then made content for Whop itself.",
     href: "https://polyviral.org",
     external: true,
     logo: "/logos/polyviral.png",
@@ -116,13 +115,12 @@ export const links: LinkItem[] = [
 export type Social = {
   label: string;
   handle: string;
-  href?: string; // omitted => not a link (Discord: click-to-copy instead)
-  copyToClipboard?: boolean;
+  href?: string; // omitted => rendered as click-to-copy (Discord)
 };
 
 export const socials: Social[] = [
   { label: "X", handle: "@newomp4", href: "https://x.com/newomp4" },
   { label: "Instagram", handle: "@newomp4", href: "https://instagram.com/newomp4" },
   { label: "YouTube (I don't post haha)", handle: "@newomp4", href: "https://youtube.com/@newomp4" },
-  { label: "Discord", handle: "newomp4", copyToClipboard: true },
+  { label: "Discord", handle: "newomp4" },
 ];

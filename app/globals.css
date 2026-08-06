@@ -9,8 +9,6 @@
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
 }
 
@@ -25,7 +23,6 @@ body {
 /* No visible scrollbars anywhere — the page scrolls, the chrome doesn't show */
 html {
   scrollbar-width: none;
-  -ms-overflow-style: none;
 }
 
 ::-webkit-scrollbar {
@@ -39,7 +36,7 @@ html {
   color: #111111;
 }
 
-/* Shared entrance animation — used by the picker page; variants may reuse */
+/* Shared entrance animation */
 @keyframes rise {
   from {
     opacity: 0;

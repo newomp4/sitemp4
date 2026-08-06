@@ -40,16 +40,25 @@ export default function HiddenFooter() {
     const s2 = { x: 0, v: 0, k: 80, c: 13 }; // soft, lags behind
 
     const measure = () => {
-      const rect = spacer.getBoundingClientRect();
+      // Progress comes from actual scrolling into the spacer, never from
+      // the spacer merely being visible — on a tall monitor where the
+      // whole page fits, the footer stays shut.
+      const maxScroll =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const spacerH = spacer.getBoundingClientRect().height;
+      if (maxScroll <= 2 || spacerH <= 0) {
+        target = 0;
+        return;
+      }
+      const start = Math.max(0, maxScroll - spacerH);
       const raw = Math.min(
         1,
-        Math.max(0, (window.innerHeight - rect.top) / rect.height),
+        Math.max(0, (window.scrollY - start) / spacerH),
       );
       target = raw * REVEAL_MAX;
     };
     const apply = () => {
       root.style.setProperty("--reveal", s1.x.toFixed(4));
-      root.style.setProperty("--revealE", s1.x.toFixed(4));
       root.style.setProperty("--revealSoft", s2.x.toFixed(4));
       root.dataset.open = Math.max(target, s1.x) > 0.02 ? "true" : "false";
     };
@@ -99,7 +108,12 @@ export default function HiddenFooter() {
   }, []);
 
   return (
-    <div ref={rootRef} className={styles.reveal} aria-hidden="true">
+    <div
+      ref={rootRef}
+      className={styles.reveal}
+      data-open="false"
+      aria-hidden="true"
+    >
       {/* Deep dead space at the document's very bottom — the reveal costs
           real scrolling on purpose */}
       <div ref={spacerRef} className={styles.revealSpacer} />

@@ -96,9 +96,14 @@ function PathRow({ item }: { item: PathItem }) {
     : false;
 
   return (
-    <li id={item.anchor} {...(item.href ? {} : { tabIndex: 0 })}>
+    <li
+      id={item.anchor}
+      // No-href rows are focusable to unfold their notes; anchored rows
+      // take programmatic focus when a deep link glides to them.
+      {...(item.href ? (item.anchor ? { tabIndex: -1 } : {}) : { tabIndex: 0 })}
+    >
       <div className="grid grid-cols-[112px_1fr] gap-x-4">
-        <p className="text-[12px] leading-6 tracking-[0.01em] text-[#6E6E6E]">
+        <p className="text-[12px] leading-6 tracking-[0.01em] text-[#7D7D7D]">
           {item.years}
         </p>
         <div>
@@ -134,7 +139,7 @@ function Row({ item }: { item: LinkItem }) {
   const external = item.external ?? /^https?:/.test(item.href);
   const body = (
     <>
-      {item.year && <p className="text-[12px] text-[#6E6E6E]">{item.year}</p>}
+      {item.year && <p className="text-[12px] text-[#7D7D7D]">{item.year}</p>}
       <h3
         className={`text-[16px] font-semibold text-[#F5F5F5] ${
           item.year ? "mt-1" : ""
@@ -303,7 +308,7 @@ export default function Home() {
               </li>
             ))}
           </ul>
-          <p className="mt-8 text-[13px] text-[#6E6E6E]">
+          <p className="mt-8 text-[13px] text-[#7D7D7D]">
             © 2026 {profile.name}
           </p>
         </footer>

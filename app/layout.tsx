@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -7,9 +7,30 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const TITLE = "Owen Opacki · newomp4";
+const DESCRIPTION =
+  "Owen Opacki makes things for the internet. @newomp4 everywhere.";
+
 export const metadata: Metadata = {
-  title: "Owen Opacki · newomp4",
-  description: "Owen Opacki makes things for the internet. @newomp4 everywhere.",
+  metadataBase: new URL("https://owenopacki.com"),
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: "/",
+    siteName: "Owen Opacki",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    creator: "@newomp4",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#111111",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
