@@ -8,13 +8,15 @@
 export const profile = {
   name: "Owen Opacki",
   handle: "newomp4",
+  // PLACEHOLDER — set the real birthday so the hover age ticks true
+  birthday: "2006-12-15T00:00:00-05:00",
   // Where the @ points — it's how people know him, so the site links it big.
   handleHref: "https://x.com/newomp4",
   email: "owen@contentrewards.com",
   headline: "Hi, I'm Owen",
   tagline: "I make things for the internet.",
   intro: [
-    "I'm 19, from Boston, and I make things for the internet.",
+    "I'm [19](#age), from Boston, and I make things for the internet.",
     "Recently dropped out of [college](#bryant) (class of 2029) to be head of creative at [Content Rewards](https://contentrewards.com), The Marketplace for Virality.",
     "Prev: co-founded a real estate marketing company (13-person team), did ~$250k GMV on TikTok Shop, and ran [polyviral](https://polyviral.org), editing for [whop.com](https://whop.com)'s top earners.",
   ],

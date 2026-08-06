@@ -9,11 +9,13 @@ import {
   type LinkItem,
   type PathItem,
 } from "@/lib/content";
+import AgeTicker from "./AgeTicker";
 import AnchorLink from "./AnchorLink";
 import Avatar from "./Avatar";
 import CopyHandle from "./copy-handle";
 import FoldRow from "./FoldRow";
 import HiddenFooter from "./HiddenFooter";
+import LocalTime from "./LocalTime";
 import Print from "./Print";
 import styles from "./styles.module.css";
 
@@ -29,7 +31,11 @@ function richText(text: string) {
   while ((m = re.exec(text))) {
     if (m.index > last) parts.push(text.slice(last, m.index));
     parts.push(
-      m[2].startsWith("#") ? (
+      m[2] === "#age" ? (
+        <AgeTicker key={m.index} birthday={profile.birthday}>
+          {m[1]}
+        </AgeTicker>
+      ) : m[2].startsWith("#") ? (
         <AnchorLink key={m.index} href={m[2]} className={styles.captionLink}>
           {m[1]}
         </AnchorLink>
@@ -300,7 +306,8 @@ export default function Home() {
               </li>
             ))}
           </ul>
-          <p className="mt-8 text-[13px] text-[#7D7D7D]">
+          <LocalTime />
+          <p className="mt-2 text-[13px] text-[#7D7D7D]">
             © 2026 {profile.name}
           </p>
         </footer>
