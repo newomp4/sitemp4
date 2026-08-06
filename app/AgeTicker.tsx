@@ -19,10 +19,7 @@ export default function AgeTicker({
   const raf = useRef(0);
 
   useEffect(() => {
-    if (!live) {
-      setText(null);
-      return;
-    }
+    if (!live) return;
     const born = new Date(birthday).getTime();
     const YEAR = 365.2425 * 24 * 60 * 60 * 1000;
     const tick = () => {
@@ -30,8 +27,13 @@ export default function AgeTicker({
       raf.current = requestAnimationFrame(tick);
     };
     raf.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf.current);
+    return () => {
+      cancelAnimationFrame(raf.current);
+      raf.current = 0;
+    };
   }, [live, birthday]);
+
+  const showTicker = live && text !== null;
 
   return (
     <span
@@ -49,7 +51,7 @@ export default function AgeTicker({
       }}
       className="cursor-default text-[#D4D4D4] tabular-nums"
     >
-      {live && text ? text : children}
+      {showTicker ? text : children}
     </span>
   );
 }
