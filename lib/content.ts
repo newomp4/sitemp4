@@ -8,8 +8,7 @@
 export const profile = {
   name: "Owen Opacki",
   handle: "newomp4",
-  // PLACEHOLDER — set the real birthday so the hover age ticks true
-  birthday: "2006-12-15T00:00:00-05:00",
+  birthday: "2006-12-01T00:00:00-05:00",
   // Where the @ points — it's how people know him, so the site links it big.
   handleHref: "https://x.com/newomp4",
   email: "owen@contentrewards.com",
