@@ -223,32 +223,6 @@ export default function Home() {
               {richText(paragraph)}
             </p>
           ))}
-
-          {/* ── CTAs ── */}
-          <div className="mt-7 flex flex-wrap gap-3">
-            <a
-              href={profile.handleHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${styles.cta} ${styles.ctaPrimary}`}
-            >
-              Let&rsquo;s chat
-              <span aria-hidden="true" className={styles.ctaArrow}>
-                ↗
-              </span>
-            </a>
-            <a
-              href="https://contentrewards.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${styles.cta} ${styles.ctaGhost}`}
-            >
-              What I&rsquo;m building
-              <span aria-hidden="true" className={styles.ctaArrow}>
-                ↗
-              </span>
-            </a>
-          </div>
         </section>
 
         <main>

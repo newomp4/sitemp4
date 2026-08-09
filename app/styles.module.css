@@ -58,53 +58,6 @@
     transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 70ms;
 }
 
-/* ── CTA buttons under the intro ── */
-.cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  height: 38px;
-  padding: 0 18px;
-  border-radius: 9px;
-  font-size: 13.5px;
-  font-weight: 500;
-  transition:
-    background-color 250ms ease,
-    border-color 250ms ease,
-    color 250ms ease;
-}
-
-.ctaPrimary {
-  background: #f5f5f5;
-  color: #111111;
-}
-
-.ctaPrimary:hover,
-.ctaPrimary:focus-visible {
-  background: #ffffff;
-}
-
-.ctaGhost {
-  border: 1px solid #2a2a2a;
-  color: #d4d4d4;
-}
-
-.ctaGhost:hover,
-.ctaGhost:focus-visible {
-  border-color: #3f3f3f;
-  background: #161616;
-  color: #f5f5f5;
-}
-
-.cta .ctaArrow {
-  transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.cta:hover .ctaArrow,
-.cta:focus-visible .ctaArrow {
-  transform: translate(2px, -2px);
-}
-
 /* ── The portrait: a 4:5 print resting at a slight tilt above the headline.
    Smooth by construction: only transform, opacity, and filter animate (all
    compositor-friendly) — the deepening shadow is a pseudo-element fading
@@ -808,16 +761,6 @@
 
   .captionLink {
     transition: none;
-  }
-
-  .cta,
-  .cta .ctaArrow {
-    transition: none;
-  }
-
-  .cta:hover .ctaArrow,
-  .cta:focus-visible .ctaArrow {
-    transform: none;
   }
 
   .glyphIn {
