@@ -55,7 +55,9 @@ export default function HiddenFooter() {
         1,
         Math.max(0, (window.scrollY - start) / spacerH),
       );
-      target = raw * REVEAL_MAX;
+      // Resistance curve: the first stretch of tugging barely shows it,
+      // then it gives — earning the reveal instead of handing it over
+      target = Math.pow(raw, 1.6) * REVEAL_MAX;
     };
     const apply = () => {
       root.style.setProperty("--reveal", s1.x.toFixed(4));
