@@ -53,7 +53,7 @@ html {
 
 .rise {
   opacity: 0;
-  animation: rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: var(--rise-delay, 0s);
 }
 
@@ -61,5 +61,29 @@ html {
   .rise {
     animation: none;
     opacity: 1;
+  }
+}
+
+/* Only JS marks offscreen content pending; server-rendered content stays readable. */
+@keyframes scroll-reveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-reveal[data-reveal="pending"] {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  .scroll-reveal[data-reveal="entering"] {
+    animation: scroll-reveal 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+
+  .scroll-reveal:focus-within {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 }

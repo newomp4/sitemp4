@@ -41,19 +41,26 @@ export default function CopyHandle({ label, handle }: Props) {
         onClick={copy}
         aria-label={`Copy ${label} handle ${handle} to clipboard`}
         className={`${styles.social} cursor-pointer`}
+        data-copied={status === "copied"}
       >
-        {label}{" "}
+        <span className={styles.copyLabel}>
+          <span aria-hidden={status === "copied"}>{label}</span>
+          <span aria-hidden={status !== "copied"}>Copied</span>
+        </span>{" "}
         {/* Both glyphs stay mounted in one grid cell — no layout shift. */}
         <span
           aria-hidden="true"
-          className={`${styles.socialArrow} inline-grid justify-items-start`}
+          className={styles.copyIcon}
         >
           <span
             className={`col-start-1 row-start-1 transition-opacity duration-150 motion-reduce:transition-none ${
               status === "copied" ? "opacity-0" : "opacity-100"
             }`}
           >
-            ↗
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.2">
+              <rect x="5.5" y="5.5" width="8" height="8" rx="1.5" />
+              <path d="M10.5 3V2.5A1 1 0 0 0 9.5 1.5h-7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1H3" />
+            </svg>
           </span>
           <span
             className={`col-start-1 row-start-1 text-[#F5F5F5] transition-opacity duration-150 motion-reduce:transition-none ${
@@ -67,7 +74,7 @@ export default function CopyHandle({ label, handle }: Props) {
       {/* If the clipboard is unavailable, say the handle instead of failing silently */}
       {status === "failed" && (
         <span className={`${styles.glyphIn} text-[13px] text-[#8A8A8A]`}>
-          couldn&rsquo;t copy, it&rsquo;s {handle}
+          Copy this: {handle}
         </span>
       )}
       <span aria-live="polite" className="sr-only">

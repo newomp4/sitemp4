@@ -1,57 +1,48 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { ageAt } from "@/lib/age";
+import useReducedMotionPreference from "./useReducedMotionPreference";
 
-/**
- * The "19" in the intro. Hover it (tap on touch) and it unfolds into the
- * real age with live-ticking decimals, counting every frame. Leave and
- * it settles back to being just a number.
- */
-export default function AgeTicker({
-  birthday,
-  children,
-}: {
-  birthday: string;
-  children: ReactNode;
-}) {
+export default function AgeTicker({ birthday, children }: { birthday: string; children: ReactNode }) {
   const [live, setLive] = useState(false);
-  const [text, setText] = useState<string | null>(null);
-  const raf = useRef(0);
+  const [now, setNow] = useState<number | null>(null);
+  const reduced = useReducedMotionPreference();
 
   useEffect(() => {
-    if (!live) return;
-    const born = new Date(birthday).getTime();
-    const YEAR = 365.2425 * 24 * 60 * 60 * 1000;
-    const tick = () => {
-      setText(((Date.now() - born) / YEAR).toFixed(9));
-      raf.current = requestAnimationFrame(tick);
+    const ticking = live && !reduced;
+    let frame = 0;
+    const update = () => {
+      setNow(Date.now());
+      if (ticking) frame = requestAnimationFrame(update);
     };
-    raf.current = requestAnimationFrame(tick);
+    frame = requestAnimationFrame(update);
+    // Keep the resting whole-number age current across birthdays and long-lived tabs.
+    const timer = ticking ? undefined : window.setInterval(update, 60_000);
     return () => {
-      cancelAnimationFrame(raf.current);
-      raf.current = 0;
+      cancelAnimationFrame(frame);
+      if (timer !== undefined) window.clearInterval(timer);
     };
-  }, [live, birthday]);
+  }, [live, reduced]);
 
-  const showTicker = live && text !== null;
+  const age = now === null ? NaN : ageAt(birthday, now);
+  const valid = Number.isFinite(age);
 
   return (
-    <span
-      onPointerEnter={(e) => {
-        if (e.pointerType === "mouse") setLive(true);
-      }}
-      onPointerLeave={(e) => {
-        if (e.pointerType === "mouse") setLive(false);
-      }}
-      onClick={(e) => {
-        if (window.matchMedia("(hover: none)").matches) {
-          e.preventDefault();
-          setLive((v) => !v);
-        }
+    <button
+      type="button"
+      aria-label={valid ? `Age ${Math.floor(age)}. ${live ? "Hide" : "Show"} precise age` : "Show precise age"}
+      aria-pressed={live}
+      onPointerEnter={(event) => { if (event.pointerType === "mouse") setLive(true); }}
+      onPointerLeave={(event) => { if (event.pointerType === "mouse") setLive(false); }}
+      onFocus={(event) => { if (event.currentTarget.matches(":focus-visible")) setLive(true); }}
+      onBlur={() => setLive(false)}
+      onClick={(event) => {
+        if (event.detail === 0 || window.matchMedia("(hover: none)").matches) setLive((value) => !value);
       }}
       className="cursor-default text-[#D4D4D4] tabular-nums"
     >
-      {showTicker ? text : children}
-    </span>
+      {valid ? (live ? age.toFixed(reduced ? 2 : 9) : Math.floor(age)) : children}
+    </button>
   );
 }

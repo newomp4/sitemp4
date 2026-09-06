@@ -1,10 +1,10 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 /**
  * An in-page link that travels rather than jumps: a long, gentle
- * ease-in-out glide (~1.1s) down to its target, which lands upper-middle
+ * ease-in-out glide (300–700ms) down to its target, which lands upper-middle
  * with its folded note opened. Any user input (wheel, touch, keys, a
  * second click) cancels the glide immediately. On arrival the URL hash
  * and keyboard focus move to the target. Reduced motion jumps straight
@@ -22,14 +22,20 @@ export default function AnchorLink({
   className?: string;
   children: ReactNode;
 }) {
+  const cancelOwn = useRef<(() => void) | null>(null);
+  useEffect(() => () => cancelOwn.current?.(), []);
+
   const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     const el = document.getElementById(href.slice(1));
     if (!el) return; // fall back to default navigation
     e.preventDefault();
     cancelActive?.();
     el.setAttribute("data-unfold", "");
+    const route = window.location.pathname + window.location.search;
 
     const arrive = () => {
+      if (!el.isConnected || window.location.pathname + window.location.search !== route) return;
       window.history.pushState(null, "", href);
       el.focus({ preventScroll: true });
     };
@@ -50,7 +56,7 @@ export default function AnchorLink({
       arrive();
       return;
     }
-    const DURATION = 1100;
+    const DURATION = Math.min(700, Math.max(300, Math.abs(dist) * 0.65));
     const t0 = performance.now();
     const ease = (t: number) =>
       t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -61,7 +67,11 @@ export default function AnchorLink({
       window.removeEventListener("wheel", cancel);
       window.removeEventListener("touchstart", cancel);
       window.removeEventListener("keydown", cancel);
-      cancelActive = null;
+      window.removeEventListener("pointerdown", cancel);
+      window.removeEventListener("popstate", cancel);
+      window.removeEventListener("hashchange", cancel);
+      if (cancelActive === cancel) cancelActive = null;
+      if (cancelOwn.current === cancel) cancelOwn.current = null;
     };
     const step = (now: number) => {
       const t = Math.min(1, (now - t0) / DURATION);
@@ -77,7 +87,11 @@ export default function AnchorLink({
     window.addEventListener("wheel", cancel, { passive: true });
     window.addEventListener("touchstart", cancel, { passive: true });
     window.addEventListener("keydown", cancel);
+    window.addEventListener("pointerdown", cancel, { passive: true });
+    window.addEventListener("popstate", cancel);
+    window.addEventListener("hashchange", cancel);
     cancelActive = cancel;
+    cancelOwn.current = cancel;
     raf = requestAnimationFrame(step);
   };
 

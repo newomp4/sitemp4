@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import useReducedMotionPreference from "./useReducedMotionPreference";
 import styles from "./styles.module.css";
 
 /**
@@ -23,11 +24,12 @@ import styles from "./styles.module.css";
 const REVEAL_MAX = 0.9; // even fully tugged, it stays a touch down
 
 export default function HiddenFooter() {
+  const reduced = useReducedMotionPreference();
   const rootRef = useRef<HTMLDivElement>(null);
   const spacerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reduced) return;
     const root = rootRef.current;
     const spacer = spacerRef.current;
     if (!root || !spacer) return;
@@ -107,7 +109,7 @@ export default function HiddenFooter() {
       window.removeEventListener("resize", kick);
       if (raf) cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [reduced]);
 
   return (
     <div

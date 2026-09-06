@@ -58,51 +58,68 @@
     transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 70ms;
 }
 
-/* ── The portrait: a 4:5 print resting at a slight tilt above the headline.
-   Smooth by construction: only transform, opacity, and filter animate (all
-   compositor-friendly) — the deepening shadow is a pseudo-element fading
-   in, never an interpolated box-shadow. One gentle curve, no wobble. ── */
-.print {
+/* A small stack of actual prints; only the inner layers move. */
+.printStack {
   position: relative;
+  display: block;
   width: 128px;
-  aspect-ratio: 4 / 5;
-  border-radius: 8px;
-  border: 1px solid #262626;
-  background: #161616;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-  transform: rotate(-2deg);
-  transition:
-    transform 400ms cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 250ms ease;
+  height: 160px;
+  perspective: 800px;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* The deep shadow, pre-rendered and faded in on hover */
-.print::after {
+.printLayers {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.stackPrint {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  border: 1px solid #393939;
+  border-radius: 6px;
+  background: #191919;
+  box-shadow: 0 3px 9px #00000060;
+}
+
+.stackPrint::after {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -1;
-  border-radius: 8px;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.55);
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px #ffffff08;
+  pointer-events: none;
+}
+
+.stackBack { z-index: 1; }
+.stackMiddle { z-index: 2; }
+.stackFront { z-index: 3; }
+
+.printHint {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding-top: 9px;
+  color: #a3a3a3;
+  font-size: 12px;
+  white-space: nowrap;
   opacity: 0;
-  transition: opacity 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(-3px);
+  transition: opacity 220ms ease, transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
 }
 
-/* Picked up — straightens, lifts, comes into full color */
-@media (hover: hover) {
-  .print:hover {
-    transform: rotate(0deg) translateY(-4px) scale(1.03);
-    border-color: #3f3f3f;
-  }
-
-  .print:hover::after {
-    opacity: 1;
-  }
+.printStack:focus-visible .printHint { opacity: 1; transform: none; }
+@media (hover: hover) and (pointer: fine) {
+  .printStack:hover .printHint { opacity: 1; transform: none; }
 }
-
-/* The photo shows true to the original — no filters */
-.printImg {
-  border-radius: 7px;
+@media (prefers-reduced-motion: reduce) {
+  .printHint { transition: none; transform: none; }
 }
 
 /* ── The note rests folded; hovering/focusing the row breathes it open.
@@ -128,6 +145,13 @@
     grid-template-rows: 1fr;
     opacity: 1;
   }
+}
+
+/* Keyboard access is independent of whether the primary pointer supports hover. */
+.list > li:focus-visible .noteWrap,
+.list > li:has(:focus-visible) .noteWrap {
+  grid-template-rows: 1fr;
+  opacity: 1;
 }
 
 /* Touch: FoldRow drives the fold with a tap (data-open), and the row's
@@ -271,6 +295,53 @@
 .social:focus-visible .socialArrow {
   transform: translate(2px, -2px);
   transition: transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 60ms;
+}
+
+.copyLabel {
+  display: inline-grid;
+}
+
+.copyLabel > span {
+  grid-area: 1 / 1;
+  transition: opacity 160ms ease, transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.copyLabel > span[aria-hidden="true"] {
+  opacity: 0;
+  transform: translateY(3px);
+}
+
+.copyLabel > span[aria-hidden="false"] {
+  opacity: 1;
+  transform: none;
+}
+
+.copyIcon {
+  display: inline-grid;
+  place-items: center;
+  line-height: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.copyIcon > * {
+  grid-area: 1 / 1;
+}
+
+.social {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding-block: 4px;
+  transition: color 160ms ease, background-size 250ms cubic-bezier(0.22, 1, 0.36, 1), transform 160ms ease;
+}
+
+.social:active {
+  transform: translateY(1px);
+}
+
+.social[data-copied="true"] {
+  color: #f5f5f5;
 }
 
 /* ── The photos page. Quiet, film-first: frames sharpen when regarded,
@@ -739,8 +810,8 @@
     transform: none;
   }
 
-  /* Notes stay open — no motion, no hidden content */
-  .noteWrap {
+  /* Legacy hover rows keep notes readable with reduced motion. */
+  .list .noteWrap {
     grid-template-rows: 1fr;
     opacity: 1;
   }
@@ -766,4 +837,12 @@
   .glyphIn {
     animation: none;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copyLabel > span,
+  .social {
+    transition: none;
+  }
+  .social:active { transform: none; }
 }

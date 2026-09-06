@@ -16,8 +16,8 @@ export const profile = {
   tagline: "I make things for the internet.",
   intro: [
     "I'm [19](#age), from Boston, and I make things for the internet.",
-    "Recently dropped out of [college](#bryant) (class of 2029) to be head of creative at [Content Rewards](https://contentrewards.com), The Marketplace for Virality.",
-    "Prev: co-founded a real estate marketing company (13-person team), did ~$250k GMV on TikTok Shop, and ran [polyviral](https://polyviral.org), editing for [whop.com](https://whop.com)'s top earners.",
+    "Dropped out of college to lead creative at [Content Rewards](https://contentrewards.com), The Marketplace for Virality where - brands pay creators for their content.",
+    "Before that: co-founded a real estate marketing company, did ~$250k GMV on TikTok Shop, and ran [polyviral](https://polyviral.org), editing for Whop’s top earners.",
   ],
 };
 
@@ -42,7 +42,7 @@ export const path: PathItem[] = [
     years: "2026 – present",
     title: "Content Rewards",
     role: "Head of Creative",
-    note: "Head of Creative at [Content Rewards](https://contentrewards.com): the platform where brands pay creators for the content they post.",
+    note: "The Marketplace for Virality where - brands pay creators for their content.",
     href: "https://contentrewards.com",
     external: true,
     logo: "/logos/content-rewards.png",
@@ -50,8 +50,8 @@ export const path: PathItem[] = [
   {
     years: "2025 – 2026",
     title: "Bryant University",
-    role: "Student, briefly",
-    note: "I was going for a master's in business administration with a concentration in digital marketing and a minor in sales and psychology. Dropped out during my second semester in March 2026 for [Content Rewards](https://contentrewards.com).",
+    role: "Student",
+    note: "Studied business and digital marketing. Dropped out in my second semester, March 2026, to join [Content Rewards](https://contentrewards.com).",
     href: "https://www.bryant.edu",
     external: true,
     logo: "/logos/bryant.png",
@@ -61,20 +61,20 @@ export const path: PathItem[] = [
   {
     years: "2025",
     title: "Real estate marketing",
-    role: "Media agency for realtors",
-    note: "Co-founded and grew to 70+ realtor clients across the state, with a team of 13 at the peak.",
+    role: "Co-founder",
+    note: "Co-founded a media agency for realtors. Grew to 70+ clients across the state, with a team of 13 at the peak.",
   },
   {
     years: "2024 – 2025",
     title: "TikTok Shop",
-    role: "Short-form e-com",
-    note: "Multiple accounts, ~$250k combined GMV, Ruby seller level. Also ran netwrk, a small coaching community.",
+    role: "Short-form commerce",
+    note: "~$250k combined GMV across multiple accounts, reaching Ruby seller level. Also ran netwrk, a small coaching community.",
   },
   {
     years: "2023 – 2025",
     title: "polyviral",
-    role: "Video editing and motion design agency",
-    note: "Full-service editing agency. Edited for top [whop.com](https://whop.com) earners like [Chase Chappell](https://www.instagram.com/realchasechappell) and [Ads Mastery](https://www.adsmastery.com/), then made content for Whop itself.",
+    role: "Editing & motion design",
+    note: "Ran an editing and motion design agency for top [Whop](https://whop.com) earners like [Chase Chappell](https://www.instagram.com/realchasechappell) and [Ads Mastery](https://www.adsmastery.com/).",
     href: "https://polyviral.org",
     external: true,
     logo: "/logos/polyviral.png",
@@ -82,8 +82,8 @@ export const path: PathItem[] = [
   {
     years: "– 2023",
     title: "Music video VFX",
-    role: "VFX and compositing",
-    note: "VFX and compositing on music videos for Tana, autumn, UnoTheActivist and more, editing for directors around the world like [@tinytapes](https://instagram.com/tinytapes) and [@dotcomnirvan](https://instagram.com/dotcomnirvan). 10M+ combined views. [The last music video I ever edited](https://youtu.be/E-KVGKqMLZ4).",
+    role: "Compositing",
+    note: "VFX on music videos for Tana, autumn, and UnoTheActivist, working with directors like [@tinytapes](https://instagram.com/tinytapes) and [@dotcomnirvan](https://instagram.com/dotcomnirvan). 10M+ combined views. [The last music video I ever edited](https://youtu.be/E-KVGKqMLZ4).",
     href: "https://youtu.be/E-KVGKqMLZ4",
     external: true,
   },
@@ -119,6 +119,6 @@ export type Social = {
 export const socials: Social[] = [
   { label: "X", handle: "@newomp4", href: "https://x.com/newomp4" },
   { label: "Instagram", handle: "@newomp4", href: "https://instagram.com/newomp4" },
-  { label: "YouTube (I don't post haha)", handle: "@newomp4", href: "https://youtube.com/@newomp4" },
+  { label: "YouTube", handle: "@newomp4", href: "https://youtube.com/@newomp4" },
   { label: "Discord", handle: "newomp4" },
 ];

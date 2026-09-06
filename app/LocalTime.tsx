@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 /**
- * "It's 2:41 AM for me right now." — always Boston time, whoever's
+ * "Boston · 2:41 AM" — always Boston time, whoever's
  * looking. Renders nothing until mounted so the static build never
  * carries a stale clock.
  */
@@ -26,8 +26,8 @@ export default function LocalTime() {
   }, []);
 
   return (
-    <p className="mt-8 min-h-5 text-[13px] text-[#7D7D7D]">
-      {now && <>It&rsquo;s {now} for me right now.</>}
+    <p className="mt-8 min-h-5 text-[13px] tabular-nums text-[#7D7D7D]">
+      {now && <>Boston <span aria-hidden="true">·</span> {now}</>}
     </p>
   );
 }

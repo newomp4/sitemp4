@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 import type { CSSProperties, ReactNode } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles.module.css";
+import PhotoGallery, { type Photo } from "./PhotoGallery";
 
 export const metadata: Metadata = {
   title: "Owen Opacki · Photos",
   description: "Film photos. New York and Paris, mostly.",
+  alternates: { canonical: "/photos" },
+  openGraph: {
+    title: "Owen Opacki · Photos",
+    description: "Film photos. New York and Paris, mostly.",
+    url: "/photos",
+    siteName: "Owen Opacki",
+    type: "website",
+  },
 };
 
 const rise = (step: number): CSSProperties =>
@@ -24,15 +32,6 @@ function Cap({ href, children }: { href: string; children: ReactNode }) {
     </a>
   );
 }
-
-type Photo = {
-  src: string;
-  width: number;
-  height: number;
-  alt: string;
-  caption: ReactNode;
-  blur: string; // tiny base64 preview shown while the scan loads
-};
 
 const PHOTOS: Photo[] = [
   {
@@ -134,50 +133,13 @@ export default function PhotosPage() {
             Photos
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-[#A3A3A3]">
-            Some photos I like.
+            New York, Paris, and people I like. Shot on film.
           </p>
         </header>
 
-        <ul className={`${styles.photoList} mt-12 space-y-14`}>
-          {PHOTOS.map((photo, i) => (
-            <li key={photo.src} className="rise" style={rise(i + 1)}>
-              <figure className={styles.photoFig}>
-                <div
-                  className={`${styles.photoFrame} ${
-                    photo.height > photo.width
-                      ? "mx-auto max-w-[540px]"
-                      : "w-full"
-                  }`}
-                >
-                  {/* Hero loads immediately; the rest of the roll only
-                      fetches as it approaches the viewport */}
-                  <Image
-                    src={photo.src}
-                    alt={photo.alt}
-                    width={photo.width}
-                    height={photo.height}
-                    unoptimized
-                    preload={i === 0}
-                    loading={i === 0 ? "eager" : "lazy"}
-                    placeholder="blur"
-                    blurDataURL={photo.blur}
-                    className={`${styles.photoImg} h-auto w-full`}
-                  />
-                </div>
-                <figcaption className="mt-3 flex items-baseline gap-3">
-                  <span className={styles.photoIndex}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="text-[14px] leading-relaxed text-[#A3A3A3]">
-                    {photo.caption}
-                  </span>
-                </figcaption>
-              </figure>
-            </li>
-          ))}
-        </ul>
+        <PhotoGallery photos={PHOTOS} />
 
-        <footer className="rise mt-16 pb-8" style={rise(7)}>
+        <footer className="scroll-reveal mt-16 pb-8">
           <Link href="/" className={styles.backLink}>
             <span aria-hidden="true" className={styles.backArrow}>
               ←

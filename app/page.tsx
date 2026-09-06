@@ -1,14 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import {
-  profile,
-  path,
-  links,
-  socials,
-  type LinkItem,
-  type PathItem,
-} from "@/lib/content";
+import { profile, path, socials, type PathItem } from "@/lib/content";
 import AgeTicker from "./AgeTicker";
 import AnchorLink from "./AnchorLink";
 import Avatar from "./Avatar";
@@ -58,12 +50,10 @@ function richText(text: string) {
   return parts;
 }
 
-/* ── A chapter of the path: one compact line at rest — years, title, role.
-   Hover/focus breathes the note open beneath it. The title alone is the
-   row's link, so notes can carry their own links. ── */
-function PathRow({ item }: { item: PathItem }) {
+/* Hover or keyboard focus unfolds the story beneath each chapter. */
+function PathRow({ item, index }: { item: PathItem; index: number }) {
   const heading = (
-    <h3 className="text-[16px] leading-6 font-semibold text-[#F5F5F5]">
+    <h3 className={`relative text-[16px] leading-6 font-semibold text-[#F5F5F5] ${item.href ? "pr-5" : ""}`}>
       {item.logo && (
         <span
           className={`${styles.logoBox} mr-2.5 ${
@@ -89,7 +79,7 @@ function PathRow({ item }: { item: PathItem }) {
           {" "}
           <span
             aria-hidden="true"
-            className={`${styles.arrow} inline-block text-[#A3A3A3]`}
+            className={`${styles.arrow} absolute right-0 top-0 text-[#A3A3A3]`}
           >
             ↗
           </span>
@@ -106,6 +96,7 @@ function PathRow({ item }: { item: PathItem }) {
     <FoldRow
       id={item.anchor}
       hasLink={Boolean(item.href)}
+      index={index}
       years={item.years}
       heading={
         item.href ? (
@@ -124,7 +115,7 @@ function PathRow({ item }: { item: PathItem }) {
       }
       note={
         item.note ? (
-          <p className="pt-1 text-[14px] leading-relaxed text-[#8A8A8A]">
+          <p className="pt-1 text-[14px] leading-relaxed text-[#A3A3A3]">
             {richText(item.note)}
           </p>
         ) : null
@@ -133,66 +124,20 @@ function PathRow({ item }: { item: PathItem }) {
   );
 }
 
-function Row({ item }: { item: LinkItem }) {
-  const external = item.external ?? /^https?:/.test(item.href);
-  const body = (
-    <>
-      {item.year && <p className="text-[12px] text-[#7D7D7D]">{item.year}</p>}
-      <h3
-        className={`text-[16px] font-semibold text-[#F5F5F5] ${
-          item.year ? "mt-1" : ""
-        }`}
-      >
-        <span className={styles.title}>{item.title}</span>{" "}
-        <span
-          aria-hidden="true"
-          className={`${styles.arrow} inline-block text-[#A3A3A3]`}
-        >
-          ↗
-        </span>
-      </h3>
-      {item.description && (
-        <p className="mt-1 text-[15px] leading-relaxed text-[#A3A3A3]">
-          {item.description}
-        </p>
-      )}
-    </>
-  );
-  return (
-    <li>
-      {external ? (
-        <a
-          href={item.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block"
-        >
-          {body}
-        </a>
-      ) : (
-        <Link href={item.href} className="block">
-          {body}
-        </Link>
-      )}
-    </li>
-  );
-}
-
 export default function Home() {
   return (
     <div className={`${styles.root} min-h-dvh w-full bg-[#111111]`}>
       <div className="mx-auto w-full max-w-[42rem] px-6 py-12 sm:py-16">
         {/* ── Hero ── */}
-        <section
-          aria-labelledby="intro-heading"
-          className="rise"
-          style={rise(0)}
-        >
+        <section aria-labelledby="intro-heading">
           {/* A single portrait, set down above the headline */}
-          <Print />
+          <div className="rise" style={rise(0)}>
+            <Print />
+          </div>
           <h1
             id="intro-heading"
-            className="mt-7 text-[26px] font-semibold tracking-tight text-[#F5F5F5]"
+            style={rise(1)}
+            className="rise mt-7 text-[24px] sm:text-[26px] font-semibold tracking-tight text-[#F5F5F5]"
           >
             {profile.headline}{" "}
             <span aria-hidden="true" className="font-normal text-[#3F3F3F]">
@@ -215,10 +160,11 @@ export default function Home() {
               </span>
             </a>
           </h1>
-          {profile.intro.map((paragraph) => (
+          {profile.intro.map((paragraph, index) => (
             <p
               key={paragraph}
-              className="mt-3 text-[15px] leading-relaxed text-[#A3A3A3]"
+              style={rise(index + 2)}
+              className="rise mt-3 text-[16px] leading-relaxed text-[#A3A3A3]"
             >
               {richText(paragraph)}
             </p>
@@ -230,38 +176,17 @@ export default function Home() {
           <section
             id="path"
             aria-labelledby="path-heading"
-            className="rise scroll-mt-10 pt-14"
-            style={rise(1)}
+            className="scroll-mt-10 pt-12"
           >
             <h2
               id="path-heading"
-              className="mb-5 text-[14px] font-semibold text-[#F5F5F5]"
+              className="scroll-reveal mb-5 text-[14px] font-semibold text-[#F5F5F5]"
             >
               So far
             </h2>
             <ul className={`${styles.list} space-y-5`}>
-              {path.map((item) => (
-                <PathRow key={item.title} item={item} />
-              ))}
-            </ul>
-          </section>
-
-          {/* ── Elsewhere ── */}
-          <section
-            id="elsewhere"
-            aria-labelledby="elsewhere-heading"
-            className="rise scroll-mt-10 pt-14"
-            style={rise(2)}
-          >
-            <h2
-              id="elsewhere-heading"
-              className="mb-5 text-[14px] font-semibold text-[#F5F5F5]"
-            >
-              Other things
-            </h2>
-            <ul className={`${styles.list} space-y-5`}>
-              {links.map((item) => (
-                <Row key={item.title} item={item} />
+              {path.map((item, index) => (
+                <PathRow key={item.title} item={item} index={index} />
               ))}
             </ul>
           </section>
@@ -271,8 +196,7 @@ export default function Home() {
         <footer
           id="contact"
           aria-labelledby="contact-heading"
-          className="rise scroll-mt-10 pt-14 pb-6"
-          style={rise(3)}
+          className="scroll-reveal scroll-mt-10 pt-12 pb-6"
         >
           <h2
             id="contact-heading"
@@ -280,7 +204,7 @@ export default function Home() {
           >
             Contact
           </h2>
-          <ul className="flex flex-wrap gap-x-5 gap-y-3">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2">
             {socials.map((social) => (
               <li key={social.label}>
                 {social.href ? (

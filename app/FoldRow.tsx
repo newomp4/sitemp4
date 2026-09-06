@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 import styles from "./styles.module.css";
 
 /**
@@ -14,18 +14,21 @@ export default function FoldRow({
   id,
   hasLink,
   years,
+  index,
   heading,
   note,
 }: {
   id?: string;
   hasLink: boolean;
   years: string;
+  index: number;
   heading: ReactNode;
   note: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
 
   const onRowClick = (e: React.MouseEvent) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.detail === 0) return;
     // Hover-capable devices are handled purely by CSS
     if (window.matchMedia("(hover: hover)").matches) return;
     if ((e.target as Element).closest("[data-note]")) return;
@@ -33,7 +36,9 @@ export default function FoldRow({
       setOpen((o) => !o);
       return;
     }
-    if (!open) {
+    const row = e.currentTarget.closest("li");
+    const alreadyUnfolded = open || row?.matches(":target") || row?.hasAttribute("data-unfold") || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!alreadyUnfolded) {
       e.preventDefault(); // first tap opens instead of navigating
       setOpen(true);
     }
@@ -43,7 +48,15 @@ export default function FoldRow({
   return (
     <li
       id={id}
+      className="scroll-reveal"
+      style={{ "--reveal-delay": `${Math.min(index, 4) * 45}ms` } as CSSProperties}
       data-open={String(open)}
+      onKeyDown={(event) => {
+        if (!hasLink && event.target === event.currentTarget && (event.key === "Enter" || event.key === " ")) {
+          event.preventDefault();
+          setOpen((value) => !value);
+        }
+      }}
       // No-href rows are focusable to unfold their notes; anchored rows
       // take programmatic focus when a deep link glides to them.
       {...(hasLink ? (id ? { tabIndex: -1 } : {}) : { tabIndex: 0 })}

@@ -1,0 +1,219 @@
+.photoRoll {
+  margin-top: 48px;
+  display: grid;
+  gap: 56px;
+}
+
+.photoFigure { --print-tilt: -0.45deg; }
+.photoRoll > li:nth-child(even) .photoFigure { --print-tilt: 0.45deg; }
+
+.photoButton {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #303030;
+  border-radius: 5px;
+  background: #181818;
+  cursor: zoom-in;
+  box-shadow: 0 4px 12px #00000030;
+  transition: transform 480ms cubic-bezier(0.22, 1, 0.36, 1), border-color 250ms ease;
+}
+
+.photoButton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px #ffffff08;
+  pointer-events: none;
+}
+
+.portrait { max-width: 540px; margin-inline: auto; }
+.scan { display: block; width: 100%; height: auto; }
+
+.expandHint {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ffffff25;
+  border-radius: 50%;
+  color: white;
+  background: #111111a6;
+  opacity: 0;
+  transform: translate(-3px, 3px);
+  transition: opacity 220ms ease, transform 350ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.photoButton:focus-visible { border-color: #c5c5c5; }
+.photoButton:focus-visible .expandHint { opacity: 1; transform: none; }
+
+@media (hover: hover) and (pointer: fine) {
+  .photoButton:hover {
+    transform: translateY(-4px) rotate(var(--print-tilt));
+    border-color: #5a5a5a;
+  }
+  .photoButton:hover .expandHint { opacity: 1; transform: none; }
+}
+
+.caption {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 14px;
+  color: #a3a3a3;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.photoNumber { flex: none; color: #7d7d7d; font-size: 12px; font-variant-numeric: tabular-nums; }
+
+.viewer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #f5f5f5;
+  overflow: hidden;
+}
+
+:global(html):has(.viewer[open]),
+:global(body):has(.viewer[open]) { overflow: hidden; }
+
+.viewer::backdrop { background: transparent; }
+
+.viewerShell {
+  width: 100%;
+  height: 100%;
+  padding: 24px clamp(20px, 4vw, 64px);
+  background: #0b0b0b;
+  display: flex;
+  flex-direction: column;
+}
+
+.viewerBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: none;
+  min-height: 40px;
+  font-size: 14px;
+}
+
+.counter { font-variant-numeric: tabular-nums; letter-spacing: 0.03em; }
+.counterTotal { color: #757575; }
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 40px;
+  padding-inline: 8px;
+  color: #a3a3a3;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.closeButton > span { font-size: 24px; font-weight: 300; line-height: 1; transition: transform 220ms ease; }
+.closeButton:hover { color: white; }
+.closeButton:hover > span { transform: rotate(90deg); }
+
+.viewerStage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-height: 0;
+  padding-block: 24px;
+  overflow: hidden;
+}
+
+.viewerPrint {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: pan-y pinch-zoom;
+}
+
+.viewerPrint:active { cursor: grabbing; }
+
+.viewerScan {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 3px;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.viewerFooter {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 72px;
+  flex: none;
+}
+
+.viewerCaption { max-width: 600px; font-size: 14px; line-height: 1.65; color: #a3a3a3; }
+.turnControls { display: flex; flex: none; gap: 8px; }
+.turnControls button {
+  width: 44px;
+  height: 44px;
+  border: 1px solid #333333;
+  border-radius: 50%;
+  color: #eeeeee;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+.turnControls button[aria-disabled="true"] { opacity: 0.25; cursor: default; }
+.turnControls button:not([aria-disabled="true"]):hover { background: #ffffff0c; border-color: #666666; }
+.turnControls button:not([aria-disabled="true"]):active { transform: scale(0.94); }
+
+@media (max-width: 639px) {
+  .photoRoll { gap: 40px; }
+  .expandHint { width: 26px; height: 26px; right: 9px; bottom: 9px; opacity: 0.85; transform: none; }
+  .viewerShell { padding: max(12px, env(safe-area-inset-top)) 20px max(20px, env(safe-area-inset-bottom)); }
+  .viewerStage { padding-block: 16px; }
+  .viewerFooter { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .viewerCaption { min-height: 68px; }
+  .turnControls { align-self: flex-end; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photoButton,
+  .expandHint,
+  .closeButton,
+  .closeButton > span,
+  .turnControls button { transition: none; }
+  .photoButton:hover,
+  .closeButton:hover > span,
+  .turnControls button:not([aria-disabled="true"]):active { transform: none; }
+}
+
+/* Zoomed and short landscape windows must be able to reach every control. */
+@media (max-height: 480px) {
+  .viewer { overflow-y: auto; }
+  .viewerShell { height: auto; min-height: 100%; }
+  .viewerStage { flex: none; height: 60dvh; min-height: 160px; }
+}
