@@ -206,7 +206,7 @@ export default function Home() {
           >
             Contact
           </h2>
-          <ul className="flex flex-wrap gap-x-5 gap-y-2 max-sm:gap-x-4 max-[360px]:gap-x-2">
+          <ul className={`${styles.contactLinks} flex flex-wrap gap-y-2`}>
             {socials.map((social) => (
               <li key={social.label}>
                 {social.href ? (

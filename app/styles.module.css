@@ -11,7 +11,15 @@
   justify-content: center;
 }
 
+.contactLinks {
+  column-gap: 20px;
+}
+
 @media (max-width: 639px) {
+  .contactLinks {
+    column-gap: 16px;
+  }
+
   .homeContent {
     --text-title: 20px;
     --text-body: 13px;
@@ -37,6 +45,12 @@
     height: 18px;
     margin-right: 8px;
     vertical-align: -4px;
+  }
+}
+
+@media (max-width: 359px) {
+  .contactLinks {
+    column-gap: 8px;
   }
 }
 
