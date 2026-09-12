@@ -9,10 +9,12 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  type CSSProperties,
   type ReactElement,
   type ReactNode,
 } from "react";
 import { motion } from "motion/react";
+import { fitPhoto, type PhotoBox } from "@/lib/photo-layout";
 import useReducedMotionPreference from "../useReducedMotionPreference";
 import styles from "./photos.module.css";
 
@@ -22,13 +24,15 @@ export type Photo = {
   caption?: ReactNode; // a quiet line under the open print
 };
 
-type Box = { top: number; left: number; width: number; height: number };
+type Box = PhotoBox;
 
 type Viewer = {
   index: number;
+  ratio: number;
   from: Box; // the square tile it grew out of
   to: Box; // centred, at the photo's native aspect ratio
   phase: "open" | "closing";
+  snap?: boolean; // resize/orientation changes must not fly in from offscreen
   back?: Box; // where the grid slot is once the gap has settled
 };
 
@@ -38,55 +42,42 @@ const spring = { type: "spring" as const, stiffness: 320, damping: 34, mass: 1 }
 const RADIUS = 10;
 
 /* The largest centred box at the photo's own ratio that fits comfortably. */
-function fit(ratio: number): Box {
-  const maxWidth = Math.min(window.innerWidth * 0.86, 760);
-  const maxHeight = Math.min(window.innerHeight * 0.66, 680);
-  const scale = Math.min(maxWidth / ratio, maxHeight);
-  const width = ratio * scale;
-  const height = scale;
-  return {
-    width,
-    height,
-    left: (window.innerWidth - width) / 2,
-    // Sit a touch above centre so the caption beneath reads as part of it.
-    top: (window.innerHeight - height) / 2 - 12,
-  };
+function fit(ratio: number, hasCaption: boolean): Box {
+  return fitPhoto(ratio, window.innerWidth, window.innerHeight, hasCaption);
 }
 
 /* Wrap every word of a caption (links included) in a span that fades and
    lifts in on its own, staggered left to right. Whitespace passes through
    untouched so the line still wraps naturally. */
-function Word({ index, reduced, children }: { index: number; reduced: boolean; children: ReactNode }) {
+function Word({ index, children }: { index: number; children: ReactNode }) {
   return (
-    <motion.span
+    <span
       className={styles.word}
-      initial={reduced ? false : { opacity: 0, y: 4, filter: "blur(4px)" }}
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.28 + index * 0.09 }}
+      style={{ "--word-delay": `${0.28 + index * 0.09}s` } as CSSProperties}
     >
       {children}
-    </motion.span>
+    </span>
   );
 }
 
-function splitWords(node: ReactNode, next: () => number, reduced: boolean): ReactNode {
+function splitWords(node: ReactNode, next: () => number): ReactNode {
   if (typeof node === "string") {
     return node.split(/(\s+)/).map((part, i) =>
       part.trim() === "" ? (
         part
       ) : (
-        <Word key={i} index={next()} reduced={reduced}>
+        <Word key={i} index={next()}>
           {part}
         </Word>
       ),
     );
   }
   if (Array.isArray(node)) {
-    return node.map((child, i) => <Fragment key={i}>{splitWords(child, next, reduced)}</Fragment>);
+    return node.map((child, i) => <Fragment key={i}>{splitWords(child, next)}</Fragment>);
   }
   if (isValidElement(node)) {
     const element = node as ReactElement<{ children?: ReactNode }>;
-    return cloneElement(element, undefined, splitWords(element.props.children, next, reduced));
+    return cloneElement(element, undefined, splitWords(element.props.children, next));
   }
   return node;
 }
@@ -115,14 +106,6 @@ const slot = (cell: HTMLElement): Box => {
   };
 };
 
-/* The first look: prints surface one after another, softly, top-left to
-   bottom-right. Nothing showy — like a contact sheet developing. */
-const arrive = (index: number) => ({
-  duration: 1.1,
-  ease: [0.16, 1, 0.3, 1] as const,
-  delay: 0.1 + index * 0.05,
-});
-
 /**
  * A grid of square prints. Click one and it grows out of its slot to the
  * middle of the screen, opening up to the photo's real proportions, while
@@ -135,19 +118,22 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
   const cells = useRef<(HTMLLIElement | null)[]>([]);
   const tiles = useRef<(HTMLButtonElement | null)[]>([]);
   const card = useRef<HTMLDivElement>(null);
+  const dialog = useRef<HTMLDialogElement>(null);
   const open = viewer?.phase === "open";
+  const viewing = viewer !== null;
   const transition = reduced ? { duration: 0 } : spring;
 
   function show(index: number, button: HTMLButtonElement) {
     const image = button.querySelector("img");
     const ratio =
       image && image.naturalWidth > 0 ? image.naturalWidth / image.naturalHeight : 1;
-    setViewer({ index, from: rect(button), to: fit(ratio), phase: "open" });
+    if (viewer) return;
+    setViewer({ index, ratio, from: rect(button), to: fit(ratio, Boolean(photos[index].caption)), phase: "open" });
   }
 
   function close() {
     setViewer((current) =>
-      current && current.phase === "open" ? { ...current, phase: "closing" } : current,
+      current && current.phase === "open" ? { ...current, phase: "closing", snap: false } : current,
     );
   }
 
@@ -162,17 +148,38 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
   }, [viewer]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!viewing) return;
+    const modal = dialog.current;
+    if (!modal) return;
+    modal.showModal();
     card.current?.focus({ preventScroll: true });
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") close();
+    const previousOverflow = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      modal.close();
+      document.documentElement.style.overflow = previousOverflow;
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+  }, [viewing]);
+
+  useEffect(() => {
+    if (!viewing) return;
+    const resize = () => setViewer((current) => {
+      if (!current) return current;
+      const cell = cells.current[current.index];
+      return {
+        ...current,
+        snap: true,
+        to: fit(current.ratio, Boolean(photos[current.index].caption)),
+        back: current.phase === "closing" && cell ? slot(cell) : undefined,
+      };
+    });
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, [viewing, photos]);
 
   function finish() {
     if (viewer?.phase !== "closing" || !viewer.back) return;
+    dialog.current?.close();
     tiles.current[viewer.index]?.focus({ preventScroll: true });
     setViewer(null);
   }
@@ -186,15 +193,13 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
           const lifted = viewer?.index === index;
           const dimmed = open && !lifted;
           return (
-            <motion.li
+            <li
               key={item.src}
               ref={(element) => {
                 cells.current[index] = element;
               }}
               className={styles.cell}
-              initial={reduced ? false : { opacity: 0, y: 10, filter: "blur(6px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={arrive(index)}
+              style={{ "--arrival-delay": `${0.1 + index * 0.05}s` } as CSSProperties}
             >
               <motion.button
                 ref={(element) => {
@@ -210,12 +215,12 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
                 }}
                 transition={{
                   ...transition,
-                  opacity: { duration: lifted || !viewer ? 0 : 0.35 },
-                  filter: { duration: 0.35 },
+                  opacity: { duration: reduced || lifted || !viewer ? 0 : 0.35 },
+                  filter: { duration: reduced ? 0 : 0.35 },
                 }}
                 onClick={(event) => show(index, event.currentTarget)}
                 aria-label={`Open photo ${index + 1}: ${item.alt}`}
-                tabIndex={open ? -1 : 0}
+                tabIndex={viewing ? -1 : 0}
               >
                 <Image
                   src={item.src}
@@ -228,17 +233,32 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
                   className={styles.img}
                 />
               </motion.button>
-            </motion.li>
+            </li>
           );
         })}
       </ul>
 
       {viewer && photo && (
-        <div
+        <dialog
+          ref={dialog}
           className={styles.viewer}
-          role="dialog"
-          aria-modal="true"
           aria-label={photo.alt}
+          onCancel={(event) => { event.preventDefault(); close(); }}
+          onKeyDown={(event) => {
+            if (event.key !== "Tab") return;
+            const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>(
+              'a[href], button:not([disabled]), [tabindex="0"]',
+            ));
+            const first = controls[0];
+            const last = controls[controls.length - 1];
+            if (event.shiftKey && (document.activeElement === first || document.activeElement === card.current)) {
+              event.preventDefault();
+              last?.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+              event.preventDefault();
+              first?.focus();
+            }
+          }}
           onClick={close}
         >
           <motion.div
@@ -247,7 +267,7 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
             style={{ borderRadius: RADIUS }}
             initial={viewer.from}
             animate={viewer.phase === "open" ? viewer.to : (viewer.back ?? viewer.to)}
-            transition={transition}
+            transition={viewer.snap ? { duration: 0 } : transition}
             onAnimationComplete={finish}
             tabIndex={-1}
           >
@@ -257,33 +277,44 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
               fill
               sizes="(max-width: 520px) 86vw, 760px"
               unoptimized
+              loading="eager"
               draggable={false}
               className={styles.img}
+              onLoad={(event) => {
+                const image = event.currentTarget;
+                if (!image.naturalWidth || !image.naturalHeight) return;
+                const ratio = image.naturalWidth / image.naturalHeight;
+                setViewer((current) => current && current.ratio !== ratio
+                  ? { ...current, ratio, to: fit(ratio, Boolean(photo.caption)) }
+                  : current);
+              }}
             />
             <motion.span
               className={styles.grain}
               aria-hidden="true"
               initial={{ opacity: 0 }}
               animate={{ opacity: viewer.phase === "open" ? 1 : 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: reduced ? 0 : 0.3 }}
             />
           </motion.div>
           {photo.caption && (
             <motion.p
               key={photo.src}
               className={styles.caption}
-              style={{ top: viewer.to.top + viewer.to.height + 14, left: viewer.to.left, width: viewer.to.width }}
+              style={{ top: viewer.to.top + viewer.to.height + 14, width: viewer.to.width }}
               animate={{ opacity: viewer.phase === "open" ? 1 : 0 }}
               transition={{ duration: reduced ? 0 : 0.12 }}
               onClick={(event) => event.stopPropagation()}
             >
-              {splitWords(photo.caption, counter(), reduced)}
+              {splitWords(photo.caption, counter())}
             </motion.p>
           )}
-          <button type="button" className="sr-only" onClick={close}>
-            Close photo
+          <button type="button" className={styles.close} onClick={close} aria-label="Close photo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+              <path d="m6 6 12 12M6 18 18 6" />
+            </svg>
           </button>
-        </div>
+        </dialog>
       )}
     </>
   );

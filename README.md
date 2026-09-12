@@ -1,7 +1,8 @@
 # owenopacki — personal site
 
 The personal site of [Owen Opacki](https://x.com/newomp4) (@newomp4): who he is, the path so far,
-and where to find him. Dark, ultra-minimal, one page plus a film-photo gallery at [`/photos`](./app/photos).
+and where to find him. Dark, ultra-minimal, with a film-photo gallery at [`/photos`](./app/photos)
+and a Tools placeholder at [`/tools`](./app/tools).
 
 Built with Next.js (App Router) + Tailwind CSS v4 + TypeScript. Fully static.
 
@@ -18,6 +19,22 @@ Notes and intro lines support `[markdown links](https://...)`, including in-page
 npm install
 npm run dev
 ```
+
+## Check changes
+
+With Node.js 22.18+ (or Node.js 24), run:
+
+```bash
+npm run lint
+npm test
+npm run build
+npm audit --omit=dev
+```
+
+The regression tests cover touch and keyboard interactions, reduced-motion gallery
+closing, focus and scroll cleanup, clipboard failures, birthday boundaries, photo
+sizing across phone and desktop viewports, and missing profile/logo assets.
+Also check animation, resizing an open photo, and mobile layouts in a browser.
 
 ## Deploy (Vercel + Namecheap)
 

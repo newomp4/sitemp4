@@ -4,15 +4,180 @@
   color-scheme: dark;
 }
 
+.homeContent {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-width: 639px) {
+  .homeContent {
+    --text-title: 20px;
+    --text-body: 13px;
+    --text-meta: 11px;
+  }
+
+  .homeContent .handleLink {
+    gap: 7px;
+    vertical-align: -3px;
+  }
+
+  .homeContent .handleLink > img {
+    width: 22px;
+    height: 22px;
+  }
+
+  .homeContent .list h3 {
+    line-height: 20px;
+  }
+
+  .homeContent .logoBox {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    vertical-align: -4px;
+  }
+}
+
 .root :is(a, button, [tabindex]):focus-visible {
   outline: 2px solid #f5f5f5;
   outline-offset: 4px;
   border-radius: 2px;
 }
 
-/* ── The identity, in the headline: pfp circle + handle. On hover the text
-   brightens, the underline draws under the text only, the arrow slides in
-   70ms behind, and the circle's ring warms. ── */
+/* The portrait is tucked into the name; its popup never shifts the layout. */
+.portraitAnchor {
+  position: relative;
+  display: inline-block;
+}
+
+.portraitName {
+  cursor: pointer;
+  transition: color 180ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.portraitAnchor[data-open="true"] .portraitName {
+  color: #ffffff;
+}
+
+.portraitPopup {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 136px;
+  padding-top: 14px;
+  transform: translateX(-50%);
+  perspective: 700px;
+  visibility: hidden;
+  pointer-events: none;
+  transition: visibility 0s 180ms;
+}
+
+.portraitAnchor[data-open="true"] .portraitPopup {
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.portraitCard {
+  position: relative;
+  display: block;
+  width: 136px;
+  height: 172px;
+  overflow: hidden;
+  border: 3px solid #292929;
+  border-radius: 7px;
+  background: #191919;
+  box-shadow: 0 12px 32px #00000066, 0 2px 6px #00000040;
+  transform-origin: 50% 0;
+}
+
+.footerLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding-block: 4px;
+  font-size: var(--text-body);
+  color: #a3a3a3;
+  transition: color 180ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.footerLink > svg {
+  position: absolute;
+  right: calc(100% + 7px);
+  flex: none;
+  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.footerLink:hover,
+.footerLink:focus-visible {
+  color: #f5f5f5;
+}
+
+.footerLink:hover > svg,
+.footerLink:focus-visible > svg {
+  transform: translateY(-1px) rotate(-6deg);
+}
+
+.galleryPreview {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: 240px;
+  height: 146px;
+  padding-top: 12px;
+  visibility: hidden;
+  pointer-events: none;
+  transition: visibility 0s 180ms;
+}
+
+.footerLink[data-open="true"] .galleryPreview {
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+.galleryFan {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.galleryPrint {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 78px;
+  height: 102px;
+  overflow: hidden;
+  border: 3px solid #292929;
+  border-radius: 6px;
+  background: #191919;
+  box-shadow: 0 8px 24px #00000066, 0 2px 6px #00000040;
+  transform-origin: 50% 90%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portraitName,
+  .portraitPopup,
+  .footerLink,
+  .galleryPreview,
+  .footerLink > svg {
+    transition: none;
+  }
+
+  .footerLink:hover > svg,
+  .footerLink:focus-visible > svg {
+    transform: none;
+  }
+}
+
+/* The identity brightens on hover, the arrow slides in, and the ring warms. */
 .handleLink {
   display: inline-flex;
   align-items: center;
@@ -27,20 +192,7 @@
   color: #f5f5f5;
 }
 
-.handle {
-  background-image: linear-gradient(currentColor, currentColor);
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 0% 2px;
-  transition: background-size 300ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.handleLink:hover .handle,
-.handleLink:focus-visible .handle {
-  background-size: 100% 2px;
-}
-
-/* The arrow is invisible at rest and animates in after the underline starts */
+/* The arrow is invisible at rest and arrives just after the color lifts. */
 .handleArrow {
   opacity: 0;
   transform: translate(-4px, 4px);
@@ -132,8 +284,7 @@
   opacity: 1;
 }
 
-/* Touch: FoldRow drives the fold with a tap (data-open), and the row's
-   ↗ and underline appear as its open-state affordances */
+/* Touch: FoldRow drives the fold with a tap, and the arrow appears. */
 .list > li[data-open="true"] .noteWrap {
   grid-template-rows: 1fr;
   opacity: 1;
@@ -142,10 +293,6 @@
 .list > li[data-open="true"] .arrow {
   opacity: 1;
   transform: translate(0, 0);
-}
-
-.list > li[data-open="true"] .title {
-  background-size: 100% 1px;
 }
 
 /* ── Deep-linked chapter (e.g. "college" in the intro → #bryant): the
@@ -210,23 +357,7 @@
   border-radius: 9999px;
 }
 
-/* ── Title underline draws left → right… ── */
-.title {
-  background-image: linear-gradient(currentColor, currentColor);
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 0% 1px;
-  transition: background-size 350ms cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-@media (hover: hover) {
-  .list > li:hover .title,
-  .list > li:focus-within .title {
-    background-size: 100% 1px;
-  }
-}
-
-/* ── …then the arrow follows it in, 75ms behind ── */
+/* The arrow follows the row's movement with a slight delay. */
 .arrow {
   opacity: 0;
   transform: translate(-4px, 4px);
@@ -246,23 +377,16 @@
   }
 }
 
-/* ── Contact links: color lifts, underline draws, arrow nudges 60ms later ── */
+/* Contact links brighten, then the arrow nudges. */
 .social {
   font-size: var(--text-body);
   color: #a3a3a3;
-  background-image: linear-gradient(currentColor, currentColor);
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 0% 1px;
-  transition:
-    color 150ms ease,
-    background-size 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: color 150ms ease;
 }
 
 .social:hover,
 .social:focus-visible {
   color: #f5f5f5;
-  background-size: 100% 1px;
 }
 
 .socialArrow {
@@ -311,7 +435,7 @@
   align-items: center;
   gap: 4px;
   padding-block: 4px;
-  transition: color 160ms ease, background-size 250ms cubic-bezier(0.22, 1, 0.36, 1), transform 160ms ease;
+  transition: color 160ms ease, transform 160ms ease;
 }
 
 .social:active {
@@ -393,18 +517,12 @@
 
 .captionLink {
   color: #d4d4d4;
-  text-decoration: underline;
-  text-decoration-color: #3f3f3f;
-  text-underline-offset: 3px;
-  transition:
-    color 150ms ease,
-    text-decoration-color 150ms ease;
+  transition: color 150ms ease;
 }
 
 .captionLink:hover,
 .captionLink:focus-visible {
   color: #f5f5f5;
-  text-decoration-color: #f5f5f5;
 }
 
 /* ── The hidden footer: a fixed aurora in the avatar's electric blues
@@ -738,14 +856,12 @@
 /* ── Reduced motion: the print renders straight and in full color, nothing moves ── */
 @media (prefers-reduced-motion: reduce) {
   .handleLink,
-  .handle,
   .handleArrow,
   .print,
   .print::after,
   .noteWrap,
   .logoBox,
   .list > li,
-  .title,
   .arrow,
   .social,
   .socialArrow {

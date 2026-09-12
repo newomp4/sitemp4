@@ -15,7 +15,8 @@ export const profile = {
   headline: "Hi, I'm Owen",
   tagline: "I make things for the internet.",
   intro: [
-    "Head of Creative at [Content Rewards](https://contentrewards.com). [19](#age), from Boston.",
+    "Head of Creative at [Content Rewards](https://contentrewards.com).",
+    "Boston · [19](#age)",
   ],
 };
 

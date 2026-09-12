@@ -26,7 +26,7 @@ export default function LocalTime() {
   }, []);
 
   return (
-    <p className="mt-8 min-h-5 text-meta tabular-nums text-[#7D7D7D]">
+    <p className="mt-8 min-h-5 text-meta tabular-nums text-[#7D7D7D] max-sm:mt-6">
       {now && <>Boston <span aria-hidden="true">·</span> {now}</>}
     </p>
   );

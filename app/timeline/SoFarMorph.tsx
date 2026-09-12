@@ -33,6 +33,7 @@ import {
   type AnimationPlaybackControls,
 } from "motion/react";
 import { path } from "@/lib/content";
+import FoldRow from "../FoldRow";
 import styles from "../styles.module.css";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -45,10 +46,10 @@ const AXIS_END = 2026.65;
 const META: { start: number; level: 0 | 1 | 2; anchor?: "right" }[] = [
   { start: 2026.2, level: 0, anchor: "right" },
   { start: 2025.7, level: 2, anchor: "right" },
-  { start: 2025.4, level: 1, anchor: "right" },
-  { start: 2024.0, level: 0 },
+  { start: 2024.0, level: 1 },
   { start: 2023.0, level: 0 },
-  { start: 2021.5, level: 0 },
+  // VFX has only an end year in the content; this marker denotes that end.
+  { start: 2023.0, level: 1 },
 ];
 const pos = (t: number) => ((t - AXIS_START) / (AXIS_END - AXIS_START)) * 100;
 /* Dots and leaders clamp off the hard left edge so the first dot,
@@ -151,53 +152,24 @@ function ClockIcon({ line }: { line: boolean }) {
    toggle, and linkless rows are focusable so keyboards can unfold too. */
 function ListRow({
   item,
+  index,
   heading,
   note,
 }: {
   item: (typeof path)[number];
+  index: number;
   heading: ReactNode;
   note: ReactNode;
 }) {
-  const [open, setOpen] = useState(false);
-
-  const onRowClick = (e: React.MouseEvent) => {
-    // Hover-capable devices are handled purely by CSS
-    if (window.matchMedia("(hover: hover)").matches) return;
-    if ((e.target as Element).closest("[data-note]")) return;
-    if (!item.href) {
-      setOpen((o) => !o);
-      return;
-    }
-    if (!open) {
-      e.preventDefault(); // first tap opens instead of navigating
-      setOpen(true);
-    }
-    // already open: let the title link navigate
-  };
-
   return (
-    <li
+    <FoldRow
       id={item.anchor}
-      data-open={String(open)}
-      {...(item.href ? (item.anchor ? { tabIndex: -1 } : {}) : { tabIndex: 0 })}
-    >
-      <div
-        className="grid grid-cols-[112px_1fr] gap-x-4 max-sm:grid-cols-1"
-        onClick={onRowClick}
-      >
-        <p className="text-[12px] leading-6 tracking-[0.01em] text-[#7D7D7D] max-sm:mb-0.5 max-sm:leading-4">
-          {item.years}
-        </p>
-        <div>
-          {heading}
-          {note && (
-            <div className={styles.noteWrap} data-note>
-              <div className={styles.noteInner}>{note}</div>
-            </div>
-          )}
-        </div>
-      </div>
-    </li>
+      hasLink={Boolean(item.href)}
+      years={item.years}
+      index={index}
+      heading={heading}
+      note={note}
+    />
   );
 }
 
@@ -430,7 +402,7 @@ export default function SoFarMorph() {
                       <Chip item={item} />
                     </span>
                   )}
-                  <span ref={(el) => void (listTitle.current[i] = el)} className={`${styles.title} inline-block`}>
+                  <span ref={(el) => void (listTitle.current[i] = el)} className="inline-block">
                     {item.title}
                   </span>
                   {item.role && (
@@ -450,6 +422,7 @@ export default function SoFarMorph() {
                 <ListRow
                   key={item.title}
                   item={item}
+                  index={i}
                   heading={
                     item.href ? (
                       <a

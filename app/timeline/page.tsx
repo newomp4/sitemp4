@@ -66,7 +66,7 @@ function Row({ item }: { item: LinkItem }) {
           item.year ? "mt-1" : ""
         }`}
       >
-        <span className={styles.title}>{item.title}</span>{" "}
+        <span>{item.title}</span>{" "}
         <span
           aria-hidden="true"
           className={`${styles.arrow} inline-block text-[#A3A3A3]`}
@@ -130,7 +130,7 @@ export default function TimelineContextTest() {
               className={`${styles.handleLink} group/handle`}
             >
               <Avatar />
-              <span className={styles.handle}>@{profile.handle}</span>
+              <span>@{profile.handle}</span>
               <span
                 aria-hidden="true"
                 className={`${styles.handleArrow} inline-block text-[20px]`}
