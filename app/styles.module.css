@@ -572,24 +572,57 @@
   pointer-events: none;
 }
 
-/* Browsers that still rubber-band (older iOS ignores overscroll-behavior)
-   see this bleed below the viewport instead of bare background — it echoes
-   the aurora's bottom edge so the glow never has a hard cutoff */
+/* Below the fold. A mobile toolbar collapsing, or a browser that still
+   rubber-bands, exposes the strip under a fixed layer; without this the
+   page background shows through as a dark sliver and the aurora looks
+   sheared off. It carries the aurora's bottom row of colour, sits behind
+   the glow planes so their own light still reads on top of it, and rides
+   --reveal so a shut footer never flashes a blue band. */
 .revealLayer::after {
   content: "";
   position: absolute;
-  top: 100%;
+  /* It has to start *above* the fold and ramp in. The glow is only part
+     opaque out at the edges, so if the backdrop behind it switched from
+     page black to this strip exactly at the layer's bottom edge, that
+     switch would draw the very line it is here to prevent. */
+  top: 82%;
   left: 0;
   right: 0;
-  height: 30vh;
-  background: linear-gradient(
-    90deg,
-    #16449c,
-    #0d61f0 30%,
-    #1f9df2 50%,
-    #0d61f0 70%,
-    #16449c
-  );
+  height: 70vh;
+  z-index: -1;
+  opacity: calc(var(--reveal, 0) * 1.2);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 14%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 14%);
+  /* Sampled off the aurora's own last row at full reveal, so the strip
+     reads as the glow continuing rather than a band tacked underneath.
+     The grain rides along at the same size the planes use. */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.028) 0%,
+      rgba(255, 255, 255, 0.038) 14%,
+      rgba(0, 0, 0, 0) 38%,
+      rgba(0, 0, 0, 0.14) 68%,
+      rgba(0, 0, 0, 0.3) 100%
+    ),
+    linear-gradient(
+      90deg,
+      #2d57ab 0%,
+      #2f66c4 12%,
+      #3179d2 26%,
+      #2f85de 40%,
+      #2d87e0 50%,
+      #2f83da 62%,
+      #3179cd 76%,
+      #3569bd 90%,
+      #3871b3 100%
+    );
+  background-size:
+    240px 240px,
+    100% 100%,
+    100% 100%;
+  background-blend-mode: overlay, normal, normal;
 }
 
 /* ── Glow stack: the reveal is split by depth across two springs — mid
@@ -604,12 +637,16 @@
      gradient alpha can ever draw a hard line at its edge */
   mask-image: linear-gradient(
     to top,
+    transparent 0%,
+    black 7%,
     black 72%,
     rgba(0, 0, 0, 0.5) 86%,
     transparent 99%
   );
   -webkit-mask-image: linear-gradient(
     to top,
+    transparent 0%,
+    black 7%,
     black 72%,
     rgba(0, 0, 0, 0.5) 86%,
     transparent 99%
@@ -623,12 +660,16 @@
   will-change: transform;
   mask-image: linear-gradient(
     to top,
+    transparent 0%,
+    black 7%,
     black 72%,
     rgba(0, 0, 0, 0.5) 86%,
     transparent 99%
   );
   -webkit-mask-image: linear-gradient(
     to top,
+    transparent 0%,
+    black 7%,
     black 72%,
     rgba(0, 0, 0, 0.5) 86%,
     transparent 99%

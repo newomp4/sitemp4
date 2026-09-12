@@ -41,7 +41,8 @@ body {
 /* No visible scrollbars anywhere — the page scrolls, the chrome doesn't show.
    No rubber-band overscroll either: bouncing past the end would expose the
    page background beneath the fixed footer glow. */
-html {
+html,
+body {
   scrollbar-width: none;
   overscroll-behavior-y: none;
 }

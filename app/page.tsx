@@ -177,7 +177,7 @@ export default function Home() {
             id="contact"
             aria-label="Contact"
             style={rise(profile.intro.length + 1)}
-            className={`${styles.contactLinks} rise mt-6 flex scroll-mt-10 flex-wrap gap-y-2 max-sm:mt-4`}
+            className={`${styles.contactLinks} rise mt-4 flex scroll-mt-10 flex-wrap gap-y-2`}
           >
             {socials.map((social) => (
               <li key={social.label}>
@@ -211,14 +211,14 @@ export default function Home() {
           <section
             id="path"
             aria-labelledby="path-heading"
-            className="scroll-mt-10 pt-12 max-sm:pt-8"
+            className="scroll-mt-10 pt-8 max-sm:pt-6"
           >
             {/* Kept for section navigation. Restore the original visible styling:
                 className="scroll-reveal mb-5 text-meta font-strong text-[#F5F5F5]" */}
             <h2 id="path-heading" className="sr-only">
               So far
             </h2>
-            <ul className={`${styles.list} space-y-6 max-sm:space-y-4`}>
+            <ul className={`${styles.list} space-y-4`}>
               {path.map((item, index) => (
                 <PathRow key={item.title} item={item} index={index} />
               ))}
@@ -227,7 +227,7 @@ export default function Home() {
         </main>
 
         {/* ── The end of the page: where else to go, and when it is here ── */}
-        <footer className="scroll-reveal pt-12 max-sm:pt-8">
+        <footer className="scroll-reveal pt-8 max-sm:pt-6">
           <div className="relative z-20 flex items-center gap-8">
             <GalleryLink />
             <Link href="/tools" className={styles.footerLink}>
