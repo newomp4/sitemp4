@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import type { CSSProperties, ReactNode } from "react";
-import Link from "next/link";
-import styles from "../styles.module.css";
-import PhotoGallery, { type Photo } from "./PhotoGallery";
+import type { ReactNode } from "react";
+import root from "../styles.module.css";
+import styles from "./photos.module.css";
+import PhotoGrid, { type Photo } from "./PhotoGrid";
 
 export const metadata: Metadata = {
   title: "Owen Opacki · Photos",
@@ -17,61 +17,40 @@ export const metadata: Metadata = {
   },
 };
 
-const rise = (step: number): CSSProperties =>
-  ({ "--rise-delay": `${step * 0.1}s` }) as CSSProperties;
-
 function Cap({ href, children }: { href: string; children: ReactNode }) {
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={styles.captionLink}
-    >
+    <a href={href} target="_blank" rel="noopener noreferrer">
       {children}
     </a>
   );
 }
 
-const PHOTOS: Photo[] = [
+// Every photo, in grid order. Rows of four.
+const ALL_PHOTOS: Photo[] = [
   {
     src: "/photos/owen-nyc-full.jpg",
-    blur:
-      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAALABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAwQFBv/EACMQAAICAQIGAwAAAAAAAAAAAAECAxEABBIFExQVITFBUaH/xAAVAQEBAAAAAAAAAAAAAAAAAAABAv/EABURAQEAAAAAAAAAAAAAAAAAAAAh/9oADAMBAAIRAxEAPwAuh16RTQLGjPZYkBqvx9fOVe9Rb3QaeVyhpthVq/cxfDJH7lpW3G91e8Xnnl6iY8xrLEE378nJpj//2Q==",
-    width: 1818,
-    height: 1228,
     alt: "Owen, Galileo, and Ariel on a rooftop in front of the Williamsburg Bridge at dusk",
     caption: (
       <>
         Williamsburg, NYC @ <Cap href="https://whop.com">whop.com</Cap>&rsquo;s
-        office with{" "}
-        <Cap href="https://x.com/galileowilson">@galileowilson</Cap> and{" "}
-        <Cap href="https://instagram.com/arielbrowerr">@arielbrowerr</Cap>
+        office with <Cap href="https://x.com/galileowilson">@galileowilson</Cap>{" "}
+        and <Cap href="https://instagram.com/arielbrowerr">@arielbrowerr</Cap>
       </>
     ),
   },
   {
-    src: "/photos/gallery/paris-eiffel.jpg",
-    blur:
-      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAUG/8QAIRAAAgEDBAMBAAAAAAAAAAAAAQIDAAQREiExQQUTUYH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFREBAQAAAAAAAAAAAAAAAAAAABH/2gAMAwEAAhEDEQA/AAW9peCFbonClgwOsZ27A/a048zZxQr75AJQo1LjO/HVQ5II45kVVAVIiyj4ciksigEBQBtwMdUo/9k=",
-    width: 1818,
-    height: 1228,
-    alt: "Three friends in front of the Eiffel Tower",
+    src: "/photos/gallery/film-16b.jpg",
+    alt: "A Content Rewards billboard truck passing the Arc de Triomphe",
     caption: (
       <>
-        Paris, France with{" "}
-        <Cap href="https://x.com/yanalgrowth">@yanalgrowth</Cap> and{" "}
-        <Cap href="https://x.com/danvsI">@danvsI</Cap>
+        <Cap href="https://x.com/contentrewards">@contentrewards</Cap> truck at
+        the Arc de Triomphe, Paris
       </>
     ),
   },
   {
     src: "/photos/gallery/soho-asspizza.jpg",
-    blur:
-      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAVABADASIAAhEBAxEB/8QAGAAAAgMAAAAAAAAAAAAAAAAAAAQBAgX/xAAjEAACAQQBBAMBAAAAAAAAAAABAgMABBEFBhIhMUGR/8QAFgEBAQEAAAAAAAAAAAAAAAAAAgAB/8QAGBEBAQEBAQAAAAAAAAAAAAAAAQARIUH/2gAMAwEAAhEDEQA/AL8hYC8lgDuUOpydDjyf5T3EW8drbNEriTuJLAEfH3Sb3EjLlWYv5GcAD1U2M0plURksWGzqR0x7/etLPYrmFjNM55Irk6741B6eKZ427kE0pGO2M4oorNaQ5f/Z",
-    width: 945,
-    height: 1227,
-    alt: "Owen and Austin Babbitt in front of a graffiti-covered wall",
+    alt: "Owen and Austin Babbitt in front of a graffiti-covered wall in SoHo",
     caption: (
       <>
         SoHo, NYC. Austin Babbitt (
@@ -80,20 +59,37 @@ const PHOTOS: Photo[] = [
     ),
   },
   {
+    src: "/photos/gallery/film-09.jpg",
+    alt: "The Paris skyline and the Eiffel Tower from a rooftop under grey skies",
+    caption: <>Paris from the roof of Galeries Lafayette</>,
+  },
+  {
+    src: "/photos/gallery/paris-eiffel.jpg",
+    alt: "Three friends in front of the Eiffel Tower",
+    caption: (
+      <>
+        Paris, France with <Cap href="https://x.com/yanalgrowth">@yanalgrowth</Cap>{" "}
+        and <Cap href="https://x.com/danvsI">@danvsI</Cap>
+      </>
+    ),
+  },
+  {
+    src: "/photos/gallery/film-29.jpg",
+    alt: "The team working on laptops around a long outdoor dinner table",
+    caption: <>team bbq</>,
+  },
+  {
     src: "/photos/gallery/chinatown.jpg",
-    blur:
-      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABAIF/8QAIBAAAgEDBQEBAAAAAAAAAAAAAQIRAAMEEiEiMVFhcf/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFxEAAwEAAAAAAAAAAAAAAAAAAAESEf/aAAwDAQACEQMRAD8AysS7eu23YIvAATI2gfTSXv5DY7s2PbCKBBQ6Z6976FFsclGrf9qcvYQABPgik6Smf//Z",
-    width: 1818,
-    height: 1228,
     alt: "A graffiti-covered van parked on a Chinatown street",
     caption: <>Chinatown, NYC</>,
   },
   {
+    src: "/photos/gallery/film-19.jpg",
+    alt: "Two people standing in front of an orange Content Rewards billboard",
+    caption: <>make content. get paid</>,
+  },
+  {
     src: "/photos/gallery/paris-team-dinner.jpg",
-    blur:
-      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAALABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABQME/8QAIRAAAgEEAgIDAAAAAAAAAAAAAQIDAAQREgUxIWEycZH/xAAUAQEAAAAAAAAAAAAAAAAAAAAC/8QAFhEBAQEAAAAAAAAAAAAAAAAAAAEh/9oADAMBAAIRAxEAPwDFyXF29rOVtZQyIE3BbJGez9dftGyWxUMVcMqfIq3j1Tt7EknKjdQd4o9veSc1GYCCwvGiAQsFU4HYzijCuP/Z",
-    width: 1818,
-    height: 1228,
     alt: "The Content Rewards team at dinner in Paris",
     caption: (
       <>
@@ -103,11 +99,26 @@ const PHOTOS: Photo[] = [
     ),
   },
   {
+    src: "/photos/gallery/film-10.jpg",
+    alt: "Haussmann rooftops and a busy Paris intersection seen from above",
+    caption: <>Boulevard Haussmann</>,
+  },
+  {
+    src: "/photos/gallery/film-33.jpg",
+    alt: "Two friends building a tower of Red Bull cans on a hotel room table",
+    caption: <>diet.</>,
+  },
+  {
+    src: "/photos/gallery/film-16a.jpg",
+    alt: "Whop stickers on a construction sign on Broome Street",
+    caption: (
+      <>
+        <Cap href="https://whop.com">whop.com</Cap> stickers on Broome St, NYC
+      </>
+    ),
+  },
+  {
     src: "/photos/gallery/team-danvsl.jpg",
-    blur:
-      "data:image/jpeg;base64,/9j/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAALABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABQT/xAAgEAACAQMEAwAAAAAAAAAAAAABAgMABBEFBhIhMUGR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAH/xAAVEQEBAAAAAAAAAAAAAAAAAAAAEf/aAAwDAQACEQMRAD8AO0qAX0ohjZY5SOsLilL1LVIn5dccDx7NB7fYrqcZB7JOfhqOWWRizlzyLHJqEf/Z",
-    width: 1818,
-    height: 1228,
     alt: "Dan and the Content Rewards team in a hotel room",
     caption: (
       <>
@@ -116,38 +127,32 @@ const PHOTOS: Photo[] = [
       </>
     ),
   },
+  {
+    src: "/photos/gallery/film-13.jpg",
+    alt: "A white room covered floor to ceiling in graffiti",
+    caption: <>A room covered in graffiti</>,
+  },
+  {
+    src: "/photos/gallery/film-08.jpg",
+    alt: "A dark Paris street at dusk with a few lit shopfronts",
+    caption: <>Paris at dusk, last frame on the roll</>,
+  },
+  {
+    src: "/photos/gallery/placeholder-1.jpg",
+    alt: "Placeholder",
+    caption: <>Placeholder</>,
+  },
 ];
+
+// Showing three rows for now. Bump ROWS to 4 to bring the last row back.
+const ROWS = 3;
+const PHOTOS = ALL_PHOTOS.slice(0, ROWS * 4);
 
 export default function PhotosPage() {
   return (
-    <div className={`${styles.root} min-h-dvh w-full bg-[#111111]`}>
-      <div className="mx-auto w-full max-w-[42rem] px-6 py-12 sm:py-16">
-        <header className="rise" style={rise(0)}>
-          <Link href="/" className={styles.backLink}>
-            <span aria-hidden="true" className={styles.backArrow}>
-              ←
-            </span>{" "}
-            Back
-          </Link>
-          <h1 className="mt-8 text-[26px] font-semibold tracking-tight text-[#F5F5F5]">
-            Photos
-          </h1>
-          <p className="mt-3 text-[15px] leading-relaxed text-[#A3A3A3]">
-            New York, Paris, and people I like. Shot on film.
-          </p>
-        </header>
-
-        <PhotoGallery photos={PHOTOS} />
-
-        <footer className="scroll-reveal mt-16 pb-8">
-          <Link href="/" className={styles.backLink}>
-            <span aria-hidden="true" className={styles.backArrow}>
-              ←
-            </span>{" "}
-            Back
-          </Link>
-        </footer>
-      </div>
-    </div>
+    <main className={`${root.root} ${styles.stage} w-full bg-[#111111]`}>
+      <h1 className="sr-only">Photos</h1>
+      <PhotoGrid photos={PHOTOS} />
+    </main>
   );
 }
