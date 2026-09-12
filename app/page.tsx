@@ -172,41 +172,13 @@ export default function Home() {
               {richText(paragraph)}
             </p>
           ))}
-        </section>
-
-        <main>
-          {/* ── The path ── */}
-          <section
-            id="path"
-            aria-labelledby="path-heading"
-            className="scroll-mt-10 pt-12 max-sm:pt-8"
+          {/* Where to find me — part of the introduction, not a footer. */}
+          <ul
+            id="contact"
+            aria-label="Contact"
+            style={rise(profile.intro.length + 1)}
+            className={`${styles.contactLinks} rise mt-7 flex scroll-mt-10 flex-wrap gap-y-2 max-sm:mt-5`}
           >
-            {/* Kept for section navigation. Restore the original visible styling:
-                className="scroll-reveal mb-5 text-meta font-strong text-[#F5F5F5]" */}
-            <h2 id="path-heading" className="sr-only">
-              So far
-            </h2>
-            <ul className={`${styles.list} space-y-5 max-sm:space-y-4`}>
-              {path.map((item, index) => (
-                <PathRow key={item.title} item={item} index={index} />
-              ))}
-            </ul>
-          </section>
-        </main>
-
-        {/* ── Contact ── */}
-        <footer
-          id="contact"
-          aria-labelledby="contact-heading"
-          className="scroll-reveal scroll-mt-10 pt-12 max-sm:pt-8"
-        >
-          <h2
-            id="contact-heading"
-            className="mb-5 text-meta font-strong text-[#F5F5F5] max-sm:mb-3"
-          >
-            Contact
-          </h2>
-          <ul className={`${styles.contactLinks} flex flex-wrap gap-y-2`}>
             {socials.map((social) => (
               <li key={social.label}>
                 {social.href ? (
@@ -232,7 +204,31 @@ export default function Home() {
               </li>
             ))}
           </ul>
-          <div className="relative z-20 mt-3 flex items-center gap-16">
+        </section>
+
+        <main>
+          {/* ── The path ── */}
+          <section
+            id="path"
+            aria-labelledby="path-heading"
+            className="scroll-mt-10 pt-12 max-sm:pt-8"
+          >
+            {/* Kept for section navigation. Restore the original visible styling:
+                className="scroll-reveal mb-5 text-meta font-strong text-[#F5F5F5]" */}
+            <h2 id="path-heading" className="sr-only">
+              So far
+            </h2>
+            <ul className={`${styles.list} space-y-5 max-sm:space-y-4`}>
+              {path.map((item, index) => (
+                <PathRow key={item.title} item={item} index={index} />
+              ))}
+            </ul>
+          </section>
+        </main>
+
+        {/* ── The end of the page: where else to go, and when it is here ── */}
+        <footer className="scroll-reveal pt-12 max-sm:pt-8">
+          <div className="relative z-20 flex items-center gap-16">
             <GalleryLink />
             <Link href="/tools" className={styles.footerLink}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="18" height="18" aria-hidden="true">

@@ -112,6 +112,5 @@ export type Social = {
 export const socials: Social[] = [
   { label: "X", handle: "@newomp4", href: "https://x.com/newomp4" },
   { label: "Instagram", handle: "@newomp4", href: "https://instagram.com/newomp4" },
-  { label: "YouTube", handle: "@newomp4", href: "https://youtube.com/@newomp4" },
   { label: "Discord", handle: "newomp4" },
 ];

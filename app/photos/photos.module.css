@@ -1,6 +1,7 @@
 /* ── The photo page: a bare stage, a grid of prints in the middle ── */
 
 .stage {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,6 +25,12 @@
   .grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     width: min(100%, 560px);
+  }
+
+  /* Narrow enough that the grid outgrows the window and rides the top
+     padding — leave the back button its own air. */
+  .stage {
+    padding-top: 76px;
   }
 }
 

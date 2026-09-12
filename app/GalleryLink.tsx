@@ -2,24 +2,31 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useSpring } from "motion/react";
-import { useEffect, useState, type PointerEvent } from "react";
+import { motion } from "motion/react";
+import { useEffect, useState } from "react";
 import useReducedMotionPreference from "./useReducedMotionPreference";
 import styles from "./styles.module.css";
 
-const spring = { type: "spring" as const, stiffness: 280, damping: 24, mass: 0.7 };
+/* Critically damped: the prints glide out and stop, no wobble on arrival. */
+const spring = { type: "spring" as const, stiffness: 190, damping: 26, mass: 0.9 };
+
+/* Where each print lands, dealt left to right. A narrow spread and small
+   angles — it should read as a peek at the gallery, not a card trick. */
 const previews = [
-  { src: "/photos/gallery/paris-eiffel.jpg", x: 8, y: 8, rotate: -12 },
-  { src: "/photos/gallery/chinatown.jpg", x: 55, y: 0, rotate: -4 },
-  { src: "/photos/owen-nyc.jpg", x: 102, y: 0, rotate: 4 },
-  { src: "/photos/gallery/film-16b.jpg", x: 149, y: 8, rotate: 12 },
+  { src: "/photos/gallery/paris-eiffel.jpg", x: 20, y: 7, rotate: -7 },
+  { src: "/photos/gallery/chinatown.jpg", x: 54, y: 0, rotate: -2.5 },
+  { src: "/photos/owen-nyc.jpg", x: 88, y: 0, rotate: 2.5 },
+  { src: "/photos/gallery/film-16b.jpg", x: 122, y: 7, rotate: 7 },
 ];
+
+/* Closed, they sit in one square stack at the middle of that spread, so
+   opening fans them apart from a single point instead of sliding in. */
+const stack = { x: 71, y: 18, scale: 0.92 };
 
 /** A tiny contact sheet unfolds above the link without moving the page. */
 export default function GalleryLink() {
   const [open, setOpen] = useState(false);
   const reduced = useReducedMotionPreference();
-  const drift = useSpring(0, spring);
 
   useEffect(() => {
     if (!open) return;
@@ -30,23 +37,15 @@ export default function GalleryLink() {
     return () => document.removeEventListener("keydown", dismiss);
   }, [open]);
 
-  function move(event: PointerEvent<HTMLAnchorElement>) {
-    if (reduced || event.pointerType !== "mouse") return;
-    const box = event.currentTarget.getBoundingClientRect();
-    const position = Math.max(-0.5, Math.min(0.5, (event.clientX - box.left) / box.width - 0.5));
-    drift.set(position * 10);
-  }
-
   return (
     <Link
       href="/photos"
       className={styles.footerLink}
       data-open={open}
       onPointerEnter={(event) => { if (event.pointerType === "mouse") setOpen(true); }}
-      onPointerMove={move}
-      onPointerLeave={() => { setOpen(false); drift.set(0); }}
+      onPointerLeave={() => setOpen(false)}
       onFocus={(event) => { if (event.currentTarget.matches(":focus-visible")) setOpen(true); }}
-      onBlur={() => { setOpen(false); drift.set(0); }}
+      onBlur={() => setOpen(false)}
     >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="18" height="18" aria-hidden="true">
         <path d="M14.5 7C13.1193 7 12 8.11929 12 9.5C12 10.8807 13.1193 12 14.5 12C15.8807 12 17 10.8807 17 9.5C17 8.11929 15.8807 7 14.5 7Z" fill="currentColor" />
@@ -54,29 +53,35 @@ export default function GalleryLink() {
       </svg>
       <span>Gallery</span>
       <span className={styles.galleryPreview} aria-hidden="true">
-        <motion.span className={styles.galleryFan} style={{ x: reduced ? 0 : drift }}>
-          {previews.map((photo, index) => (
-            <motion.span
-              key={photo.src}
-              className={styles.galleryPrint}
-              initial={false}
-              animate={{
-                opacity: open ? 1 : 0,
-                x: reduced || open ? photo.x : 28,
-                y: reduced || open ? photo.y : 24,
-                rotate: reduced ? 0 : open ? photo.rotate : 0,
-                scale: reduced || open ? 1 : 0.85,
-              }}
-              transition={reduced ? { duration: 0 } : {
-                ...spring,
-                delay: open ? index * 0.035 : 0,
-                opacity: { duration: open ? 0.18 : 0.12 },
-              }}
-            >
-              <Image src={photo.src} alt="" fill sizes="78px" loading="eager" className="object-cover" />
-            </motion.span>
-          ))}
-        </motion.span>
+        <span className={styles.galleryFan}>
+          {previews.map((photo, index) => {
+            /* Dealt outward on the way open, gathered from the outside in
+               on the way back. The fade carries the same delay as the
+               travel, so each print appears while it is already moving. */
+            const delay = open ? index * 0.045 : (previews.length - 1 - index) * 0.02;
+            return (
+              <motion.span
+                key={photo.src}
+                className={styles.galleryPrint}
+                initial={false}
+                animate={{
+                  opacity: open ? 1 : 0,
+                  x: reduced || open ? photo.x : stack.x,
+                  y: reduced || open ? photo.y : stack.y,
+                  rotate: reduced ? 0 : open ? photo.rotate : 0,
+                  scale: reduced || open ? 1 : stack.scale,
+                }}
+                transition={reduced ? { duration: 0 } : {
+                  ...spring,
+                  delay,
+                  opacity: { duration: open ? 0.22 : 0.14, delay },
+                }}
+              >
+                <Image src={photo.src} alt="" fill sizes="78px" loading="eager" className="object-cover" />
+              </motion.span>
+            );
+          })}
+        </span>
       </span>
     </Link>
   );

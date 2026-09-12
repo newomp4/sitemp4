@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import type { ReactNode } from "react";
+import BackLink from "../BackLink";
 import root from "../styles.module.css";
 import styles from "./photos.module.css";
 import PhotoGrid, { type Photo } from "./PhotoGrid";
@@ -152,9 +152,7 @@ const PHOTOS = ALL_PHOTOS.slice(0, ROWS * 4);
 export default function PhotosPage() {
   return (
     <main className={`${root.root} ${styles.stage} w-full bg-[#111111]`}>
-      <Link href="/" className={`${root.backLink} absolute left-6 top-5`}>
-        <span aria-hidden="true" className={root.backArrow}>←</span> Back
-      </Link>
+      <BackLink />
       <h1 className="sr-only">Photos</h1>
       <PhotoGrid photos={PHOTOS} />
     </main>
