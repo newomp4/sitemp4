@@ -73,7 +73,7 @@ export default function CopyHandle({ label, handle }: Props) {
       </button>
       {/* If the clipboard is unavailable, say the handle instead of failing silently */}
       {status === "failed" && (
-        <span className={`${styles.glyphIn} text-[13px] text-[#8A8A8A]`}>
+        <span className={`${styles.glyphIn} text-meta text-[#8A8A8A]`}>
           Copy this: {handle}
         </span>
       )}

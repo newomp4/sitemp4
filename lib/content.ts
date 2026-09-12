@@ -14,7 +14,9 @@ export const profile = {
   email: "owen@contentrewards.com",
   headline: "Hi, I'm Owen",
   tagline: "I make things for the internet.",
-  intro: ["I'm [19](#age), from Boston."],
+  intro: [
+    "Head of Creative at [Content Rewards](https://contentrewards.com). [19](#age), from Boston.",
+  ],
 };
 
 // ── The path — how I got here, not a portfolio ──

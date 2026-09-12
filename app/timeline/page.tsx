@@ -1,15 +1,21 @@
+import type { Metadata } from "next";
 import type { CSSProperties, ReactNode } from "react";
-import Image from "next/image";
-import { profile, path, socials, type PathItem } from "@/lib/content";
-import AgeTicker from "./AgeTicker";
-import AnchorLink from "./AnchorLink";
-import Avatar from "./Avatar";
-import CopyHandle from "./copy-handle";
-import FoldRow from "./FoldRow";
-import HiddenFooter from "./HiddenFooter";
-import LocalTime from "./LocalTime";
-import Print from "./Print";
-import styles from "./styles.module.css";
+import Link from "next/link";
+import { profile, links, socials, type LinkItem } from "@/lib/content";
+import AgeTicker from "../AgeTicker";
+import AnchorLink from "../AnchorLink";
+import Avatar from "../Avatar";
+import CopyHandle from "../copy-handle";
+import HiddenFooter from "../HiddenFooter";
+import LocalTime from "../LocalTime";
+import Print from "../Print";
+import styles from "../styles.module.css";
+import SoFarMorph from "./SoFarMorph";
+
+export const metadata: Metadata = {
+  title: "Owen Opacki · Timeline preview",
+  robots: { index: false, follow: false },
+};
 
 const rise = (step: number): CSSProperties =>
   ({ "--rise-delay": `${step * 0.1}s` }) as CSSProperties;
@@ -50,97 +56,70 @@ function richText(text: string) {
   return parts;
 }
 
-/* Hover or keyboard focus unfolds the story beneath each chapter. */
-function PathRow({ item, index }: { item: PathItem; index: number }) {
-  const heading = (
-    <h3 className={`relative text-body leading-6 font-strong text-[#F5F5F5] ${item.href ? "pr-5" : ""}`}>
-      {item.logo && (
+function Row({ item }: { item: LinkItem }) {
+  const external = item.external ?? /^https?:/.test(item.href);
+  const body = (
+    <>
+      {item.year && <p className="text-[12px] text-[#7D7D7D]">{item.year}</p>}
+      <h3
+        className={`text-[16px] font-semibold text-[#F5F5F5] ${
+          item.year ? "mt-1" : ""
+        }`}
+      >
+        <span className={styles.title}>{item.title}</span>{" "}
         <span
-          className={`${styles.logoBox} mr-2.5 ${
-            item.logoShape === "circle" ? styles.logoCircle : ""
-          }`}
           aria-hidden="true"
+          className={`${styles.arrow} inline-block text-[#A3A3A3]`}
         >
-          <Image
-            src={item.logo}
-            alt=""
-            width={22}
-            height={22}
-            className="h-full w-full object-cover"
-          />
+          ↗
         </span>
+      </h3>
+      {item.description && (
+        <p className="mt-1 text-[15px] leading-relaxed text-[#A3A3A3]">
+          {item.description}
+        </p>
       )}
-      <span className={styles.title}>{item.title}</span>
-      {item.role && (
-        <span className="font-regular text-[#A3A3A3]"> · {item.role}</span>
-      )}
-      {item.href && (
-        <>
-          {" "}
-          <span
-            aria-hidden="true"
-            className={`${styles.arrow} absolute right-0 top-0 text-[#A3A3A3]`}
-          >
-            ↗
-          </span>
-        </>
-      )}
-    </h3>
+    </>
   );
-
-  const external = item.href
-    ? (item.external ?? /^https?:/.test(item.href))
-    : false;
-
   return (
-    <FoldRow
-      id={item.anchor}
-      hasLink={Boolean(item.href)}
-      index={index}
-      years={item.years}
-      heading={
-        item.href ? (
-          <a
-            href={item.href}
-            {...(external
-              ? { target: "_blank", rel: "noopener noreferrer" }
-              : {})}
-            className="block"
-          >
-            {heading}
-          </a>
-        ) : (
-          heading
-        )
-      }
-      note={
-        item.note ? (
-          <p className="pt-1 text-body leading-relaxed text-[#A3A3A3]">
-            {richText(item.note)}
-          </p>
-        ) : null
-      }
-    />
+    <li>
+      {external ? (
+        <a
+          href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block"
+        >
+          {body}
+        </a>
+      ) : (
+        <Link href={item.href} className="block">
+          {body}
+        </Link>
+      )}
+    </li>
   );
 }
 
-export default function Home() {
+export default function TimelineContextTest() {
   return (
     <div className={`${styles.root} min-h-dvh w-full bg-[#111111]`}>
       <div className="mx-auto w-full max-w-[42rem] px-6 py-12 sm:py-16">
+        <p className="mb-10 text-[13px] text-[#7D7D7D]">test page: the So far morph in full context. click “So far”.</p>
         {/* ── Hero ── */}
-        <section aria-labelledby="intro-heading">
+        <section
+          aria-labelledby="intro-heading"
+          className="rise"
+          style={rise(0)}
+        >
           {/* A single portrait, set down above the headline */}
-          <div className="rise" style={rise(0)}>
-            <Print />
-          </div>
+          <Print />
           <h1
             id="intro-heading"
-            style={rise(1)}
-            className="rise mt-7 text-title font-strong tracking-tight text-[#F5F5F5]"
+            className="mt-7 text-[26px] font-semibold tracking-tight text-[#F5F5F5]"
           >
             {profile.headline}{" "}
-            <span aria-hidden="true" className="font-regular text-[#3F3F3F]">
+            <span aria-hidden="true" className="font-normal text-[#3F3F3F]">
               /
             </span>{" "}
             <a
@@ -154,17 +133,16 @@ export default function Home() {
               <span className={styles.handle}>@{profile.handle}</span>
               <span
                 aria-hidden="true"
-                className={`${styles.handleArrow} inline-block`}
+                className={`${styles.handleArrow} inline-block text-[20px]`}
               >
                 ↗
               </span>
             </a>
           </h1>
-          {profile.intro.map((paragraph, index) => (
+          {profile.intro.map((paragraph) => (
             <p
               key={paragraph}
-              style={rise(index + 2)}
-              className="rise mt-3 text-body leading-relaxed text-[#A3A3A3]"
+              className="mt-3 text-[15px] leading-relaxed text-[#A3A3A3]"
             >
               {richText(paragraph)}
             </p>
@@ -175,18 +153,28 @@ export default function Home() {
           {/* ── The path ── */}
           <section
             id="path"
-            aria-labelledby="path-heading"
-            className="scroll-mt-10 pt-12"
+            className="rise scroll-mt-10 pt-14"
+            style={rise(1)}
+          >
+            <SoFarMorph />
+          </section>
+
+          {/* ── Elsewhere ── */}
+          <section
+            id="elsewhere"
+            aria-labelledby="elsewhere-heading"
+            className="rise scroll-mt-10 pt-14"
+            style={rise(2)}
           >
             <h2
-              id="path-heading"
-              className="scroll-reveal mb-5 text-meta font-strong text-[#F5F5F5]"
+              id="elsewhere-heading"
+              className="mb-5 text-[14px] font-semibold text-[#F5F5F5]"
             >
-              So far
+              Other things
             </h2>
             <ul className={`${styles.list} space-y-5`}>
-              {path.map((item, index) => (
-                <PathRow key={item.title} item={item} index={index} />
+              {links.map((item) => (
+                <Row key={item.title} item={item} />
               ))}
             </ul>
           </section>
@@ -196,15 +184,16 @@ export default function Home() {
         <footer
           id="contact"
           aria-labelledby="contact-heading"
-          className="scroll-reveal scroll-mt-10 pt-12 pb-6"
+          className="rise scroll-mt-10 pt-14 pb-6"
+          style={rise(3)}
         >
           <h2
             id="contact-heading"
-            className="mb-5 text-meta font-strong text-[#F5F5F5]"
+            className="mb-5 text-[14px] font-semibold text-[#F5F5F5]"
           >
             Contact
           </h2>
-          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+          <ul className="flex flex-wrap gap-x-5 gap-y-3">
             {socials.map((social) => (
               <li key={social.label}>
                 {social.href ? (
@@ -231,7 +220,7 @@ export default function Home() {
             ))}
           </ul>
           <LocalTime />
-          <p className="mt-2 text-meta text-[#7D7D7D]">
+          <p className="mt-2 text-[13px] text-[#7D7D7D]">
             © 2026 {profile.name}
           </p>
         </footer>

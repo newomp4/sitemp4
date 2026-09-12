@@ -100,7 +100,7 @@
   position: fixed;
   margin: 0;
   color: #7d7d7d;
-  font-size: 13px;
+  font-size: var(--text-meta);
   line-height: 1.5;
   text-align: left;
 }

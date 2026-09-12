@@ -50,19 +50,19 @@ export default function Print() {
           aria-hidden="true"
           className={`${styles.stackPrint} ${styles.stackBack}`}
           initial={false}
-          animate={{ x: active ? 26 : 12, y: active ? 1 : 3, rotate: active ? 10 : 7 }}
+          animate={{ x: active ? 18 : 8, y: active ? 1 : 2, rotate: active ? 8 : 5 }}
           transition={reduced ? { duration: 0 } : spring}
         >
-          <Image src="/photos/gallery/paris-eiffel.jpg" alt="" fill sizes="128px" className="object-cover" />
+          <Image src="/photos/gallery/paris-eiffel.jpg" alt="" fill sizes="102px" className="object-cover" />
         </motion.span>
         <motion.span
           aria-hidden="true"
           className={`${styles.stackPrint} ${styles.stackMiddle}`}
           initial={false}
-          animate={{ x: active ? 13 : 6, y: active ? -1 : 1, rotate: active ? 4 : 2 }}
+          animate={{ x: active ? 9 : 4, y: active ? -1 : 1, rotate: active ? 3 : 1.5 }}
           transition={reduced ? { duration: 0 } : spring}
         >
-          <Image src="/photos/gallery/chinatown.jpg" alt="" fill sizes="128px" className="object-cover" />
+          <Image src="/photos/gallery/chinatown.jpg" alt="" fill sizes="102px" className="object-cover" />
         </motion.span>
         <motion.span
           className={`${styles.stackPrint} ${styles.stackFront}`}
@@ -74,7 +74,7 @@ export default function Print() {
             src="/photos/owen-nyc.jpg"
             alt="Owen in front of the Williamsburg Bridge"
             fill
-            sizes="128px"
+            sizes="102px"
             quality={90}
             preload
             className="object-cover"

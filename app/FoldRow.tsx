@@ -65,7 +65,7 @@ export default function FoldRow({
         className="grid grid-cols-[112px_1fr] gap-x-4 max-sm:grid-cols-1"
         onClick={onRowClick}
       >
-        <p className="text-[12px] leading-6 tracking-[0.01em] text-[#7D7D7D] max-sm:mb-0.5 max-sm:leading-4">
+        <p className="text-meta leading-6 tracking-[0.01em] text-[#7D7D7D] max-sm:mb-0.5 max-sm:leading-4">
           {years}
         </p>
         <div>

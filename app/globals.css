@@ -12,6 +12,24 @@
   --font-sans: var(--font-inter);
 }
 
+/* ── Type. The whole site uses exactly three sizes and two weights.
+   Tailwind's stock sizes and weights are cleared so nothing else can
+   slip in: use text-title / text-body / text-meta and
+   font-strong / font-regular, or the same variables from module CSS. ── */
+@theme static {
+  --text-*: initial;
+  --text-title: 24px;
+  --text-title--line-height: 1.25;
+  --text-body: 15px;
+  --text-body--line-height: 1.6;
+  --text-meta: 13px;
+  --text-meta--line-height: 1.5;
+
+  --font-weight-*: initial;
+  --font-weight-regular: 400;
+  --font-weight-strong: 600;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

@@ -62,8 +62,8 @@
 .printStack {
   position: relative;
   display: block;
-  width: 128px;
-  height: 160px;
+  width: 102px;
+  height: 128px;
   perspective: 800px;
   -webkit-tap-highlight-color: transparent;
 }
@@ -81,10 +81,10 @@
   inset: 0;
   display: block;
   overflow: hidden;
-  border: 1px solid #393939;
-  border-radius: 6px;
+  border: 1px solid #2a2a2a;
+  border-radius: 5px;
   background: #191919;
-  box-shadow: 0 3px 9px #00000060;
+  box-shadow: 0 2px 6px #00000040;
 }
 
 .stackPrint::after {
@@ -96,8 +96,8 @@
   pointer-events: none;
 }
 
-.stackBack { z-index: 1; }
-.stackMiddle { z-index: 2; }
+.stackBack { z-index: 1; opacity: 0.7; }
+.stackMiddle { z-index: 2; opacity: 0.85; }
 .stackFront { z-index: 3; }
 
 /* ── The note rests folded; hovering/focusing the row breathes it open.
@@ -248,7 +248,7 @@
 
 /* ── Contact links: color lifts, underline draws, arrow nudges 60ms later ── */
 .social {
-  font-size: 15px;
+  font-size: var(--text-body);
   color: #a3a3a3;
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
@@ -328,7 +328,7 @@
   display: inline-flex;
   align-items: baseline;
   gap: 6px;
-  font-size: 13px;
+  font-size: var(--text-meta);
   color: #7d7d7d;
   transition: color 150ms ease;
 }
@@ -366,7 +366,7 @@
 }
 
 .photoIndex {
-  font-size: 12px;
+  font-size: var(--text-meta);
   color: #7d7d7d;
   transition: color 500ms ease;
 }
@@ -708,14 +708,14 @@
 }
 
 .revealQuote {
-  font-size: 13px;
+  font-size: var(--text-meta);
   letter-spacing: -0.01em;
   color: rgba(238, 244, 251, 0.92);
   text-shadow: 0 1px 12px rgba(6, 20, 46, 0.5);
 }
 
 .revealBy {
-  font-size: 12px;
+  font-size: var(--text-meta);
   color: rgba(238, 244, 251, 0.55);
 }
 
