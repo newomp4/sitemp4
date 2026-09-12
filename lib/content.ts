@@ -14,11 +14,7 @@ export const profile = {
   email: "owen@contentrewards.com",
   headline: "Hi, I'm Owen",
   tagline: "I make things for the internet.",
-  intro: [
-    "I'm [19](#age), from Boston, and I make things for the internet.",
-    "Dropped out of college to lead creative at [Content Rewards](https://contentrewards.com), The Marketplace for Virality where - brands pay creators for their content.",
-    "Before that: co-founded a real estate marketing company, did ~$250k GMV on TikTok Shop, and ran [polyviral](https://polyviral.org), editing for Whop’s top earners.",
-  ],
+  intro: ["I'm [19](#age), from Boston."],
 };
 
 // ── The path — how I got here, not a portfolio ──
@@ -59,21 +55,15 @@ export const path: PathItem[] = [
     anchor: "bryant",
   },
   {
-    years: "2025",
-    title: "Real estate marketing",
-    role: "Co-founder",
-    note: "Co-founded a media agency for realtors. Grew to 70+ clients across the state, with a team of 13 at the peak.",
-  },
-  {
     years: "2024 – 2025",
     title: "TikTok Shop",
-    role: "Short-form commerce",
+    role: "Ruby affiliate",
     note: "~$250k combined GMV across multiple accounts, reaching Ruby seller level. Also ran netwrk, a small coaching community.",
   },
   {
     years: "2023 – 2025",
     title: "polyviral",
-    role: "Editing & motion design",
+    role: "Short-form marketing agency",
     note: "Ran an editing and motion design agency for top [Whop](https://whop.com) earners like [Chase Chappell](https://www.instagram.com/realchasechappell) and [Ads Mastery](https://www.adsmastery.com/).",
     href: "https://polyviral.org",
     external: true,
@@ -81,7 +71,7 @@ export const path: PathItem[] = [
   },
   {
     years: "– 2023",
-    title: "Music video VFX",
+    title: "VFX artist",
     role: "Compositing",
     note: "VFX on music videos for Tana, autumn, and UnoTheActivist, working with directors like [@tinytapes](https://instagram.com/tinytapes) and [@dotcomnirvan](https://instagram.com/dotcomnirvan). 10M+ combined views. [The last music video I ever edited](https://youtu.be/E-KVGKqMLZ4).",
     href: "https://youtu.be/E-KVGKqMLZ4",

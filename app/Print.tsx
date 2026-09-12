@@ -7,7 +7,7 @@ import { motion, useSpring } from "motion/react";
 import useReducedMotionPreference from "./useReducedMotionPreference";
 import styles from "./styles.module.css";
 
-const spring = { type: "spring" as const, stiffness: 230, damping: 26, mass: 0.8 };
+const spring = { type: "spring" as const, stiffness: 140, damping: 24, mass: 0.9 };
 
 /** The link stays still; the prints move inside it so the pointer never chases them. */
 export default function Print() {
@@ -24,8 +24,8 @@ export default function Print() {
     const box = event.currentTarget.getBoundingClientRect();
     const x = Math.max(-0.5, Math.min(0.5, (event.clientX - box.left) / box.width - 0.5));
     const y = Math.max(-0.5, Math.min(0.5, (event.clientY - box.top) / box.height - 0.5));
-    rotateX.set(-y * 7);
-    rotateY.set(x * 7);
+    rotateX.set(-y * 3);
+    rotateY.set(x * 3);
   }
 
   return (
@@ -50,7 +50,7 @@ export default function Print() {
           aria-hidden="true"
           className={`${styles.stackPrint} ${styles.stackBack}`}
           initial={false}
-          animate={{ x: active ? 48 : 12, y: active ? 0 : 3, rotate: active ? 15 : 7 }}
+          animate={{ x: active ? 26 : 12, y: active ? 1 : 3, rotate: active ? 10 : 7 }}
           transition={reduced ? { duration: 0 } : spring}
         >
           <Image src="/photos/gallery/paris-eiffel.jpg" alt="" fill sizes="128px" className="object-cover" />
@@ -59,7 +59,7 @@ export default function Print() {
           aria-hidden="true"
           className={`${styles.stackPrint} ${styles.stackMiddle}`}
           initial={false}
-          animate={{ x: active ? 24 : 6, y: active ? -3 : 1, rotate: active ? 6 : 2 }}
+          animate={{ x: active ? 13 : 6, y: active ? -1 : 1, rotate: active ? 4 : 2 }}
           transition={reduced ? { duration: 0 } : spring}
         >
           <Image src="/photos/gallery/chinatown.jpg" alt="" fill sizes="128px" className="object-cover" />
@@ -67,7 +67,7 @@ export default function Print() {
         <motion.span
           className={`${styles.stackPrint} ${styles.stackFront}`}
           initial={false}
-          animate={{ x: active ? -5 : 0, y: active ? -7 : 0, rotate: active ? -5 : -2, scale: !reduced && pressed ? 0.98 : 1 }}
+          animate={{ x: active ? -2 : 0, y: active ? -3 : 0, rotate: active ? -3 : -2, scale: !reduced && pressed ? 0.98 : 1 }}
           transition={reduced ? { duration: 0 } : spring}
         >
           <Image
@@ -81,7 +81,6 @@ export default function Print() {
           />
         </motion.span>
       </motion.span>
-      <span className={styles.printHint} aria-hidden="true">View photos <span>↗</span></span>
     </Link>
   );
 }

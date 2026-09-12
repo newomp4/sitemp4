@@ -100,28 +100,6 @@
 .stackMiddle { z-index: 2; }
 .stackFront { z-index: 3; }
 
-.printHint {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  padding-top: 9px;
-  color: #a3a3a3;
-  font-size: 12px;
-  white-space: nowrap;
-  opacity: 0;
-  transform: translateY(-3px);
-  transition: opacity 220ms ease, transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
-  pointer-events: none;
-}
-
-.printStack:focus-visible .printHint { opacity: 1; transform: none; }
-@media (hover: hover) and (pointer: fine) {
-  .printStack:hover .printHint { opacity: 1; transform: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .printHint { transition: none; transform: none; }
-}
-
 /* ── The note rests folded; hovering/focusing the row breathes it open.
    Unhurried on purpose — a slow exhale, not a snap. ── */
 .noteWrap {
