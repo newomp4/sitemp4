@@ -188,7 +188,7 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
 
   return (
     <>
-      <ul className={styles.grid} style={{ gap: open ? 22 : 10 }}>
+      <ul className={styles.grid} style={{ gap: open ? 24 : 8 }}>
         {photos.map((item, index) => {
           const lifted = viewer?.index === index;
           const dimmed = open && !lifted;
@@ -301,7 +301,7 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
             <motion.p
               key={photo.src}
               className={styles.caption}
-              style={{ top: viewer.to.top + viewer.to.height + 14, width: viewer.to.width }}
+              style={{ top: viewer.to.top + viewer.to.height + 16, width: viewer.to.width }}
               animate={{ opacity: viewer.phase === "open" ? 1 : 0 }}
               transition={{ duration: reduced ? 0 : 0.12 }}
               onClick={(event) => event.stopPropagation()}

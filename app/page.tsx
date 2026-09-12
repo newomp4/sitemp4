@@ -55,10 +55,10 @@ function richText(text: string) {
 /* Hover or keyboard focus unfolds the story beneath each chapter. */
 function PathRow({ item, index }: { item: PathItem; index: number }) {
   const heading = (
-    <h3 className={`relative text-body leading-6 font-strong text-[#F5F5F5] ${item.href ? "pr-5" : ""}`}>
+    <h3 className={`relative text-body leading-6 font-strong text-[#F5F5F5] ${item.href ? "pr-6" : ""}`}>
       {item.logo && (
         <span
-          className={`${styles.logoBox} mr-2.5 ${
+          className={`${styles.logoBox} mr-2 ${
             item.logoShape === "circle" ? styles.logoCircle : ""
           }`}
           aria-hidden="true"
@@ -167,7 +167,7 @@ export default function Home() {
             <p
               key={paragraph}
               style={rise(index + 1)}
-              className={`rise text-body leading-relaxed text-[#A3A3A3] ${index === 0 ? "mt-3" : "mt-1"}`}
+              className={`rise text-body leading-relaxed text-[#A3A3A3] ${index === 0 ? "mt-4" : "mt-1"}`}
             >
               {richText(paragraph)}
             </p>
@@ -177,7 +177,7 @@ export default function Home() {
             id="contact"
             aria-label="Contact"
             style={rise(profile.intro.length + 1)}
-            className={`${styles.contactLinks} rise mt-7 flex scroll-mt-10 flex-wrap gap-y-2 max-sm:mt-5`}
+            className={`${styles.contactLinks} rise mt-6 flex scroll-mt-10 flex-wrap gap-y-2 max-sm:mt-4`}
           >
             {socials.map((social) => (
               <li key={social.label}>
@@ -218,7 +218,7 @@ export default function Home() {
             <h2 id="path-heading" className="sr-only">
               So far
             </h2>
-            <ul className={`${styles.list} space-y-5 max-sm:space-y-4`}>
+            <ul className={`${styles.list} space-y-6 max-sm:space-y-4`}>
               {path.map((item, index) => (
                 <PathRow key={item.title} item={item} index={index} />
               ))}
@@ -228,7 +228,7 @@ export default function Home() {
 
         {/* ── The end of the page: where else to go, and when it is here ── */}
         <footer className="scroll-reveal pt-12 max-sm:pt-8">
-          <div className="relative z-20 flex items-center gap-16">
+          <div className="relative z-20 flex items-center gap-8">
             <GalleryLink />
             <Link href="/tools" className={styles.footerLink}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="18" height="18" aria-hidden="true">

@@ -3,17 +3,22 @@ import type { CSSProperties } from "react";
 import styles from "./styles.module.css";
 
 /**
- * The way home from a sub-page. A small pill in the top-left corner,
- * identical on every page that has one, so it is always in the same
- * place. The arrow comes from the same icon set as the Gallery and
- * Tools icons on the homepage.
+ * The way home from a sub-page. The same small pill everywhere: parked
+ * in the top-left corner by default, or sitting in the column on the
+ * 404, where it is the last line of the page rather than its chrome.
+ * The arrow comes from the same set as the Gallery and Tools icons.
  */
-export default function BackLink() {
+export default function BackLink({
+  placement = "corner",
+}: {
+  placement?: "corner" | "inline";
+}) {
+  const corner = placement === "corner";
   return (
     <Link
       href="/"
-      className={`${styles.backLink} rise`}
-      style={{ "--rise-delay": "0.05s" } as CSSProperties}
+      className={corner ? `${styles.backLink} ${styles.backCorner} rise` : styles.backLink}
+      style={corner ? ({ "--rise-delay": "0.05s" } as CSSProperties) : undefined}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

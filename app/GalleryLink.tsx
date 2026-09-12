@@ -13,15 +13,15 @@ const spring = { type: "spring" as const, stiffness: 190, damping: 26, mass: 0.9
 /* Where each print lands, dealt left to right. A narrow spread and small
    angles — it should read as a peek at the gallery, not a card trick. */
 const previews = [
-  { src: "/photos/gallery/paris-eiffel.jpg", x: 20, y: 7, rotate: -7 },
-  { src: "/photos/gallery/chinatown.jpg", x: 54, y: 0, rotate: -2.5 },
-  { src: "/photos/owen-nyc.jpg", x: 88, y: 0, rotate: 2.5 },
-  { src: "/photos/gallery/film-16b.jpg", x: 122, y: 7, rotate: 7 },
+  { src: "/photos/gallery/paris-eiffel.jpg", x: 16, y: 8, rotate: -7 },
+  { src: "/photos/gallery/chinatown.jpg", x: 48, y: 0, rotate: -2.5 },
+  { src: "/photos/owen-nyc.jpg", x: 80, y: 0, rotate: 2.5 },
+  { src: "/photos/gallery/film-16b.jpg", x: 112, y: 8, rotate: 7 },
 ];
 
 /* Closed, they sit in one square stack at the middle of that spread, so
    opening fans them apart from a single point instead of sliding in. */
-const stack = { x: 71, y: 18, scale: 0.92 };
+const stack = { x: 64, y: 16, scale: 0.92 };
 
 /** A tiny contact sheet unfolds above the link without moving the page. */
 export default function GalleryLink() {
@@ -77,7 +77,7 @@ export default function GalleryLink() {
                   opacity: { duration: open ? 0.22 : 0.14, delay },
                 }}
               >
-                <Image src={photo.src} alt="" fill sizes="78px" loading="eager" className="object-cover" />
+                <Image src={photo.src} alt="" fill sizes="80px" loading="eager" className="object-cover" />
               </motion.span>
             );
           })}

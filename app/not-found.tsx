@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import Link from "next/link";
+import BackLink from "./BackLink";
 import styles from "./styles.module.css";
 
 /**
@@ -16,16 +16,11 @@ export default function NotFound() {
         <h1 className="mt-2 text-title font-strong tracking-tight text-[#F5F5F5]">
           Nothing here.
         </h1>
-        <p className="mt-3 text-body leading-relaxed text-[#A3A3A3]">
+        <p className="mt-4 text-body leading-relaxed text-[#A3A3A3]">
           Probably never was.
         </p>
         <p className="mt-8">
-          <Link href="/" className={styles.backLink}>
-            <span aria-hidden="true" className={styles.backArrow}>
-              ←
-            </span>{" "}
-            Back
-          </Link>
+          <BackLink placement="inline" />
         </p>
       </div>
 

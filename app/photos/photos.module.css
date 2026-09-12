@@ -12,7 +12,7 @@
 
 .grid {
   /* Four squares that always fit the height of the window */
-  --tile: min(176px, max(72px, calc((100dvh - 170px) / 3)));
+  --tile: min(176px, max(72px, calc((100dvh - 168px) / 3)));
   position: relative;
   display: grid;
   grid-template-columns: repeat(4, var(--tile));
@@ -30,7 +30,7 @@
   /* Narrow enough that the grid outgrows the window and rides the top
      padding — leave the back button its own air. */
   .stage {
-    padding-top: 76px;
+    padding-top: 80px;
   }
 }
 

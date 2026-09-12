@@ -67,7 +67,7 @@ export default function FoldRow({
         onPointerDown={(event) => { pointerType.current = event.pointerType; }}
         onClick={onRowClick}
       >
-        <p className="text-meta leading-6 tracking-[0.01em] text-[#7D7D7D] max-sm:mb-0.5 max-sm:leading-4">
+        <p className="text-meta leading-6 tracking-[0.01em] text-[#7D7D7D] max-sm:mb-1 max-sm:leading-4">
           {years}
         </p>
         <div>
