@@ -86,11 +86,45 @@
   pointer-events: none;
 }
 
+/* The blur placeholder sits under the photo at full opacity and stays
+   there. The photo fades in on top of it, so the handover is a rise in
+   sharpness rather than a swap — and at no point is either one
+   semi-transparent over the page. */
+.blurLayer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(14px);
+  /* Scaled up so the blur's own soft edge never shows inside the frame */
+  transform: scale(1.1);
+}
+
 .img {
   object-fit: cover;
+  opacity: 0;
   user-select: none;
   -webkit-user-drag: none;
-  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    opacity 420ms ease,
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.img[data-ready] {
+  opacity: 1;
+}
+
+/* Full-size copies pulled down in the background. Present to the network,
+   invisible and untouchable to everyone else. */
+.warm {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -150,7 +184,7 @@
 }
 
 .card .img {
-  transition: none;
+  transition: opacity 420ms ease;
 }
 
 /* The caption: quiet, under the print, the print's width. */
@@ -213,6 +247,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .img,
+  .card .img,
   .tile {
     transition: none;
   }

@@ -3,6 +3,7 @@
 import Image, { type StaticImageData } from "next/image";
 import {
   Fragment,
+  useCallback,
   cloneElement,
   isValidElement,
   useEffect,
@@ -40,6 +41,11 @@ type Viewer = {
    apart, and the trip back. Damped hard so it settles without a bounce. */
 const spring = { type: "spring" as const, stiffness: 320, damping: 34, mass: 1 };
 const RADIUS = 10;
+/* The print and the warmer must agree, or warming fetches the wrong
+   candidate and the open still waits on a download. */
+const TILE_SIZES = "(max-width: 520px) 46vw, (max-width: 860px) 30vw, 176px";
+const PRINT_SIZES = "(max-width: 520px) 86vw, 760px";
+const PRINT_QUALITY = 90;
 
 /* The largest centred box at the photo's own ratio that fits comfortably. */
 function fit(ratio: number, hasCaption: boolean): Box {
@@ -106,6 +112,157 @@ const slot = (cell: HTMLElement): Box => {
   };
 };
 
+/* Photos already decoded once at a given size. Re-opening a print should
+   show it outright rather than replaying the blur — the bytes are in the
+   browser cache, only the component remounted. Lives in a ref so it
+   survives the viewer unmounting. */
+type Seen = { current: Set<string> };
+
+/* The real photo fades in on top of its own blur placeholder, which stays
+   fully opaque underneath — so the two never cross-dissolve through to
+   the background. Next's built-in placeholder is dropped in one frame,
+   which is the hard cut this replaces. */
+function SoftPhoto({
+  photo,
+  role,
+  sizes,
+  quality,
+  preload,
+  eager,
+  seen,
+}: {
+  photo: Photo;
+  role: "tile" | "print";
+  sizes: string;
+  quality?: number;
+  preload?: boolean;
+  eager?: boolean;
+  seen: Seen;
+}) {
+  const key = `${photo.src.src}@${role}`;
+  const [ready, setReady] = useState(() => seen.current.has(key));
+  const img = useRef<HTMLImageElement>(null);
+
+  /* A cached image can finish decoding before React attaches onLoad —
+     on a warm reload that is the common case — and the event is simply
+     never delivered. Without this the photo would stay at opacity 0. */
+  useEffect(() => {
+    if (!ready && img.current?.complete) {
+      seen.current.add(key);
+      setReady(true);
+    }
+  }, [ready, key, seen]);
+
+  return (
+    <>
+      {photo.src.blurDataURL && (
+        <span
+          aria-hidden="true"
+          className={styles.blurLayer}
+          style={{ backgroundImage: `url("${photo.src.blurDataURL}")` }}
+        />
+      )}
+      <Image
+        ref={img}
+        src={photo.src}
+        alt={role === "print" ? photo.alt : ""}
+        fill
+        sizes={sizes}
+        quality={quality}
+        preload={preload}
+        loading={eager ? "eager" : undefined}
+        draggable={false}
+        className={styles.img}
+        data-ready={ready || undefined}
+        onLoad={() => {
+          seen.current.add(key);
+          setReady(true);
+        }}
+      />
+    </>
+  );
+}
+
+/* A full-size print is ~600KB at retina, so pulling all sixteen down on
+   spec would cost several megabytes to save a wait the reader may never
+   have. Instead the queue is small and earned: the first few once the
+   browser goes idle, and any frame the pointer or keyboard lands on,
+   which is the best possible guess at the next click. Skipped outright
+   on metered or very slow connections. */
+const IDLE_WARM = 4;
+
+function useWarmQueue(total: number) {
+  const [queue, setQueue] = useState<number[]>([]);
+
+  const warm = useCallback((...indexes: number[]) => {
+    setQueue((current) => {
+      const next = indexes.filter((i) => i < total && !current.includes(i));
+      return next.length ? [...current, ...next] : current;
+    });
+  }, [total]);
+
+  useEffect(() => {
+    type Conn = { saveData?: boolean; effectiveType?: string };
+    const link = (navigator as Navigator & { connection?: Conn }).connection;
+    if (link?.saveData || (link?.effectiveType && /2g$/.test(link.effectiveType))) return;
+
+    let cancelled = false;
+    const start = () => {
+      if (!cancelled) warm(...Array.from({ length: IDLE_WARM }, (_, i) => i));
+    };
+    const canIdle = typeof window.requestIdleCallback === "function";
+    const handle = canIdle
+      ? window.requestIdleCallback(start, { timeout: 2500 })
+      : window.setTimeout(start, 1200);
+    return () => {
+      cancelled = true;
+      if (canIdle) window.cancelIdleCallback(handle);
+      else window.clearTimeout(handle);
+    };
+  }, [warm]);
+
+  return { queue, warm };
+}
+
+/* Present to the network, invisible to everyone else. `sizes` decides
+   which candidate is fetched, so a 1px box still warms the right one. */
+function Warm({
+  photos,
+  queue,
+  sizes,
+  quality,
+  seen,
+}: {
+  photos: Photo[];
+  queue: number[];
+  sizes: string;
+  quality: number;
+  seen: Seen;
+}) {
+  return (
+    <span aria-hidden="true" className={styles.warm}>
+      {queue.map((index) => {
+        const photo = photos[index];
+        return photo ? (
+          <Image
+            key={photo.src.src}
+            src={photo.src}
+            alt=""
+            fill
+            sizes={sizes}
+            quality={quality}
+            loading="eager"
+            /* Warming fetches the same variant the print asks for, so a
+               photo that arrived this way is already seen: opening it
+               should show the photo outright, not replay the blur. */
+            onLoad={() => seen.current.add(`${photo.src.src}@print`)}
+          />
+        ) : null;
+      })}
+    </span>
+  );
+}
+
 /**
  * A grid of square prints. Click one and it grows out of its slot to the
  * middle of the screen, opening up to the photo's real proportions, while
@@ -119,6 +276,8 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
   const tiles = useRef<(HTMLButtonElement | null)[]>([]);
   const card = useRef<HTMLDivElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
+  const seen = useRef<Set<string>>(new Set());
+  const { queue, warm } = useWarmQueue(photos.length);
   const open = viewer?.phase === "open";
   const viewing = viewer !== null;
   const transition = reduced ? { duration: 0 } : spring;
@@ -217,24 +376,31 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
                 data-dimmed={dimmed || undefined}
                 transition={transition}
                 onClick={(event) => show(index, event.currentTarget)}
+                onPointerEnter={() => warm(index)}
+                onFocus={() => warm(index)}
                 aria-label={`Open photo ${index + 1}: ${item.alt}`}
                 tabIndex={viewing ? -1 : 0}
               >
-                <Image
-                  src={item.src}
-                  alt=""
-                  fill
-                  sizes="(max-width: 520px) 46vw, (max-width: 860px) 30vw, 176px"
-                  placeholder="blur"
+                <SoftPhoto
+                  photo={item}
+                  role="tile"
+                  sizes={TILE_SIZES}
                   preload={index < 4}
-                  draggable={false}
-                  className={styles.img}
+                  seen={seen}
                 />
               </motion.button>
             </li>
           );
         })}
       </ul>
+
+      <Warm
+        photos={photos}
+        queue={queue}
+        sizes={PRINT_SIZES}
+        quality={PRINT_QUALITY}
+        seen={seen}
+      />
 
       {viewer && photo && (
         <dialog
@@ -269,16 +435,13 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
             onAnimationComplete={finish}
             tabIndex={-1}
           >
-            <Image
-              src={photo.src}
-              alt={photo.alt}
-              fill
-              sizes="(max-width: 520px) 86vw, 760px"
-              quality={90}
-              placeholder="blur"
-              loading="eager"
-              draggable={false}
-              className={styles.img}
+            <SoftPhoto
+              photo={photo}
+              role="print"
+              sizes={PRINT_SIZES}
+              quality={PRINT_QUALITY}
+              eager
+              seen={seen}
             />
             <motion.span
               className={styles.grain}
