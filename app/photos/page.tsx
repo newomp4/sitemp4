@@ -5,6 +5,26 @@ import root from "../styles.module.css";
 import styles from "./photos.module.css";
 import PhotoGrid, { type Photo } from "./PhotoGrid";
 
+/* Imported rather than referenced by URL: that is what gives Next the
+   real dimensions and a blur placeholder for each frame, and lets it
+   serve a resized, modern-format copy instead of the 1818px original. */
+import owenNycFull from "../../public/photos/owen-nyc-full.jpg";
+import film16b from "../../public/photos/gallery/film-16b.jpg";
+import sohoAsspizza from "../../public/photos/gallery/soho-asspizza.jpg";
+import film09 from "../../public/photos/gallery/film-09.jpg";
+import parisEiffel from "../../public/photos/gallery/paris-eiffel.jpg";
+import film29 from "../../public/photos/gallery/film-29.jpg";
+import chinatown from "../../public/photos/gallery/chinatown.jpg";
+import film19 from "../../public/photos/gallery/film-19.jpg";
+import parisTeamDinner from "../../public/photos/gallery/paris-team-dinner.jpg";
+import film10 from "../../public/photos/gallery/film-10.jpg";
+import film33 from "../../public/photos/gallery/film-33.jpg";
+import film16a from "../../public/photos/gallery/film-16a.jpg";
+import teamDanvsl from "../../public/photos/gallery/team-danvsl.jpg";
+import film13 from "../../public/photos/gallery/film-13.jpg";
+import film08 from "../../public/photos/gallery/film-08.jpg";
+import placeholder1 from "../../public/photos/gallery/placeholder-1.jpg";
+
 export const metadata: Metadata = {
   title: "Owen Opacki · Photos",
   description: "Film photos. New York and Paris, mostly.",
@@ -29,7 +49,7 @@ function Cap({ href, children }: { href: string; children: ReactNode }) {
 // Every photo, in grid order. Rows of four.
 const ALL_PHOTOS: Photo[] = [
   {
-    src: "/photos/owen-nyc-full.jpg",
+    src: owenNycFull,
     alt: "Owen, Galileo, and Ariel on a rooftop in front of the Williamsburg Bridge at dusk",
     caption: (
       <>
@@ -40,7 +60,7 @@ const ALL_PHOTOS: Photo[] = [
     ),
   },
   {
-    src: "/photos/gallery/film-16b.jpg",
+    src: film16b,
     alt: "A Content Rewards billboard truck passing the Arc de Triomphe",
     caption: (
       <>
@@ -50,7 +70,7 @@ const ALL_PHOTOS: Photo[] = [
     ),
   },
   {
-    src: "/photos/gallery/soho-asspizza.jpg",
+    src: sohoAsspizza,
     alt: "Owen and Austin Babbitt in front of a graffiti-covered wall in SoHo",
     caption: (
       <>
@@ -60,12 +80,12 @@ const ALL_PHOTOS: Photo[] = [
     ),
   },
   {
-    src: "/photos/gallery/film-09.jpg",
+    src: film09,
     alt: "The Paris skyline and the Eiffel Tower from a rooftop under grey skies",
     caption: <>Paris from the roof of Galeries Lafayette</>,
   },
   {
-    src: "/photos/gallery/paris-eiffel.jpg",
+    src: parisEiffel,
     alt: "Three friends in front of the Eiffel Tower",
     caption: (
       <>
@@ -75,22 +95,22 @@ const ALL_PHOTOS: Photo[] = [
     ),
   },
   {
-    src: "/photos/gallery/film-29.jpg",
+    src: film29,
     alt: "The team working on laptops around a long outdoor dinner table",
     caption: <>team bbq</>,
   },
   {
-    src: "/photos/gallery/chinatown.jpg",
+    src: chinatown,
     alt: "A graffiti-covered van parked on a Chinatown street",
     caption: <>Chinatown, NYC</>,
   },
   {
-    src: "/photos/gallery/film-19.jpg",
+    src: film19,
     alt: "Two people standing in front of an orange Content Rewards billboard",
     caption: <>make content. get paid</>,
   },
   {
-    src: "/photos/gallery/paris-team-dinner.jpg",
+    src: parisTeamDinner,
     alt: "The Content Rewards team at dinner in Paris",
     caption: (
       <>
@@ -100,17 +120,17 @@ const ALL_PHOTOS: Photo[] = [
     ),
   },
   {
-    src: "/photos/gallery/film-10.jpg",
+    src: film10,
     alt: "Haussmann rooftops and a busy Paris intersection seen from above",
     caption: <>Boulevard Haussmann</>,
   },
   {
-    src: "/photos/gallery/film-33.jpg",
+    src: film33,
     alt: "Two friends building a tower of Red Bull cans on a hotel room table",
     caption: <>diet.</>,
   },
   {
-    src: "/photos/gallery/film-16a.jpg",
+    src: film16a,
     alt: "Whop stickers on a construction sign on Broome Street",
     caption: (
       <>
@@ -119,7 +139,7 @@ const ALL_PHOTOS: Photo[] = [
     ),
   },
   {
-    src: "/photos/gallery/team-danvsl.jpg",
+    src: teamDanvsl,
     alt: "Dan and the Content Rewards team in a hotel room",
     caption: (
       <>
@@ -129,17 +149,17 @@ const ALL_PHOTOS: Photo[] = [
     ),
   },
   {
-    src: "/photos/gallery/film-13.jpg",
+    src: film13,
     alt: "A white room covered floor to ceiling in graffiti",
     caption: <>A room covered in graffiti</>,
   },
   {
-    src: "/photos/gallery/film-08.jpg",
+    src: film08,
     alt: "A dark Paris street at dusk with a few lit shopfronts",
     caption: <>Paris at dusk, last frame on the roll</>,
   },
   {
-    src: "/photos/gallery/placeholder-1.jpg",
+    src: placeholder1,
     alt: "Placeholder",
     caption: <>Placeholder</>,
   },

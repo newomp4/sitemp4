@@ -55,7 +55,25 @@
   border: 0;
   background: #191919;
   cursor: pointer;
+  transition:
+    opacity 350ms ease,
+    filter 350ms ease;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Neighbours step back while a print is open. */
+.tile[data-dimmed] {
+  opacity: 0.28;
+  filter: blur(2px);
+}
+
+/* The open print stands in for its own tile, so the tile is simply not
+   there. This is `visibility`, not an animated opacity, because it has
+   to return in the very same frame the print unmounts — anything that
+   settles a frame later leaves the slot empty, which is the black flash
+   you used to get on collapse. */
+.tile[data-lifted] {
+  visibility: hidden;
 }
 
 .tile::after,
@@ -194,7 +212,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .img {
+  .img,
+  .tile {
     transition: none;
   }
   .tile:hover .img {

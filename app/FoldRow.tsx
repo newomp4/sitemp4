@@ -14,14 +14,14 @@ export default function FoldRow({
   id,
   hasLink,
   years,
-  index,
+  style,
   heading,
   note,
 }: {
   id?: string;
   hasLink: boolean;
   years: string;
-  index: number;
+  style?: CSSProperties;
   heading: ReactNode;
   note: ReactNode;
 }) {
@@ -49,8 +49,8 @@ export default function FoldRow({
   return (
     <li
       id={id}
-      className="scroll-reveal"
-      style={{ "--reveal-delay": `${Math.min(index, 4) * 45}ms` } as CSSProperties}
+      className="rise"
+      style={style}
       data-open={String(open)}
       onKeyDown={(event) => {
         if (!hasLink && event.target === event.currentTarget && (event.key === "Enter" || event.key === " ")) {

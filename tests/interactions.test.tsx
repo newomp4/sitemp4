@@ -47,7 +47,7 @@ test("touch unfolds a linked chapter before navigation, while modifier clicks re
   // This case needs folded notes, rather than the always-visible reduced-motion notes.
   const originalMatchMedia = window.matchMedia;
   window.matchMedia = (query) => ({ ...originalMatchMedia(query), matches: query === "(hover: hover)" });
-  render(<ul><FoldRow hasLink years="2026" index={0} heading={<a href="#job">Job</a>} note={<p>Details</p>} /></ul>);
+  render(<ul><FoldRow hasLink years="2026" heading={<a href="#job">Job</a>} note={<p>Details</p>} /></ul>);
   const link = screen.getByRole("link", { name: "Job" });
   fireEvent.pointerDown(link, { pointerType: "touch" });
   expect(fireEvent.click(link, { detail: 1, ctrlKey: true })).toBe(true);
@@ -57,8 +57,10 @@ test("touch unfolds a linked chapter before navigation, while modifier clicks re
   expect(fireEvent.click(link, { detail: 1 })).toBe(true);
 });
 
+const testPhoto = { src: "/test.jpg", width: 1818, height: 1228, blurDataURL: "data:image/jpeg;base64,/9j/" };
+
 test("reduced-motion gallery closes completely and restores focus and scrolling", async () => {
-  render(<PhotoGrid photos={[{ src: "/test.jpg", alt: "Test photo", caption: "A caption" }]} />);
+  render(<PhotoGrid photos={[{ src: testPhoto, alt: "Test photo", caption: "A caption" }]} />);
   const tile = screen.getByRole("button", { name: "Open photo 1: Test photo" });
   fireEvent.click(tile);
   await waitFor(() => expect(document.querySelector("dialog")?.open).toBe(true));
@@ -71,7 +73,7 @@ test("reduced-motion gallery closes completely and restores focus and scrolling"
 
 test("gallery keyboard focus wraps, and unmount releases its scroll lock", async () => {
   const { unmount } = render(<PhotoGrid photos={[{
-    src: "/test.jpg", alt: "Test photo", caption: <a href="#caption">Caption link</a>,
+    src: testPhoto, alt: "Test photo", caption: <a href="#caption">Caption link</a>,
   }]} />);
   fireEvent.click(screen.getByRole("button", { name: "Open photo 1: Test photo" }));
   await waitFor(() => expect(document.querySelector("dialog")?.open).toBe(true));

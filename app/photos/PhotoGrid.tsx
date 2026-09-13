@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import {
   Fragment,
   cloneElement,
@@ -19,7 +19,7 @@ import useReducedMotionPreference from "../useReducedMotionPreference";
 import styles from "./photos.module.css";
 
 export type Photo = {
-  src: string;
+  src: StaticImageData; // imported, so its dimensions are known up front
   alt: string;
   caption?: ReactNode; // a quiet line under the open print
 };
@@ -124,11 +124,16 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
   const transition = reduced ? { duration: 0 } : spring;
 
   function show(index: number, button: HTMLButtonElement) {
-    const image = button.querySelector("img");
-    const ratio =
-      image && image.naturalWidth > 0 ? image.naturalWidth / image.naturalHeight : 1;
     if (viewer) return;
-    setViewer({ index, ratio, from: rect(button), to: fit(ratio, Boolean(photos[index].caption)), phase: "open" });
+    const photo = photos[index];
+    const ratio = photo.src.width / photo.src.height;
+    setViewer({
+      index,
+      ratio,
+      from: rect(button),
+      to: fit(ratio, Boolean(photo.caption)),
+      phase: "open",
+    });
   }
 
   function close() {
@@ -179,7 +184,6 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
 
   function finish() {
     if (viewer?.phase !== "closing" || !viewer.back) return;
-    dialog.current?.close();
     tiles.current[viewer.index]?.focus({ preventScroll: true });
     setViewer(null);
   }
@@ -194,7 +198,7 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
           const dimmed = open && !lifted;
           return (
             <li
-              key={item.src}
+              key={item.src.src}
               ref={(element) => {
                 cells.current[index] = element;
               }}
@@ -209,15 +213,9 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
                 layout={!reduced}
                 className={styles.tile}
                 style={{ borderRadius: RADIUS }}
-                animate={{
-                  opacity: lifted ? 0 : dimmed ? 0.28 : 1,
-                  filter: dimmed ? "blur(2px)" : "blur(0px)",
-                }}
-                transition={{
-                  ...transition,
-                  opacity: { duration: reduced || lifted || !viewer ? 0 : 0.35 },
-                  filter: { duration: reduced ? 0 : 0.35 },
-                }}
+                data-lifted={lifted || undefined}
+                data-dimmed={dimmed || undefined}
+                transition={transition}
                 onClick={(event) => show(index, event.currentTarget)}
                 aria-label={`Open photo ${index + 1}: ${item.alt}`}
                 tabIndex={viewing ? -1 : 0}
@@ -227,7 +225,7 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
                   alt=""
                   fill
                   sizes="(max-width: 520px) 46vw, (max-width: 860px) 30vw, 176px"
-                  unoptimized
+                  placeholder="blur"
                   preload={index < 4}
                   draggable={false}
                   className={styles.img}
@@ -276,18 +274,11 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
               alt={photo.alt}
               fill
               sizes="(max-width: 520px) 86vw, 760px"
-              unoptimized
+              quality={90}
+              placeholder="blur"
               loading="eager"
               draggable={false}
               className={styles.img}
-              onLoad={(event) => {
-                const image = event.currentTarget;
-                if (!image.naturalWidth || !image.naturalHeight) return;
-                const ratio = image.naturalWidth / image.naturalHeight;
-                setViewer((current) => current && current.ratio !== ratio
-                  ? { ...current, ratio, to: fit(ratio, Boolean(photo.caption)) }
-                  : current);
-              }}
             />
             <motion.span
               className={styles.grain}
@@ -299,7 +290,7 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
           </motion.div>
           {photo.caption && (
             <motion.p
-              key={photo.src}
+              key={photo.src.src}
               className={styles.caption}
               style={{ top: viewer.to.top + viewer.to.height + 16, width: viewer.to.width }}
               animate={{ opacity: viewer.phase === "open" ? 1 : 0 }}

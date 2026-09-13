@@ -22,6 +22,7 @@ import {
   useRef,
   useState,
   useSyncExternalStore,
+  type CSSProperties,
   type ReactNode,
 } from "react";
 import Image from "next/image";
@@ -166,7 +167,7 @@ function ListRow({
       id={item.anchor}
       hasLink={Boolean(item.href)}
       years={item.years}
-      index={index}
+      style={{ "--rise-delay": `${Math.min(index, 4) * 0.045}s` } as CSSProperties}
       heading={heading}
       note={note}
     />
