@@ -62,8 +62,15 @@ export default function HiddenFooter() {
       target = Math.pow(raw, 1.6) * REVEAL_MAX;
     };
     const apply = () => {
-      root.style.setProperty("--reveal", s1.x.toFixed(4));
+      const r = s1.x.toFixed(4);
+      root.style.setProperty("--reveal", r);
       root.style.setProperty("--revealSoft", s2.x.toFixed(4));
+      /* The glow is a fixed layer, so a phone that rubber-bands past the
+         end, or whose toolbar collapses, briefly shows the document behind
+         it as a grey sliver under the gradient. The document itself never
+         moves, so it carries the aurora's last colour too and there is
+         nothing left to expose. */
+      document.documentElement.style.setProperty("--reveal", r);
       root.dataset.open = Math.max(target, s1.x) > 0.02 ? "true" : "false";
     };
     const stepSpring = (
@@ -108,6 +115,7 @@ export default function HiddenFooter() {
       window.removeEventListener("scroll", kick);
       window.removeEventListener("resize", kick);
       if (raf) cancelAnimationFrame(raf);
+      document.documentElement.style.removeProperty("--reveal");
     };
   }, [reduced]);
 

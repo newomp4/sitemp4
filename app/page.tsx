@@ -223,7 +223,7 @@ export default function Home() {
             <h2 id="path-heading" className="sr-only">
               So far
             </h2>
-            <ul className={`${styles.list} space-y-4`}>
+            <ul className={`${styles.list} space-y-4 max-sm:space-y-3`}>
               {path.map((item, index) => (
                 <PathRow key={item.title} item={item} index={index} />
               ))}
