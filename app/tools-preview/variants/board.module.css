@@ -1,0 +1,415 @@
+/* ── CONCEPT 5 · "Board" ─────────────────────────────────────────
+   A wall of names in motion. Three rows, three speeds, two directions;
+   the pointer stops all of it at once. ── */
+
+.stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  width: 100%;
+  padding-block: 96px 160px;
+  overflow: hidden;
+  background: #111111;
+  color-scheme: dark;
+}
+
+/* Title at the top, wall through the middle, the count at the foot —
+   the wall takes whatever room is left rather than floating in it. */
+.wallWrap {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.wall {
+  margin-block: auto;
+}
+
+.stage :is(a, button, [tabindex]):focus-visible {
+  outline: 2px solid #f5f5f5;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.wallWrap {
+  width: 100%;
+  transition:
+    opacity 400ms ease,
+    filter 400ms ease;
+}
+
+/* The wall steps back while a sheet is up. */
+.stage[data-open] .wallWrap {
+  opacity: 0.3;
+  filter: blur(6px);
+}
+
+.head {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 42rem;
+  padding-inline: 24px;
+  margin-bottom: 48px;
+}
+
+.title {
+  margin: 0 0 16px;
+  font-size: var(--text-title);
+  font-weight: var(--font-weight-strong);
+  letter-spacing: -0.02em;
+  color: #f5f5f5;
+}
+
+.intro {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: 1.6;
+  color: #a3a3a3;
+}
+
+.introLink {
+  color: #d4d4d4;
+  transition: color 150ms ease;
+}
+
+.introLink:hover,
+.introLink:focus-visible {
+  color: #f5f5f5;
+}
+
+/* ── The wall ── */
+
+.wall {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  /* The names dissolve into the page at both edges instead of being
+     chopped off by the viewport. */
+  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+}
+
+/* The entrance rides on top of the marquee: the row is still sliding
+   left at a constant rate while this decaying offset unwinds, and the
+   sum of the two reads as easing up to speed. */
+@keyframes rowIn {
+  from { opacity: 0; transform: translateX(64px); filter: blur(6px); }
+  to { opacity: 1; transform: translateX(0); filter: blur(0); }
+}
+
+.rowIn {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rowIn {
+    animation: rowIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) var(--in) backwards;
+  }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .track {
+    animation: marquee var(--speed) linear infinite;
+    animation-direction: var(--direction);
+  }
+}
+
+/* Anywhere on the wall holds all three rows. */
+.wall:hover .track,
+.wall:focus-within .track {
+  animation-play-state: paused;
+}
+
+.name {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  flex: none;
+  padding: 8px 24px 8px 0;
+  font-size: var(--text-title);
+  font-weight: var(--font-weight-strong);
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  white-space: nowrap;
+  color: #3d3d3d;
+  cursor: pointer;
+  transition:
+    color 220ms ease,
+    filter 220ms ease,
+    transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #262626;
+  transition: background-color 220ms ease;
+}
+
+/* The one you are reading holds; the rest of the wall recedes. */
+.wall:hover .name,
+.wall:focus-within .name {
+  color: #262626;
+  filter: blur(1px);
+}
+
+.wall .name:hover,
+.wall .name:focus-visible {
+  color: #f5f5f5;
+  filter: blur(0);
+  transform: translateY(-2px);
+}
+
+.wall .name:hover .dot,
+.wall .name:focus-visible .dot {
+  background: #f5f5f5;
+}
+
+.foot {
+  margin: 48px auto 0;
+  width: 100%;
+  max-width: 42rem;
+  padding-inline: 24px;
+  font-size: var(--text-meta);
+  color: #7d7d7d;
+}
+
+.footDim {
+  color: #4a4a4a;
+}
+
+/* ── The sheet ── */
+
+.sheetLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.sheetLayer::backdrop {
+  background: #0b0b0b8f;
+}
+
+.sheet {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  gap: 32px;
+  margin-inline: auto;
+  width: min(100%, 64rem);
+  padding: 32px;
+  border-radius: 16px 16px 0 0;
+  background: #161616;
+  box-shadow: 0 -24px 64px #000000a6;
+}
+
+.sheet::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px #ffffff14;
+  pointer-events: none;
+}
+
+.sheetArt {
+  position: relative;
+  flex: none;
+  width: 240px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #171717;
+}
+
+.sheetBody {
+  flex: 1;
+  min-width: 0;
+  padding-right: 48px;
+}
+
+@keyframes sheetIn {
+  from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sheetBody > * {
+    animation: sheetIn 600ms cubic-bezier(0.16, 1, 0.3, 1) var(--in) backwards;
+  }
+}
+
+.sheetMeta {
+  margin: 0 0 8px;
+  font-size: var(--text-meta);
+  color: #7d7d7d;
+}
+
+.sheetName {
+  margin: 0;
+  font-size: var(--text-title);
+  font-weight: var(--font-weight-strong);
+  letter-spacing: -0.02em;
+  color: #f5f5f5;
+}
+
+.sheetTagline {
+  margin: 8px 0 0;
+  font-size: var(--text-body);
+  line-height: 1.5;
+  color: #d4d4d4;
+}
+
+.sheetNote {
+  margin: 16px 0 0;
+  max-width: 34rem;
+  font-size: var(--text-meta);
+  line-height: 1.6;
+  color: #8a8a8a;
+}
+
+.sheetLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 16px;
+  border: 1px solid #2a2a2a;
+  border-radius: 9999px;
+  font-size: var(--text-meta);
+  color: #a3a3a3;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.action:hover,
+.action:focus-visible {
+  color: #f5f5f5;
+  border-color: #3f3f3f;
+  transform: translateY(-1px);
+}
+
+.actionPrimary {
+  border-color: transparent;
+  background: #f5f5f5;
+  color: #111111;
+}
+
+.actionPrimary:hover,
+.actionPrimary:focus-visible {
+  border-color: transparent;
+  color: #111111;
+}
+
+.close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: #7d7d7d;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.close:hover,
+.close:focus-visible {
+  color: #f5f5f5;
+}
+
+/* ── Narrow ── */
+
+@media (max-width: 720px) {
+  .sheet {
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+    max-height: 88dvh;
+    overflow-y: auto;
+  }
+
+  .sheetArt {
+    width: 100%;
+    height: 160px;
+  }
+
+  .sheetBody {
+    padding-right: 0;
+  }
+}
+
+/* ── No hover to stop it with, so it simply holds still ── */
+
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .wall {
+    mask-image: none;
+    -webkit-mask-image: none;
+    gap: 8px;
+  }
+
+  .track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Standing still, the repeats would just be repetition. */
+  .name[data-scenery] {
+    display: none;
+  }
+
+  .name {
+    color: #8a8a8a;
+    padding-inline: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wallWrap,
+  .name,
+  .dot,
+  .action {
+    transition: none;
+  }
+
+  .wall:hover .name,
+  .wall:focus-within .name {
+    filter: none;
+  }
+}
