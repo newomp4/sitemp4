@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import BackLink from "../../BackLink";
+import BackLink from "../BackLink";
 import { SHORT_LANG, tools, toolsIntro, updatedLabel } from "@/lib/tools";
 import Icon from "./Icon";
-import styles from "./register.module.css";
+import styles from "./tools.module.css";
 
 /**
- * "Register" — the tools as a directory listing.
+ * The tools, as a directory listing.
  *
  * The rows print themselves in a line at a time. Clicking one breathes
  * it open in place — its cover, the longer story, and the ways in — on
@@ -18,7 +18,7 @@ import styles from "./register.module.css";
  * that opened under the pointer would push the rest of the listing down,
  * out from under the very pointer that was choosing it.
  */
-export default function Register() {
+export default function ToolsList() {
   /* -1 until a pointer or an arrow key says otherwise: nothing on the
      page should look chosen before anyone has chosen it. */
   const [cursor, setCursor] = useState(-1);

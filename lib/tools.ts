@@ -57,9 +57,9 @@ export const tools: Tool[] = [
   {
     name: "ID4",
     tagline: "A quiet YouTube downloader",
-    note: "MP4 or MP3, monochrome, self-contained: Flask, yt-dlp and a bundled ffmpeg.",
+    note: "Paste a link, pick MP4 or MP3, hit download. Everything it needs lives in its own folder.",
     repo: "https://github.com/newomp4/ID4",
-    lang: "CSS",
+    lang: "Python",
     updated: "2026-05",
     tags: ["local"],
   },
