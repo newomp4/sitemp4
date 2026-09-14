@@ -39,7 +39,7 @@ export default function GalleryLink() {
 
   return (
     <Link
-      href="/photos"
+      href="/gallery"
       className={styles.footerLink}
       data-open={open}
       onPointerEnter={(event) => { if (event.pointerType === "mouse") setOpen(true); }}

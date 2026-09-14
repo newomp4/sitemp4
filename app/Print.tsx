@@ -30,7 +30,7 @@ export default function Print() {
 
   return (
     <Link
-      href="/photos"
+      href="/gallery"
       aria-label="Open the photo book"
       className={styles.printStack}
       onPointerEnter={(event) => { if (event.pointerType === "mouse") setHovered(true); }}

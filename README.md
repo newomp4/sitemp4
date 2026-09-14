@@ -1,7 +1,7 @@
 # owenopacki — personal site
 
 The personal site of [Owen Opacki](https://x.com/newomp4) (@newomp4): who he is, the path so far,
-and where to find him. Dark, ultra-minimal, with a film-photo gallery at [`/photos`](./app/photos)
+and where to find him. Dark, ultra-minimal, with a film-photo gallery at [`/gallery`](./app/gallery)
 and a Tools placeholder at [`/tools`](./app/tools).
 
 Built with Next.js (App Router) + Tailwind CSS v4 + TypeScript. Fully static.

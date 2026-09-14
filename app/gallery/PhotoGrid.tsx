@@ -17,7 +17,7 @@ import {
 import { motion } from "motion/react";
 import { fitPhoto, type PhotoBox } from "@/lib/photo-layout";
 import useReducedMotionPreference from "../useReducedMotionPreference";
-import styles from "./photos.module.css";
+import styles from "./gallery.module.css";
 
 export type Photo = {
   src: StaticImageData; // imported, so its dimensions are known up front

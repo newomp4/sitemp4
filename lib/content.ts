@@ -93,8 +93,8 @@ export type LinkItem = {
 // Misc links — writing, clips, favorite stuff, whatever you want to point at
 export const links: LinkItem[] = [
   {
-    title: "Photos",
-    href: "/photos",
+    title: "Gallery",
+    href: "/gallery",
   },
   {
     title: "Certifications",

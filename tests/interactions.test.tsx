@@ -3,7 +3,7 @@ import { expect, test, vi } from "vitest";
 import NamePortrait from "../app/NamePortrait";
 import AgeTicker from "../app/AgeTicker";
 import FoldRow from "../app/FoldRow";
-import PhotoGrid from "../app/photos/PhotoGrid";
+import PhotoGrid from "../app/gallery/PhotoGrid";
 import CopyHandle from "../app/copy-handle";
 
 function tap(element: HTMLElement) {

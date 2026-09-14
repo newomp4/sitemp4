@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import BackLink from "../BackLink";
 import root from "../styles.module.css";
-import styles from "./photos.module.css";
+import styles from "./gallery.module.css";
 import PhotoGrid, { type Photo } from "./PhotoGrid";
 
 /* Imported rather than referenced by URL: that is what gives Next the
@@ -26,13 +26,13 @@ import film08 from "../../public/photos/gallery/film-08.jpg";
 import placeholder1 from "../../public/photos/gallery/placeholder-1.jpg";
 
 export const metadata: Metadata = {
-  title: "Owen Opacki · Photos",
+  title: "Owen Opacki · Gallery",
   description: "Film photos. New York and Paris, mostly.",
-  alternates: { canonical: "/photos" },
+  alternates: { canonical: "/gallery" },
   openGraph: {
-    title: "Owen Opacki · Photos",
+    title: "Owen Opacki · Gallery",
     description: "Film photos. New York and Paris, mostly.",
-    url: "/photos",
+    url: "/gallery",
     siteName: "Owen Opacki",
     type: "website",
   },
@@ -173,7 +173,7 @@ export default function PhotosPage() {
   return (
     <main className={`${root.root} ${styles.stage} w-full bg-[#111111]`}>
       <BackLink />
-      <h1 className="sr-only">Photos</h1>
+      <h1 className="sr-only">Gallery</h1>
       <PhotoGrid photos={PHOTOS} />
     </main>
   );
