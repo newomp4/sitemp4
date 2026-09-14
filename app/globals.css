@@ -30,16 +30,24 @@
   --font-weight-strong: 600;
 }
 
-/* The page ground follows the hidden footer. At rest it is the site's
-   black; as the glow opens it becomes the aurora's own last row, so a
-   mobile browser that exposes a strip under the fixed glow shows more
-   gradient rather than a grey sliver. */
+/* The page ground carries the end of the hidden footer. Safari on iOS keeps
+   a fixed layer off the true bottom of the window, so a strip of the
+   document shows under the glow. A flat colour there butts a dull navy
+   against a bright gradient and you see the join, so this is the aurora's
+   own bottom row, sampled off it: the same left-to-right sweep, fading up
+   with the reveal. Positioned at the document's bottom rather than
+   attachment: fixed, which iOS renders unreliably. */
 html {
-  background-color: color-mix(
-    in srgb,
-    #2d6bc9 calc(var(--reveal, 0) * 100%),
-    var(--background)
+  background-color: var(--background);
+  background-image: linear-gradient(
+    90deg,
+    rgb(43 94 194 / calc(var(--reveal, 0))) 0%,
+    rgb(42 143 223 / calc(var(--reveal, 0))) 50%,
+    rgb(56 112 188 / calc(var(--reveal, 0))) 100%
   );
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 100% 60vh;
 }
 
 body {
