@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * ARCHIVED CONCEPTS — ten ways to sell ad space on the site.
+ * ARCHIVED CONCEPTS, ten ways to sell ad space on the site.
  * Not routed. To preview: copy to app/ads/page.tsx and fix the
  * styles import back to "../styles.module.css".
  * Ten ways to sell ad space on a personal site without breaking its

@@ -11,7 +11,7 @@ import { profile } from "@/lib/content";
  * unreachable, it falls back to the snapshot committed in /public.
  */
 /* fallback=false makes unavatar 404 on a failed lookup instead of serving
-   its own gray placeholder with a 200 — so onError can actually fire. */
+   its own gray placeholder with a 200, so onError can actually fire. */
 const LIVE = `https://unavatar.io/x/${profile.handle}?fallback=false`;
 const SNAPSHOT = "/photos/avatar.jpg";
 

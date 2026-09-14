@@ -120,7 +120,7 @@
 }
 
 /* The icon rides in the flow, so these two start flush with the column's
-   left edge — in line with the logos in the path above, not hanging out
+   left edge, in line with the logos in the path above, not hanging out
    in the gutter beside them. */
 .footerLink > svg {
   flex: none;
@@ -267,7 +267,7 @@
 .stackFront { z-index: 3; }
 
 /* ── The note rests folded; hovering/focusing the row breathes it open.
-   Unhurried on purpose — a slow exhale, not a snap. ── */
+   Unhurried on purpose, a slow exhale, not a snap. ── */
 .noteWrap {
   display: grid;
   grid-template-rows: 0fr;
@@ -460,7 +460,7 @@
   color: #f5f5f5;
 }
 
-/* ── Sub-pages. The way home is plain text, like everything else here —
+/* ── Sub-pages. The way home is plain text, like everything else here , 
    an arrow and a word, no chrome around it. ── */
 .backLink {
   display: inline-flex;
@@ -521,7 +521,7 @@
   transition: color 500ms ease;
 }
 
-/* Hover choreography only where hover exists — on touch a tap would
+/* Hover choreography only where hover exists, on touch a tap would
    latch these until the next tap elsewhere */
 @media (hover: hover) {
   .photoList:hover > li:not(:hover) .photoFig {
@@ -553,8 +553,8 @@
 
 /* ── The hidden footer: a fixed aurora in the avatar's electric blues
    rises from the bottom edge (translated, never squashed) as you scroll
-   into the spacer. Its top dissolves — gradients and grain both fade to
-   nothing — so there is no seam against the page. ── */
+   into the spacer. Its top dissolves, gradients and grain both fade to
+   nothing, so there is no seam against the page. ── */
 .reveal {
   --reveal: 0;
 }
@@ -625,7 +625,7 @@
   background-blend-mode: overlay, normal, normal;
 }
 
-/* ── Glow stack: the reveal is split by depth across two springs — mid
+/* ── Glow stack: the reveal is split by depth across two springs, mid
    and front ride the tense one, the back wash rides the soft one and
    visibly lags, so opening has parallax and a layered settle ── */
 .gsLiftSoft {
@@ -633,7 +633,7 @@
   inset: 0;
   transform: translateY(calc((1 - var(--revealSoft, var(--reveal, 0))) * 103%));
   will-change: transform;
-  /* The plane's own top dissolves — travels with the glow, so no residual
+  /* The plane's own top dissolves, travels with the glow, so no residual
      gradient alpha can ever draw a hard line at its edge */
   mask-image: linear-gradient(
     to top,
@@ -728,7 +728,7 @@
   }
 }
 
-/* Back — the wide indigo/navy wash. Extra-wide so the falloff at the
+/* Back, the wide indigo/navy wash. Extra-wide so the falloff at the
    screen edges is gentle instead of compressed into visible bands */
 .gsBack {
   background: radial-gradient(
@@ -745,7 +745,7 @@
   animation: gsDriftBack 25s ease-in-out -9s infinite alternate;
 }
 
-/* Mid — twin electric-blue cores */
+/* Mid, twin electric-blue cores */
 .gsMid {
   background:
     radial-gradient(
@@ -771,7 +771,7 @@
   animation: gsDriftMid 17s ease-in-out -6s infinite alternate;
 }
 
-/* Front — smaller, brighter cyan highlights, softly melted */
+/* Front, smaller, brighter cyan highlights, softly melted */
 .gsFront {
   background:
     radial-gradient(
@@ -883,7 +883,7 @@
   text-align: center;
 }
 
-/* While the footer is shut, its animations idle — no cost on a page
+/* While the footer is shut, its animations idle, no cost on a page
    that is just sitting there */
 .reveal[data-open="false"] .gsBack,
 .reveal[data-open="false"] .gsMid,
@@ -952,7 +952,7 @@
     transition: none;
   }
 
-  /* The hidden footer is dropped entirely — no scroll-driven motion */
+  /* The hidden footer is dropped entirely, no scroll-driven motion */
   .reveal {
     display: none;
   }

@@ -3,7 +3,7 @@ import BackLink from "./BackLink";
 import styles from "./styles.module.css";
 
 /**
- * 404 — nothing here. The glow rests half-open at the bottom, alive but
+ * 404, nothing here. The glow rests half-open at the bottom, alive but
  * unbothered.
  */
 export default function NotFound() {

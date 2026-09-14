@@ -8,7 +8,7 @@ import styles from "./styles.module.css";
  * (hover breathes the note open). On touch there is no hover, so the row
  * becomes tappable: first tap expands the note (and reveals the ↗ for
  * linked rows), a second tap on the title follows the link. Taps inside
- * the note never toggle — its links stay links.
+ * the note never toggle, its links stay links.
  */
 export default function FoldRow({
   id,

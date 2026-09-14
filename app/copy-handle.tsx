@@ -47,7 +47,7 @@ export default function CopyHandle({ label, handle }: Props) {
           <span aria-hidden={status === "copied"}>{label}</span>
           <span aria-hidden={status !== "copied"}>Copied</span>
         </span>{" "}
-        {/* Both glyphs stay mounted in one grid cell — no layout shift. */}
+        {/* Both glyphs stay mounted in one grid cell, no layout shift. */}
         <span
           aria-hidden="true"
           className={styles.copyIcon}

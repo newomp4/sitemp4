@@ -11,7 +11,7 @@ import styles from "./styles.module.css";
 const spring = { type: "spring" as const, stiffness: 190, damping: 26, mass: 0.9 };
 
 /* Where each print lands, dealt left to right. A narrow spread and small
-   angles — it should read as a peek at the gallery, not a card trick. */
+   angles, it should read as a peek at the gallery, not a card trick. */
 const previews = [
   { src: "/photos/gallery/paris-eiffel.jpg", x: 16, y: 8, rotate: -7 },
   { src: "/photos/gallery/chinatown.jpg", x: 48, y: 0, rotate: -2.5 },

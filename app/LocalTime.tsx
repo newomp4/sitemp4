@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 /**
- * "Boston · 2:41 AM" — always Boston time, whoever's
+ * "Boston · 2:41 AM", always Boston time, whoever's
  * looking. Renders nothing until mounted so the static build never
  * carries a stale clock.
  */

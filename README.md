@@ -1,4 +1,4 @@
-# owenopacki — personal site
+# owenopacki, personal site
 
 The personal site of [Owen Opacki](https://x.com/newomp4) (@newomp4): who he is, the path so far,
 and where to find him. Dark, ultra-minimal, with a film-photo gallery at [`/gallery`](./app/gallery)
@@ -11,7 +11,7 @@ Built with Next.js (App Router) + Tailwind CSS v4 + TypeScript. Fully static.
 **All copy, the career path, links, and socials live in [`lib/content.ts`](lib/content.ts).**
 Notes and intro lines support `[markdown links](https://...)`, including in-page anchors like
 `[college](#bryant)`. Logos for path entries live in `public/logos/`; photos in `public/photos/`
-(committed byte-for-byte from the original scans — never recompress them).
+(committed byte-for-byte from the original scans, never recompress them).
 
 ## Develop
 
@@ -40,12 +40,12 @@ Also check animation, resizing an open photo, and mobile layouts in a browser.
 
 Domains: **owenopacki.com** and **newomp4.com**, both pointing at this site.
 
-1. Push to GitHub (done — this repo).
+1. Push to GitHub (done, this repo).
 2. Go to [vercel.com/new](https://vercel.com/new), import `newomp4/sitemp4`, hit Deploy. Defaults are correct.
 3. In the Vercel project → Settings → Domains, add all four:
    `owenopacki.com`, `www.owenopacki.com`, `newomp4.com`, `www.newomp4.com`.
    Pick one as the primary (e.g. `owenopacki.com`); Vercel will offer to redirect
-   the others to it — accept. One canonical URL is better for sharing and search.
+   the others to it, accept. One canonical URL is better for sharing and search.
 4. In Namecheap, for **each** domain → Advanced DNS, add:
    - `A` record, host `@`, value `76.76.21.21`
    - `CNAME` record, host `www`, value `cname.vercel-dns.com`

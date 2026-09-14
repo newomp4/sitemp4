@@ -6,7 +6,7 @@ const CAPTION_SPACE = 104;
 
 /**
  * The open print's box: as large as fits comfortably, at the photo's own
- * ratio, centred in the window — which is where the grid behind it is
+ * ratio, centred in the window, which is where the grid behind it is
  * centred too, so the two stay concentric. Only a print tall enough that
  * a centred box would push its caption off the bottom edge rides up, and
  * then only by as much as the caption needs.

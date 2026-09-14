@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * TEST — "So far" with hand-rolled shared-element flight.
+ * TEST, "So far" with hand-rolled shared-element flight.
  * On toggle: source rects are measured at click time, target rects the
  * moment the destination layer mounts, and visual clones of each chip +
  * title fly point-to-point on a single tween while the layers crossfade
@@ -214,7 +214,7 @@ export default function SoFarMorph() {
     setEpoch((e) => e + 1);
   };
 
-  /* Orientation changes while resting in line mode retarget the height —
+  /* Orientation changes while resting in line mode retarget the height , 
      without this the container keeps the other layout's height and
      either clips the rail or floats it over a dead gap */
   useEffect(() => {
@@ -265,7 +265,7 @@ export default function SoFarMorph() {
           : LINE_H
         : (listLayerRef.current?.scrollHeight ?? LINE_H);
 
-    /* Reduced motion: no flights, no glide — states just are */
+    /* Reduced motion: no flights, no glide, states just are */
     if (reduce) {
       setHeight(targetHeight());
       if (!toLine) {
@@ -485,7 +485,7 @@ export default function SoFarMorph() {
                     }`}
                     style={{ top: V_Y[i] + 9 }}
                   />
-                  {/* the label block itself never fades — its chip/title
+                  {/* the label block itself never fades, its chip/title
                       appear exactly when the ghosts land */}
                   <div className="absolute left-6" style={{ top: V_Y[i] }}>
                     <div className="flex items-center gap-2.5 whitespace-nowrap">
@@ -552,7 +552,7 @@ export default function SoFarMorph() {
                     className="absolute w-px origin-top bg-[#242424]"
                     style={{ left: `${left}%`, top: 10, height: LABEL_TOP[m.level] - 14 }}
                   />
-                  {/* label — no transforms, so its rects are exact at
+                  {/* label, no transforms, so its rects are exact at
                       mount; opaque and above the leaders so lines never
                       cross text; never fades, so its chip/title appear
                       exactly when the ghosts land */}

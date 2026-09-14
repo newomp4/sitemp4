@@ -1,6 +1,6 @@
 /**
  * ─────────────────────────────────────────────────────────────
- *  SITE CONTENT — single source of truth.
+ *  SITE CONTENT, single source of truth.
  *  Edit copy, the path, links, and socials here; the site updates.
  * ─────────────────────────────────────────────────────────────
  */
@@ -9,7 +9,7 @@ export const profile = {
   name: "Owen Opacki",
   handle: "newomp4",
   birthday: "2006-12-01T00:00:00-05:00",
-  // Where the @ points — it's how people know him, so the site links it big.
+  // Where the @ points, it's how people know him, so the site links it big.
   handleHref: "https://x.com/newomp4",
   email: "owen@contentrewards.com",
   headline: "Hi, I'm Owen",
@@ -20,9 +20,9 @@ export const profile = {
   ],
 };
 
-// ── The path — how I got here, not a portfolio ──
+// ── The path, how I got here, not a portfolio ──
 // Companies you've worked at / chapters of what you've been doing.
-// Newest first. Notes may contain [markdown links](https://...) —
+// Newest first. Notes may contain [markdown links](https://...) , 
 // the page renders them as real anchors.
 export type PathItem = {
   years: string; // "2024 – now"
@@ -90,7 +90,7 @@ export type LinkItem = {
   external?: boolean;
 };
 
-// Misc links — writing, clips, favorite stuff, whatever you want to point at
+// Misc links, writing, clips, favorite stuff, whatever you want to point at
 export const links: LinkItem[] = [
   {
     title: "Gallery",

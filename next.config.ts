@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     qualities: [75, 90],
   },
   // The gallery used to live at /photos. Anything already shared out
-  // there — links, the old sitemap entry — still lands on it. Matching
+  // there, links, the old sitemap entry, still lands on it. Matching
   // is exact on purpose: the photos themselves are served from
   // /photos/... in /public, and a wildcard here would redirect them.
   redirects() {

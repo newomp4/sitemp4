@@ -4,13 +4,23 @@
    folded underneath it; clicking the row breathes that open, on the
    fold the homepage chapters use. ── */
 
+/* The column sits in the middle of the window however many tools there
+   are. "safe" centring means a long list falls back to the top instead of
+   being cut off at both ends. */
 .stage {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   min-height: 100dvh;
   width: 100%;
   padding: 96px 0 64px;
   background: #111111;
   color-scheme: dark;
+}
+
+@supports (justify-content: safe center) {
+  .stage { justify-content: safe center; }
 }
 
 /* The homepage's column, to the pixel: 35rem with the side padding
@@ -35,8 +45,8 @@
   outline: none;
 }
 
-/* Sits on the same left edge as every row below it — the row's own
-   padding — so the column reads as one block rather than a heading that
+/* Sits on the same left edge as every row below it, the row's own
+   padding, so the column reads as one block rather than a heading that
    has slipped out from under its list. */
 .title {
   display: flex;
@@ -222,8 +232,8 @@
   opacity: 1;
 }
 
-/* One rhythm the whole way down — 16 between the parts, 24 before the
-   two ways in — instead of a different gap under every element. */
+/* One rhythm the whole way down, 16 between the parts, 24 before the
+   two ways in, instead of a different gap under every element. */
 .detail {
   display: flex;
   flex-direction: column;
@@ -252,7 +262,7 @@
   margin-top: 8px;
 }
 
-/* Each line of the entry runs out from the left as the fold opens — the
+/* Each line of the entry runs out from the left as the fold opens, the
    same wipe the rows themselves arrive on, so an entry opening looks like
    the listing printing one more paragraph of itself. */
 @keyframes foldLine {
@@ -327,7 +337,7 @@
   }
 
   /* Four columns will not fit a phone, and the headings are the part the
-     rows can do without — each row names its own fields by position. */
+     rows can do without, each row names its own fields by position. */
   .legendRow {
     display: none;
   }

@@ -28,7 +28,7 @@
   }
 
   /* Narrow enough that the grid outgrows the window and rides the top
-     padding — leave the back button its own air. */
+     padding, leave the back button its own air. */
   .stage {
     padding-top: 80px;
   }
@@ -69,7 +69,7 @@
 
 /* The open print stands in for its own tile, so the tile is simply not
    there. This is `visibility`, not an animated opacity, because it has
-   to return in the very same frame the print unmounts — anything that
+   to return in the very same frame the print unmounts, anything that
    settles a frame later leaves the slot empty, which is the black flash
    you used to get on collapse. */
 .tile[data-lifted] {
@@ -88,7 +88,7 @@
 
 /* The blur placeholder sits under the photo at full opacity and stays
    there. The photo fades in on top of it, so the handover is a rise in
-   sharpness rather than a swap — and at no point is either one
+   sharpness rather than a swap, and at no point is either one
    semi-transparent over the page. */
 .blurLayer {
   position: absolute;
@@ -136,7 +136,7 @@
 /* ── The open print: fixed above the grid. Its box is animated directly
    (top/left/width/height, not transforms) so the photo re-crops smoothly
    from the square to its own proportions instead of stretching. The
-   backdrop is transparent on purpose — the grid dims itself. ── */
+   backdrop is transparent on purpose, the grid dims itself. ── */
 .viewer {
   position: fixed;
   inset: 0;

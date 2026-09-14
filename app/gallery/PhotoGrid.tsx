@@ -113,13 +113,13 @@ const slot = (cell: HTMLElement): Box => {
 };
 
 /* Photos already decoded once at a given size. Re-opening a print should
-   show it outright rather than replaying the blur — the bytes are in the
+   show it outright rather than replaying the blur, the bytes are in the
    browser cache, only the component remounted. Lives in a ref so it
    survives the viewer unmounting. */
 type Seen = { current: Set<string> };
 
 /* The real photo fades in on top of its own blur placeholder, which stays
-   fully opaque underneath — so the two never cross-dissolve through to
+   fully opaque underneath, so the two never cross-dissolve through to
    the background. Next's built-in placeholder is dropped in one frame,
    which is the hard cut this replaces. */
 function SoftPhoto({
@@ -143,8 +143,8 @@ function SoftPhoto({
   const [ready, setReady] = useState(() => seen.current.has(key));
   const img = useRef<HTMLImageElement>(null);
 
-  /* A cached image can finish decoding before React attaches onLoad —
-     on a warm reload that is the common case — and the event is simply
+  /* A cached image can finish decoding before React attaches onLoad , 
+     on a warm reload that is the common case, and the event is simply
      never delivered. Without this the photo would stay at opacity 0. */
   useEffect(() => {
     if (!ready && img.current?.complete) {

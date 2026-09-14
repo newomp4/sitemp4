@@ -10,7 +10,7 @@ import styles from "./tools.module.css";
  * The tools, as a directory listing.
  *
  * The rows print themselves in a line at a time. Clicking one breathes
- * it open in place — its cover, the longer story, and the ways in — on
+ * it open in place, its cover, the longer story, and the ways in, on
  * the same fold the homepage chapters use. One entry is open at a time,
  * so the listing never grows past the length of itself plus one.
  *
@@ -122,7 +122,7 @@ export default function ToolsList() {
                 {/* Rests folded at nought rows high; opening runs it out
                     to its own height, the way the homepage chapters go. */}
                 {/* Closed, the fold is clipped to nothing but its links are
-                    still in the document — inert keeps them out of the tab
+                    still in the document, inert keeps them out of the tab
                     order and the accessibility tree until it opens. */}
                 <div
                   className={styles.fold}

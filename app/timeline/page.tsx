@@ -226,7 +226,7 @@ export default function TimelineContextTest() {
         </footer>
       </div>
 
-      {/* ── The hidden footer — tug past the end and the blues rise ── */}
+      {/* ── The hidden footer, tug past the end and the blues rise ── */}
       <HiddenFooter />
     </div>
   );

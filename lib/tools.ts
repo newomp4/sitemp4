@@ -1,6 +1,6 @@
 /**
  * ─────────────────────────────────────────────────────────────
- *  TOOLS — the free things on GitHub.
+ *  TOOLS, the free things on GitHub.
  *  Same idea as content.ts: edit here, every layout updates.
  * ─────────────────────────────────────────────────────────────
  */
@@ -27,8 +27,8 @@ export const toolsIntro =
 export const tools: Tool[] = [
   {
     name: "twitchsim",
-    tagline: "Twitch chat with an alpha channel",
-    note: "A chat simulator that exports transparent video — WebM VP9 alpha, ProRes 4444 or a PNG sequence, up to 4K. Drops straight over an edit.",
+    tagline: "Fake Twitch chat you can drop into a video",
+    note: "Build a chat that looks real, then export it with a see through background so it sits straight on top of your footage.",
     repo: "https://github.com/newomp4/twitchsim",
     demo: "https://newomp4.github.io/twitchsim/",
     lang: "TypeScript",
@@ -37,8 +37,8 @@ export const tools: Tool[] = [
   },
   {
     name: "crboard",
-    tagline: "An infinite canvas where the reels actually play",
-    note: "Miro-like, except the Instagram and YouTube embeds play in place. Exports the whole board as one self-contained HTML file.",
+    tagline: "A board for collecting links, images and notes",
+    note: "An endless canvas where the videos you paste actually play. Send the whole board to someone as a single file.",
     repo: "https://github.com/newomp4/crboard",
     demo: "https://newomp4.github.io/crboard/",
     lang: "TypeScript",
@@ -47,8 +47,8 @@ export const tools: Tool[] = [
   },
   {
     name: "mok",
-    tagline: "3D device mockups in the browser",
-    note: "Screenshots and video on procedurally built iPhone, iPad, MacBook, Watch and desktop displays. Nothing to render out and wait on.",
+    tagline: "Put a screenshot on a 3D phone or laptop",
+    note: "Drop in a screenshot or a screen recording, pick a device, light it, and save a picture or a video.",
     repo: "https://github.com/newomp4/mok",
     lang: "TypeScript",
     updated: "2026-09",
@@ -56,8 +56,8 @@ export const tools: Tool[] = [
   },
   {
     name: "ID4",
-    tagline: "A quiet YouTube downloader",
-    note: "Paste a link, pick MP4 or MP3, hit download. Everything it needs lives in its own folder.",
+    tagline: "Save YouTube videos as MP4 or MP3",
+    note: "Paste a link, pick the format, hit download. Everything it needs stays in its own folder.",
     repo: "https://github.com/newomp4/ID4",
     lang: "Python",
     updated: "2026-05",

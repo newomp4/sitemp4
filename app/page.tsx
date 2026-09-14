@@ -177,7 +177,7 @@ export default function Home() {
               {richText(paragraph)}
             </p>
           ))}
-          {/* Where to find me — part of the introduction, not a footer. */}
+          {/* Where to find me, part of the introduction, not a footer. */}
           <ul
             id="contact"
             aria-label="Contact"
@@ -253,7 +253,7 @@ export default function Home() {
         </footer>
       </div>
 
-      {/* ── The hidden footer — tug past the end and the blues rise ── */}
+      {/* ── The hidden footer, tug past the end and the blues rise ── */}
       <HiddenFooter />
     </div>
   );

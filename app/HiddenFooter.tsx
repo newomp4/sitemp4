@@ -5,7 +5,7 @@ import useReducedMotionPreference from "./useReducedMotionPreference";
 import styles from "./styles.module.css";
 
 /**
- * The hidden footer — the "Glow stack" winner from the bake-off. Three
+ * The hidden footer, the "Glow stack" winner from the bake-off. Three
  * depth layers of bottom-anchored radial glows in the avatar's blues:
  * indigo wash at the back, electric cores in the middle, cyan highlights
  * in front, film grain riding the front layer.
@@ -43,7 +43,7 @@ export default function HiddenFooter() {
 
     const measure = () => {
       // Progress comes from actual scrolling into the spacer, never from
-      // the spacer merely being visible — on a tall monitor where the
+      // the spacer merely being visible, on a tall monitor where the
       // whole page fits, the footer stays shut.
       const maxScroll =
         document.documentElement.scrollHeight - window.innerHeight;
@@ -58,7 +58,7 @@ export default function HiddenFooter() {
         Math.max(0, (window.scrollY - start) / spacerH),
       );
       // Resistance curve: the first stretch of tugging barely shows it,
-      // then it gives — earning the reveal instead of handing it over
+      // then it gives, earning the reveal instead of handing it over
       target = Math.pow(raw, 1.6) * REVEAL_MAX;
     };
     const apply = () => {
@@ -118,7 +118,7 @@ export default function HiddenFooter() {
       data-open="false"
       aria-hidden="true"
     >
-      {/* Deep dead space at the document's very bottom — the reveal costs
+      {/* Deep dead space at the document's very bottom, the reveal costs
           real scrolling on purpose */}
       <div ref={spacerRef} className={styles.revealSpacer} />
 
