@@ -1,21 +1,25 @@
-/* ── CONCEPT 4 · "Register" ──────────────────────────────────────
-   A directory listing. Monospace is the one departure from the site's
-   type, and it is the point: these are things you clone. ── */
+/* ── "Register" ──────────────────────────────────────────────────
+   A directory listing, in the same centred column and on the same
+   8-point rhythm as the homepage. Every row carries its own entry
+   folded underneath it; clicking the row breathes that open, on the
+   fold the homepage chapters use. ── */
 
 .stage {
   position: relative;
   min-height: 100dvh;
   width: 100%;
-  padding: 96px 24px 160px;
+  padding: 96px 0 64px;
   background: #111111;
   color-scheme: dark;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
+/* The homepage's column, to the pixel: 35rem with the side padding
+   inside it, so every line starts on the same edge as the homepage's. */
 .column {
   margin-inline: auto;
   width: 100%;
-  max-width: 60rem;
+  max-width: 35rem;
+  padding-inline: 24px;
 }
 
 .stage :is(a, button, [tabindex]):focus-visible {
@@ -24,111 +28,71 @@
   border-radius: 2px;
 }
 
-/* The filter shows its focus the way a prompt does — the rule under it
-   lights up and the caret is sitting there — so a ring around the whole
-   line would only be noise. */
-.input:focus-visible {
+/* Rows are the exception: walking the listing already lights the line you
+   are on, so a ring over the top of it is noise. Scoped through .stage to
+   outrank the blanket rule above, which is (0,3,0) on its own. */
+.stage .row:focus-visible {
   outline: none;
 }
 
-/* ── Head ── */
-
-.head {
-  margin-bottom: 32px;
-}
-
+/* Sits on the same left edge as every row below it — the row's own
+   padding — so the column reads as one block rather than a heading that
+   has slipped out from under its list. */
 .title {
-  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
   font-size: var(--text-title);
   font-weight: var(--font-weight-strong);
   letter-spacing: -0.02em;
   color: #f5f5f5;
 }
 
-.prompt {
-  margin: 0;
-  font-size: var(--text-meta);
+.titleIcon {
+  flex: none;
+  transform-origin: 78% 78%;
+  color: #a3a3a3;
+  transition: color 200ms ease;
+}
+
+.title:hover .titleIcon {
+  color: #f5f5f5;
+}
+
+/* Easter egg: the hammer takes a swing when you come near the title. */
+@keyframes hammerTap {
+  0% { transform: rotate(0deg); }
+  22% { transform: rotate(-30deg); }
+  42% { transform: rotate(14deg); }
+  58% { transform: rotate(-7deg); }
+  74% { transform: rotate(4deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .title:hover .titleIcon {
+    animation: hammerTap 640ms cubic-bezier(0.3, 0, 0.2, 1);
+  }
+}
+
+/* Says what the page is, for anyone who does not already know. */
+.intro {
+  margin: 16px 0 0;
+  max-width: 32rem;
+  font-size: var(--text-body);
   line-height: 1.6;
   color: #a3a3a3;
 }
 
-.dim {
-  color: #5a5a5a;
-}
-
-.link {
-  color: #d4d4d4;
-  transition: color 150ms ease;
-}
-
-.link:hover,
-.link:focus-visible {
-  color: #f5f5f5;
-}
-
-/* ── Filter ── */
-
-.filter {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 24px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #242424;
-  transition: border-color 200ms ease;
-}
-
-.filter:focus-within {
-  border-color: #f5f5f5;
-}
-
-.filter:focus-within .slash {
-  color: #f5f5f5;
-}
-
-.slash {
-  font-size: var(--text-meta);
-  color: #5a5a5a;
-}
-
-.input {
-  flex: 1;
-  min-width: 0;
-  border: 0;
-  background: transparent;
-  font: inherit;
-  font-size: var(--text-meta);
-  color: #f5f5f5;
-  outline: none;
-}
-
-.input::placeholder {
-  color: #4a4a4a;
-}
-
-.clear,
-.count {
-  flex: none;
-  font-size: var(--text-meta);
-  color: #5a5a5a;
-}
-
-.clear {
-  cursor: pointer;
-  transition: color 150ms ease;
-}
-
-.clear:hover {
-  color: #f5f5f5;
-}
 
 /* ── Columns ── */
 
 .legendRow,
 .row {
   display: grid;
-  grid-template-columns: 168px minmax(0, 1fr) 56px 96px 16px;
-  align-items: baseline;
+  grid-template-columns: 112px minmax(0, 1fr) 40px 16px;
+  align-items: center;
   gap: 16px;
   padding: 8px;
   font-size: var(--text-meta);
@@ -136,48 +100,78 @@
 }
 
 .legendRow {
-  color: #4a4a4a;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  margin-top: 32px;
+  margin-inline: -8px;
+  padding-bottom: 8px;
   border-bottom: 1px solid #1c1c1c;
+  color: #7d7d7d;
 }
 
 .rows {
-  position: relative;
-  padding-top: 8px;
+  margin: 0 -8px;
+  padding: 8px 0 0;
+  list-style: none;
+}
+
+/* The open entry keeps its row and its fold on one quiet ground, so the
+   two read as the one thing rather than a row with something under it. */
+.item {
+  border-radius: 6px;
+  transition: background-color 560ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.item[data-open] {
+  background: #161616;
 }
 
 .row {
   position: relative;
-  border-radius: 4px;
+  width: 100%;
+  appearance: none;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  font-family: inherit;
+  font-weight: var(--font-weight-regular);
+  text-align: left;
+  cursor: pointer;
   color: #8a8a8a;
-  text-decoration: none;
   transition:
-    background-color 140ms ease,
-    color 140ms ease;
+    background-color 160ms ease,
+    color 160ms ease;
 }
 
 .colName {
-  display: flex;
-  gap: 4px;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-weight: var(--font-weight-strong);
   color: #f5f5f5;
 }
 
-.caretSlot {
-  display: inline-block;
-  width: 8px;
+/* Closes the row on the right, where it cannot push the names off the
+   column's left edge. */
+.caret {
   flex: none;
-  color: #7d7d7d;
+  color: #5a5a5a;
   opacity: 0;
-  transition: opacity 140ms ease;
+  transition:
+    opacity 160ms ease,
+    transform 260ms cubic-bezier(0.25, 1, 0.5, 1),
+    color 160ms ease;
 }
 
-.caretSlot[data-on] {
+.row[data-selected] .caret {
   opacity: 1;
+}
+
+/* Open: the caret turns down and stays lit, whether or not the pointer
+   is anywhere near it. */
+.row[data-open] .caret {
+  opacity: 1;
+  transform: rotate(90deg);
+  color: #a3a3a3;
 }
 
 .colWhat {
@@ -187,35 +181,125 @@
   white-space: nowrap;
 }
 
-.colLang,
-.colWhen {
-  color: #5a5a5a;
+.colLang {
+  color: #7d7d7d;
+  text-align: right;
   white-space: nowrap;
 }
 
-.rowArrow {
-  opacity: 0;
-  transition: opacity 140ms ease, transform 200ms ease;
-  transform: translate(-2px, 2px);
-}
-
-/* The selected line inverts, the way a selected line does. */
+/* ── The line under the pointer ──
+   A shade off the page rather than a slab of white: enough to say which
+   line you are on, quiet enough to belong to the rest of the site. */
 .row[data-selected] {
-  background: #f5f5f5;
-  color: #2a2a2a;
+  background: #1c1c1c;
+  color: #d4d4d4;
 }
 
-.row[data-selected] .colName,
-.row[data-selected] .colLang,
-.row[data-selected] .colWhen,
-.row[data-selected] .caretSlot {
-  color: #111111;
+.row[data-selected] .colLang {
+  color: #8a8a8a;
 }
 
-.row[data-selected] .rowArrow {
+/* ── The entry, folded under its row ──
+   Nought rows high at rest; opening runs the track out to the content's
+   own height, which is the one way to animate to "however tall it is". */
+
+.fold {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 560ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 400ms ease 80ms;
+}
+
+.foldInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.item[data-open] .fold {
+  grid-template-rows: 1fr;
   opacity: 1;
-  transform: translate(0, 0);
-  color: #111111;
+}
+
+/* One rhythm the whole way down — 16 between the parts, 24 before the
+   two ways in — instead of a different gap under every element. */
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 8px;
+}
+
+.meta {
+  margin: 0;
+  font-size: var(--text-meta);
+  line-height: 1.5;
+  color: #7d7d7d;
+}
+
+.note {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: 1.6;
+  color: #a3a3a3;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 8px;
+}
+
+/* Each line of the entry runs out from the left as the fold opens — the
+   same wipe the rows themselves arrive on, so an entry opening looks like
+   the listing printing one more paragraph of itself. */
+@keyframes foldLine {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .item[data-open] .detail > * {
+    animation: foldLine 540ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+  .item[data-open] .detail > :nth-child(1) { animation-delay: 60ms; }
+  .item[data-open] .detail > :nth-child(2) { animation-delay: 150ms; }
+  .item[data-open] .detail > :nth-child(3) { animation-delay: 240ms; }
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--text-meta);
+  color: #a3a3a3;
+  transition: color 150ms ease;
+}
+
+.link:hover,
+.link:focus-visible {
+  color: #f5f5f5;
+}
+
+.linkIcon {
+  flex: none;
+  color: #7d7d7d;
+  transition: color 150ms ease;
+}
+
+.link:hover .linkIcon,
+.link:focus-visible .linkIcon {
+  color: #d4d4d4;
 }
 
 /* ── The listing prints itself in, a line at a time ── */
@@ -231,78 +315,35 @@
   }
 }
 
-.empty {
-  margin: 24px 8px;
-  font-size: var(--text-meta);
-  color: #5a5a5a;
-}
-
-/* ── Footer prompt ── */
-
-.footer {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 24px 0 0;
-  padding: 0 8px;
-  font-size: var(--text-meta);
-  color: #5a5a5a;
-}
-
-.caret {
-  display: inline-block;
-  width: 7px;
-  height: 14px;
-  flex: none;
-  background: #f5f5f5;
-  opacity: 0.9;
-}
-
-@keyframes blink {
-  0%, 45% { opacity: 0.9; }
-  55%, 100% { opacity: 0; }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .caret[data-blink] {
-    animation: blink 1.1s steps(1) infinite;
-  }
-}
-
-.keys kbd {
-  display: inline-block;
-  min-width: 16px;
-  padding: 2px 4px;
-  border: 1px solid #262626;
-  border-radius: 3px;
-  background: #171717;
-  font: inherit;
-  font-size: 11px;
-  line-height: 1;
-  text-align: center;
-  color: #8a8a8a;
-}
-
 /* ── Narrow ── */
 
-@media (max-width: 720px) {
+@media (max-width: 640px) {
   .stage {
-    padding: 80px 16px 160px;
+    padding: 80px 0 48px;
   }
 
+  .column {
+    padding-inline: 32px;
+  }
+
+  /* Four columns will not fit a phone, and the headings are the part the
+     rows can do without — each row names its own fields by position. */
   .legendRow {
     display: none;
   }
 
+  .rows {
+    margin-top: 32px;
+  }
+
   .row {
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) 40px 16px;
     row-gap: 4px;
-    padding: 12px 8px;
+    padding: 8px;
   }
 
   .colName {
     grid-column: 1;
-    white-space: normal;
   }
 
   .colWhat {
@@ -316,18 +357,26 @@
     grid-row: 1;
   }
 
-  .colWhen,
-  .rowArrow {
-    display: none;
+  .caret {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .note {
+    font-size: var(--text-meta);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .row,
-  .rowArrow,
-  .clear,
+  .item,
+  .caret,
   .link,
-  .filter {
+  .linkIcon {
     transition: none;
+  }
+
+  .fold {
+    transition: opacity 1ms linear;
   }
 }

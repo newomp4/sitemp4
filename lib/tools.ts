@@ -12,44 +12,19 @@ export type Tool = {
   repo: string;
   demo?: string; // a live one you can open right now
   lang: "TypeScript" | "JavaScript" | "Python" | "HTML" | "CSS";
-  updated: string; // "2026-08" — rendered as "Aug 2026"
+  updated: string; // "2026-08", rendered as "Aug 2026"
   tags: string[];
-  art: Art; // which generated cover it gets
 };
-
-export type Art =
-  | "scan"
-  | "chat"
-  | "board"
-  | "device"
-  | "frame"
-  | "mesh"
-  | "type"
-  | "wave"
-  | "wall"
-  | "ascii"
-  | "split"
-  | "arrow";
 
 export const github = "https://github.com/newomp4";
 
-/* One canonical intro line, so the five layouts differ in form, not copy.
-   Each one sets the GitHub link after it in its own way. */
+/* The line under the page title. It stands on its own, with no link
+   running off the end of it, and it says what the things are, since
+   "tools" by itself does not. */
 export const toolsIntro =
-  "Small things I built because I needed them. Free to use, open to read, all of them on";
+  "Open source free apps and tools I've built for myself or for one off projects. Feel free to use and edit however you want!";
 
 export const tools: Tool[] = [
-  {
-    name: "phosphor",
-    tagline: "CRT, VHS and datamosh, frame-exact",
-    note: "Signal-accurate composite video emulation in the browser, on the GPU. Load footage, dial in the artifacts, export frame for frame.",
-    repo: "https://github.com/newomp4/phosphor",
-    demo: "https://newomp4.github.io/phosphor/",
-    lang: "TypeScript",
-    updated: "2026-08",
-    tags: ["video", "webgl"],
-    art: "scan",
-  },
   {
     name: "twitchsim",
     tagline: "Twitch chat with an alpha channel",
@@ -59,7 +34,6 @@ export const tools: Tool[] = [
     lang: "TypeScript",
     updated: "2026-08",
     tags: ["video", "overlay"],
-    art: "chat",
   },
   {
     name: "crboard",
@@ -70,7 +44,6 @@ export const tools: Tool[] = [
     lang: "TypeScript",
     updated: "2026-08",
     tags: ["canvas", "browser"],
-    art: "board",
   },
   {
     name: "mok",
@@ -80,77 +53,6 @@ export const tools: Tool[] = [
     lang: "TypeScript",
     updated: "2026-09",
     tags: ["3d", "browser"],
-    art: "device",
-  },
-  {
-    name: "guidemaker",
-    tagline: "Screenshots into SOPs, fast",
-    note: "Drop in a screenshot, mark it up with boxes, arrows and text, export a PNG. For writing process docs without opening Figma.",
-    repo: "https://github.com/newomp4/guidemaker",
-    lang: "HTML",
-    updated: "2026-09",
-    tags: ["docs", "browser"],
-    art: "frame",
-  },
-  {
-    name: "Gradiafy",
-    tagline: "Procedural gradients that move",
-    note: "Orbs, blobs, turbulence and mesh engines for motion graphics, with WebM export.",
-    repo: "https://github.com/newomp4/Gradiafy",
-    lang: "HTML",
-    updated: "2026-06",
-    tags: ["motion", "browser"],
-    art: "mesh",
-  },
-  {
-    name: "typearrange",
-    tagline: "Captions that arrange themselves",
-    note: "Automatic captioning with animated, geometrically arranged typography. Runs locally — Whisper for the transcript, canvas for the render.",
-    repo: "https://github.com/newomp4/typearrange",
-    lang: "JavaScript",
-    updated: "2026-04",
-    tags: ["video", "local"],
-    art: "type",
-  },
-  {
-    name: "autocut",
-    tagline: "Silence out, timeline in",
-    note: "A monochrome local dashboard for auto-editor. Drop a video, pick a preset, get the cut — or an XML timeline for Premiere, Resolve, FCP and Shotcut.",
-    repo: "https://github.com/newomp4/autocut",
-    lang: "Python",
-    updated: "2026-04",
-    tags: ["video", "local"],
-    art: "wave",
-  },
-  {
-    name: "wallmaker",
-    tagline: "Walls of video, as real After Effects layers",
-    note: "CCTV-style monitor grids built as actual layers, with power-on reveals driven by expression controls.",
-    repo: "https://github.com/newomp4/wallmaker",
-    lang: "JavaScript",
-    updated: "2026-08",
-    tags: ["after effects", "motion"],
-    art: "wall",
-  },
-  {
-    name: "asciimp4",
-    tagline: "ASCII art that moves",
-    note: "An After Effects extension for ASCII motion graphics: character sets, dynamic scaling, colour modes, cluster tracking, data overlays.",
-    repo: "https://github.com/newomp4/asciimp4",
-    lang: "JavaScript",
-    updated: "2026-05",
-    tags: ["after effects", "motion"],
-    art: "ascii",
-  },
-  {
-    name: "Splitup",
-    tagline: "One long video, many verticals",
-    note: "Splits a horizontal video into 1080×1920 clips with a blurred bed and editable per-clip text. Self-contained — ffmpeg and the output live in the folder.",
-    repo: "https://github.com/newomp4/Splitup",
-    lang: "JavaScript",
-    updated: "2026-04",
-    tags: ["video", "local"],
-    art: "split",
   },
   {
     name: "ID4",
@@ -160,7 +62,6 @@ export const tools: Tool[] = [
     lang: "CSS",
     updated: "2026-05",
     tags: ["local"],
-    art: "arrow",
   },
 ];
 

@@ -1,81 +1,59 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import BackLink from "../../BackLink";
-import useReducedMotionPreference from "../../useReducedMotionPreference";
-import { SHORT_LANG, github, tools, updatedLabel } from "@/lib/tools";
+import { SHORT_LANG, tools, toolsIntro, updatedLabel } from "@/lib/tools";
+import Icon from "./Icon";
 import styles from "./register.module.css";
 
 /**
- * CONCEPT 4 — "Register".
+ * "Register" — the tools as a directory listing.
  *
- * A directory listing. The rows print in, one line at a time, and the
- * caret is left blinking at the end like something is waiting for you.
- * It is: ↑↓ walks the list, ⏎ opens the source, d opens the live one,
- * and / filters — rows slide out of the way as the list narrows rather
- * than snapping to their new places.
+ * The rows print themselves in a line at a time. Clicking one breathes
+ * it open in place — its cover, the longer story, and the ways in — on
+ * the same fold the homepage chapters use. One entry is open at a time,
+ * so the listing never grows past the length of itself plus one.
+ *
+ * The fold is driven by a click rather than a hover on purpose: an entry
+ * that opened under the pointer would push the rest of the listing down,
+ * out from under the very pointer that was choosing it.
  */
 export default function Register() {
-  const reduced = useReducedMotionPreference();
-  const [query, setQuery] = useState("");
-  const [cursor, setCursor] = useState(0);
+  /* -1 until a pointer or an arrow key says otherwise: nothing on the
+     page should look chosen before anyone has chosen it. */
+  const [cursor, setCursor] = useState(-1);
   const [typing, setTyping] = useState(true);
-  const filter = useRef<HTMLInputElement>(null);
-
-  const rows = useMemo(() => {
-    const needle = query.trim().toLowerCase();
-    if (!needle) return tools;
-    return tools.filter((tool) =>
-      [tool.name, tool.tagline, tool.lang, ...tool.tags].join(" ").toLowerCase().includes(needle),
-    );
-  }, [query]);
-
-  /* A narrowing list must never leave the cursor pointing past its end. */
-  const selected = rows.length ? Math.min(cursor, rows.length - 1) : 0;
-  const current = rows[selected];
+  const [open, setOpen] = useState<string | null>(null);
+  const items = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.metaKey || event.ctrlKey || event.altKey) return;
-      const inFilter = document.activeElement === filter.current;
 
-      if (event.key === "/" && !inFilter) {
-        event.preventDefault();
-        filter.current?.focus();
+      if (event.key === "Escape" && open) {
+        setOpen(null);
         return;
       }
-      if (event.key === "Escape" && inFilter) {
-        filter.current?.blur();
-        if (query) setQuery("");
-        return;
-      }
-      if (event.key === "ArrowDown" || (event.key === "j" && !inFilter)) {
-        event.preventDefault();
-        setCursor((c) => (rows.length ? (Math.min(c, rows.length - 1) + 1) % rows.length : 0));
-        return;
-      }
-      if (event.key === "ArrowUp" || (event.key === "k" && !inFilter)) {
-        event.preventDefault();
-        setCursor((c) => (rows.length ? (Math.min(c, rows.length - 1) - 1 + rows.length) % rows.length : 0));
-        return;
-      }
-      if (event.key === "Enter" && current) {
-        window.open(current.repo, "_blank", "noopener,noreferrer");
-        return;
-      }
-      if (event.key === "d" && !inFilter && current?.demo) {
-        window.open(current.demo, "_blank", "noopener,noreferrer");
-      }
+
+      const step = event.key === "ArrowDown" ? 1 : event.key === "ArrowUp" ? -1 : 0;
+      if (!step) return;
+      event.preventDefault();
+      const next =
+        cursor < 0 ? (step > 0 ? 0 : tools.length - 1) : (cursor + step + tools.length) % tools.length;
+      setCursor(next);
+      /* An arrow key opens as it goes: walking the listing reads every
+         entry in turn rather than only moving a highlight over them. */
+      setOpen(tools[next].name);
+      items.current[next]?.focus();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [rows.length, current, query]);
+  }, [cursor, open]);
 
-  /* The listing prints itself in, then hands the caret over. It starts
-     out printing and only ever stops, so nothing has to be set from
-     inside the effect. (With reduced motion the print keyframes never
-     run, so this just resolves a beat later and changes nothing.) */
+  /* The listing prints itself in, a line at a time. It starts out
+     printing and only ever stops, so nothing has to be set from inside
+     the effect. (With reduced motion the print keyframes never run, so
+     this just resolves a beat later and changes nothing.) */
   useEffect(() => {
     const done = window.setTimeout(() => setTyping(false), 340 + tools.length * 70);
     return () => window.clearTimeout(done);
@@ -86,117 +64,100 @@ export default function Register() {
       <BackLink />
 
       <div className={styles.column}>
-        <header className={styles.head}>
-          <h1 className={`${styles.title} rise`} style={{ "--rise-delay": "0.08s" } as CSSProperties}>
-            Tools
-          </h1>
-          <p className={`${styles.prompt} rise`} style={{ "--rise-delay": "0.14s" } as CSSProperties}>
-            <span className={styles.dim}>~/tools —</span> {tools.length} free things, all of them on{" "}
-            <a className={styles.link} href={github} target="_blank" rel="noopener noreferrer">
-              GitHub ↗
-            </a>
-          </p>
+        <h1 className={`${styles.title} rise`} style={{ "--rise-delay": "0.08s" } as CSSProperties}>
+          <Icon name="hammer" size={20} className={styles.titleIcon} />
+          Tools
+        </h1>
 
-          <div className={`${styles.filter} rise`} style={{ "--rise-delay": "0.2s" } as CSSProperties}>
-            <span className={styles.slash} aria-hidden="true">
-              /
-            </span>
-            <input
-              ref={filter}
-              data-swallow-keys="true"
-              className={styles.input}
-              value={query}
-              onChange={(event) => {
-                setQuery(event.target.value);
-                setCursor(0);
-              }}
-              placeholder="filter"
-              aria-label="Filter tools"
-              spellCheck={false}
-              autoComplete="off"
-            />
-            {query && (
-              <button type="button" className={styles.clear} onClick={() => setQuery("")}>
-                clear
-              </button>
-            )}
-            <span className={styles.count}>
-              {rows.length}/{tools.length}
-            </span>
-          </div>
-        </header>
-
-        <div className={styles.legendRow} aria-hidden="true">
-          <span className={styles.colName}>tool</span>
-          <span className={styles.colWhat}>what it does</span>
-          <span className={styles.colLang}>lang</span>
-          <span className={styles.colWhen}>updated</span>
-        </div>
-
-        <div className={styles.rows} role="listbox" aria-label="Tools" tabIndex={-1}>
-          <AnimatePresence initial={false} mode="popLayout">
-            {rows.map((tool, i) => (
-              <motion.a
-                key={tool.name}
-                layout={!reduced}
-                role="option"
-                aria-selected={i === selected}
-                href={tool.repo}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.row}
-                data-selected={i === selected || undefined}
-                style={{ "--line": `${i}` } as CSSProperties}
-                data-printing={typing && !query ? "" : undefined}
-                initial={reduced ? false : { opacity: 0, y: -4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={reduced ? { opacity: 0 } : { opacity: 0, y: 4, transition: { duration: 0.14 } }}
-                transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 520, damping: 44, mass: 0.8 }}
-                onPointerEnter={(event) => {
-                  if (event.pointerType === "mouse") setCursor(i);
-                }}
-                onFocus={() => setCursor(i)}
-              >
-                <span className={styles.colName}>
-                  {/* Always present, so every name sits on the same
-                      baseline whether or not it is the selected one. */}
-                  <span className={styles.caretSlot} data-on={i === selected || undefined} aria-hidden="true">
-                    ›
-                  </span>
-                  {tool.name}
-                </span>
-                <span className={styles.colWhat}>{tool.tagline}</span>
-                <span className={styles.colLang}>{SHORT_LANG[tool.lang]}</span>
-                <span className={styles.colWhen}>{updatedLabel(tool.updated)}</span>
-                <span className={styles.rowArrow} aria-hidden="true">
-                  ↗
-                </span>
-              </motion.a>
-            ))}
-          </AnimatePresence>
-
-          {!rows.length && (
-            <p className={styles.empty}>
-              nothing matches <span className={styles.dim}>{query}</span>
-            </p>
-          )}
-        </div>
-
-        {/* The prompt the listing hands back to you. */}
-        <p className={styles.footer}>
-          <span className={styles.caret} data-blink={!typing || undefined} aria-hidden="true" />
-          <span className={styles.keys}>
-            <kbd>↑</kbd>
-            <kbd>↓</kbd> move · <kbd>⏎</kbd> source
-            {current?.demo && (
-              <>
-                {" · "}
-                <kbd>d</kbd> demo
-              </>
-            )}{" "}
-            · <kbd>/</kbd> filter
-          </span>
+        <p className={`${styles.intro} rise`} style={{ "--rise-delay": "0.14s" } as CSSProperties}>
+          {toolsIntro}
         </p>
+
+        {/* The column headings, in the page's own type rather than the
+            spaced-out capitals they started as. */}
+        <div
+          className={`${styles.legendRow} rise`}
+          style={{ "--rise-delay": "0.2s" } as CSSProperties}
+          aria-hidden="true"
+        >
+          <span>Tool</span>
+          <span>What it does</span>
+          <span className={styles.colLang}>Lang</span>
+          <span />
+        </div>
+
+        <ul className={styles.rows}>
+          {tools.map((tool, i) => {
+            const isOpen = open === tool.name;
+            return (
+              <li
+                key={tool.name}
+                className={styles.item}
+                data-open={isOpen || undefined}
+                style={{ "--line": `${i}` } as CSSProperties}
+              >
+                <button
+                  ref={(element) => {
+                    items.current[i] = element;
+                  }}
+                  type="button"
+                  className={styles.row}
+                  data-selected={i === cursor || undefined}
+                  data-open={isOpen || undefined}
+                  data-printing={typing ? "" : undefined}
+                  aria-expanded={isOpen}
+                  aria-controls={`entry-${tool.name}`}
+                  onClick={() => setOpen((prev) => (prev === tool.name ? null : tool.name))}
+                  onPointerEnter={(event) => {
+                    if (event.pointerType === "mouse") setCursor(i);
+                  }}
+                  onFocus={() => setCursor(i)}
+                >
+                  <span className={styles.colName}>{tool.name}</span>
+                  <span className={styles.colWhat}>{tool.tagline}</span>
+                  <span className={styles.colLang}>{SHORT_LANG[tool.lang]}</span>
+                  <Icon name="chevronRight" size={16} className={styles.caret} />
+                </button>
+
+                {/* Rests folded at nought rows high; opening runs it out
+                    to its own height, the way the homepage chapters go. */}
+                {/* Closed, the fold is clipped to nothing but its links are
+                    still in the document — inert keeps them out of the tab
+                    order and the accessibility tree until it opens. */}
+                <div
+                  className={styles.fold}
+                  id={`entry-${tool.name}`}
+                  role="region"
+                  aria-label={tool.name}
+                  inert={!isOpen}
+                >
+                  <div className={styles.foldInner}>
+                    <div className={styles.detail}>
+                      <p className={styles.meta}>
+                        {tool.lang} · updated {updatedLabel(tool.updated)} · {tool.tags.join(" · ")}
+                      </p>
+
+                      <p className={styles.note}>{tool.note}</p>
+
+                      <div className={styles.links}>
+                        <a className={styles.link} href={tool.repo} target="_blank" rel="noopener noreferrer">
+                          <Icon name="github" size={14} className={styles.linkIcon} />
+                          Source
+                        </a>
+                        {tool.demo && (
+                          <a className={styles.link} href={tool.demo} target="_blank" rel="noopener noreferrer">
+                            <Icon name="arrowUpRight" size={14} className={styles.linkIcon} />
+                            Live demo
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </main>
   );
