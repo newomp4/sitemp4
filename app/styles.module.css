@@ -53,7 +53,11 @@
   }
 }
 
-.root :is(a, button, [tabindex]):focus-visible {
+/* A tabindex of -1 is never reached by keyboard, it is only ever focused
+   in code (the open print takes focus so Escape and Tab work). Those must
+   not draw a keyboard ring, which is what put a white outline around a
+   photo the moment you opened it. */
+.root :is(a, button, [tabindex]:not([tabindex="-1"])):focus-visible {
   outline: 2px solid #f5f5f5;
   outline-offset: 4px;
   border-radius: 2px;

@@ -216,7 +216,7 @@ export default function Home() {
           <section
             id="path"
             aria-labelledby="path-heading"
-            className="scroll-mt-10 pt-8 max-sm:pt-6"
+            className="scroll-mt-10 pt-8"
           >
             {/* Kept for section navigation. Restore the original visible styling:
                 className="mb-6 text-meta font-strong text-[#F5F5F5]" */}
@@ -234,7 +234,7 @@ export default function Home() {
         {/* ── The end of the page: where else to go, and when it is here ── */}
         <footer
           style={rise(PATH_RISE_START + path.length)}
-          className="rise pt-8 max-sm:pt-6"
+          className="rise pt-8"
         >
           <div className="relative z-20 flex items-center gap-8">
             <GalleryLink />

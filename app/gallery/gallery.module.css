@@ -67,6 +67,18 @@
   filter: blur(2px);
 }
 
+/* A phone cannot animate a blur across every photo at once while the print
+   is springing open, which is what made opening one stutter. Touch devices
+   get the step back without the blur, which composites for free. */
+@media (hover: none), (max-width: 720px) {
+  .tile {
+    transition: opacity 350ms ease;
+  }
+  .tile[data-dimmed] {
+    filter: none;
+  }
+}
+
 /* The open print stands in for its own tile, so the tile is simply not
    there. This is `visibility`, not an animated opacity, because it has
    to return in the very same frame the print unmounts, anything that

@@ -27,8 +27,8 @@ export const toolsIntro =
 export const tools: Tool[] = [
   {
     name: "twitchsim",
-    tagline: "Fake Twitch chat you can drop into a video",
-    note: "Build a chat that looks real, then export it with a see through background so it sits straight on top of your footage.",
+    tagline: "Fake Twitch chat simulator",
+    note: "Makes a Twitch chat that looks real, then saves it as a video you can put on top of your own video.",
     repo: "https://github.com/newomp4/twitchsim",
     demo: "https://newomp4.github.io/twitchsim/",
     lang: "TypeScript",
@@ -38,7 +38,7 @@ export const tools: Tool[] = [
   {
     name: "crboard",
     tagline: "A board for collecting links, images and notes",
-    note: "An endless canvas where the videos you paste actually play. Send the whole board to someone as a single file.",
+    note: "Pin videos, pictures and notes anywhere on one giant page. Videos play right there. Send the whole board to someone as a single file.",
     repo: "https://github.com/newomp4/crboard",
     demo: "https://newomp4.github.io/crboard/",
     lang: "TypeScript",
@@ -48,7 +48,7 @@ export const tools: Tool[] = [
   {
     name: "mok",
     tagline: "Put a screenshot on a 3D phone or laptop",
-    note: "Drop in a screenshot or a screen recording, pick a device, light it, and save a picture or a video.",
+    note: "Drop in a screenshot, choose a phone or a laptop to put it on, and save the result as a picture or a short video.",
     repo: "https://github.com/newomp4/mok",
     lang: "TypeScript",
     updated: "2026-09",
@@ -57,7 +57,7 @@ export const tools: Tool[] = [
   {
     name: "ID4",
     tagline: "Save YouTube videos as MP4 or MP3",
-    note: "Paste a link, pick the format, hit download. Everything it needs stays in its own folder.",
+    note: "Paste a link, choose video or audio, and it saves to a folder on your computer.",
     repo: "https://github.com/newomp4/ID4",
     lang: "Python",
     updated: "2026-05",
