@@ -157,6 +157,10 @@
   background: #161616;
 }
 
+.rowFrame {
+  position: relative;
+}
+
 .row {
   position: relative;
   width: 100%;
@@ -229,12 +233,13 @@
   transition: color 250ms ease;
 }
 
-/* A brief burst from Petal's icon, outside the row's reveal clipping.
+/* A centered burst, outside the row's reveal clipping. The header wrapper
+   follows the button's height without including its expanded details.
    Decorations never move the layout or intercept a click. */
 .petalBurst {
   position: absolute;
-  top: 19px;
-  left: calc(8px + var(--mark) / 2);
+  top: 50%;
+  left: 50%;
   z-index: 3;
   width: 0;
   height: 0;
@@ -263,7 +268,7 @@
     transform: translate(calc(-50% + var(--petal-x)), calc(-50% + var(--petal-y))) scale(1) rotate(var(--petal-turn));
     animation-timing-function: cubic-bezier(.4, 0, .6, 1);
   }
-  68% { opacity: .9; }
+  68% { opacity: 1; }
   100% {
     opacity: 0;
     transform: translate(calc(-50% + var(--petal-x) * 1.14), calc(-50% + var(--petal-y) + 24px)) scale(.8) rotate(calc(var(--petal-turn) + 28deg));

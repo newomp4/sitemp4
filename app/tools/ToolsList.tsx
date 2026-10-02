@@ -148,89 +148,91 @@ export default function ToolsList() {
                 data-open={isOpen || undefined}
                 style={{ "--line": `${i}` } as CSSProperties}
               >
-                <button
-                  ref={(element) => {
-                    items.current[i] = element;
-                  }}
-                  type="button"
-                  className={`${styles.row} ${paid ? styles.priceRow : ""}`}
-                  data-selected={i === cursor || undefined}
-                  data-open={isOpen || undefined}
-                  data-printing={typing ? "" : undefined}
-                  aria-expanded={isOpen}
-                  aria-controls={`entry-${tool.name}`}
-                  onClick={() => {
-                    if (isPetal && !isOpen) celebratePetal();
-                    setOpen((prev) => (prev === tool.name ? null : tool.name));
-                  }}
-                  onPointerMove={paid && !reducedMotion ? trackLight : undefined}
-                  onPointerEnter={(event) => {
-                    if (event.pointerType === "mouse") {
+                <div className={styles.rowFrame}>
+                  <button
+                    ref={(element) => {
+                      items.current[i] = element;
+                    }}
+                    type="button"
+                    className={`${styles.row} ${paid ? styles.priceRow : ""}`}
+                    data-selected={i === cursor || undefined}
+                    data-open={isOpen || undefined}
+                    data-printing={typing ? "" : undefined}
+                    aria-expanded={isOpen}
+                    aria-controls={`entry-${tool.name}`}
+                    onClick={() => {
+                      if (isPetal && !isOpen) celebratePetal();
+                      setOpen((prev) => (prev === tool.name ? null : tool.name));
+                    }}
+                    onPointerMove={paid && !reducedMotion ? trackLight : undefined}
+                    onPointerEnter={(event) => {
+                      if (event.pointerType === "mouse") {
+                        setCursor(i);
+                        if (isPetal) celebratePetal();
+                      }
+                    }}
+                    onPointerLeave={(event) => {
+                      if (document.activeElement !== event.currentTarget) setCursor(-1);
+                    }}
+                    onFocus={(event) => {
                       setCursor(i);
-                      if (isPetal) celebratePetal();
-                    }
-                  }}
-                  onPointerLeave={(event) => {
-                    if (document.activeElement !== event.currentTarget) setCursor(-1);
-                  }}
-                  onFocus={(event) => {
-                    setCursor(i);
-                    if (isPetal && event.currentTarget.matches(":focus-visible")) celebratePetal();
-                  }}
-                  onBlur={() => setCursor(-1)}
-                >
-                  {/* Out of flow, so it is not a fifth cell in the row's
-                      grid, and clipped to the bar, so the band never runs
-                      out into the fold below. */}
-                  {paid && <span className={styles.sweep} aria-hidden="true" />}
+                      if (isPetal && event.currentTarget.matches(":focus-visible")) celebratePetal();
+                    }}
+                    onBlur={() => setCursor(-1)}
+                  >
+                    {/* Out of flow, so it is not a fifth cell in the row's
+                        grid, and clipped to the bar, so the band never runs
+                        out into the fold below. */}
+                    {paid && <span className={styles.sweep} aria-hidden="true" />}
 
-                  <span className={styles.colName}>
-                    {/* Only the ones I sell have artwork, so only they
-                        wear a tile. The slot is held open on every row
-                        regardless, or the marked names would sit 30px to
-                        the right of all the others. */}
-                    <span className={styles.markSlot} aria-hidden="true">
+                    <span className={styles.colName}>
+                      {/* Only the ones I sell have artwork, so only they
+                          wear a tile. The slot is held open on every row
+                          regardless, or the marked names would sit 30px to
+                          the right of all the others. */}
+                      <span className={styles.markSlot} aria-hidden="true">
+                        {paid && (
+                          <span className={styles.markTile}>
+                            {tool.icon ? (
+                              <Image src={tool.icon} alt="" width={22} height={22} className={styles.markArt} />
+                            ) : (
+                              <span className={styles.markLetter}>{tool.name.charAt(0).toUpperCase()}</span>
+                            )}
+                          </span>
+                        )}
+                      </span>
+                      <span className={styles.nameText}>{tool.name}</span>
+                    </span>
+
+                    <span className={styles.colWhat}>
+                      {tool.tagline}
                       {paid && (
-                        <span className={styles.markTile}>
-                          {tool.icon ? (
-                            <Image src={tool.icon} alt="" width={22} height={22} className={styles.markArt} />
-                          ) : (
-                            <span className={styles.markLetter}>{tool.name.charAt(0).toUpperCase()}</span>
-                          )}
-                        </span>
+                        <>
+                          {" "}
+                          {/* One unbreakable piece, so a description that
+                              wraps on a phone never leaves the separator
+                              stranded at the end of a line. */}
+                          <span className={styles.priceTail}>
+                            <span className={styles.sep} aria-hidden="true">·</span>{" "}
+                            <span className={styles.price}>
+                              <span className={styles.srOnly}>Paid, </span>
+                              {tool.price}
+                            </span>
+                          </span>
+                        </>
                       )}
                     </span>
-                    <span className={styles.nameText}>{tool.name}</span>
-                  </span>
 
-                  <span className={styles.colWhat}>
-                    {tool.tagline}
-                    {paid && (
-                      <>
-                        {" "}
-                        {/* One unbreakable piece, so a description that
-                            wraps on a phone never leaves the separator
-                            stranded at the end of a line. */}
-                        <span className={styles.priceTail}>
-                          <span className={styles.sep} aria-hidden="true">·</span>{" "}
-                          <span className={styles.price}>
-                            <span className={styles.srOnly}>Paid, </span>
-                            {tool.price}
-                          </span>
-                        </span>
-                      </>
-                    )}
-                  </span>
+                    {/* Empty for the ones I sell. The column belongs to the
+                        open source rows, which are the ones with a language
+                        you could go and read. */}
+                    {tool.lang && <span className={styles.colLast}>{SHORT_LANG[tool.lang]}</span>}
 
-                  {/* Empty for the ones I sell. The column belongs to the
-                      open source rows, which are the ones with a language
-                      you could go and read. */}
-                  {tool.lang && <span className={styles.colLast}>{SHORT_LANG[tool.lang]}</span>}
+                    <Icon name="chevronRight" size={16} className={styles.caret} />
+                  </button>
 
-                  <Icon name="chevronRight" size={16} className={styles.caret} />
-                </button>
-
-                {isPetal && petalBurst && <PetalBurst />}
+                  {isPetal && petalBurst && <PetalBurst />}
+                </div>
 
                 {/* Rests folded at nought rows high; opening runs it out
                     to its own height, the way the homepage chapters go. */}
