@@ -6,7 +6,7 @@ import BackLink from "../BackLink";
 import useReducedMotionPreference from "../useReducedMotionPreference";
 import { SHORT_LANG, tools, toolsIntro, updatedLabel } from "@/lib/tools";
 import Icon from "./Icon";
-import PetalBurst from "./PetalBurst";
+import PetalBurst, { PETAL_BURST_DURATION } from "./PetalBurst";
 import styles from "./tools.module.css";
 
 /**
@@ -56,7 +56,7 @@ export default function ToolsList() {
   // stack particles or restart it mid-flight, and nothing animates at rest.
   useEffect(() => {
     if (!petalBurst) return;
-    const done = window.setTimeout(() => setPetalBurst(false), 1100);
+    const done = window.setTimeout(() => setPetalBurst(false), PETAL_BURST_DURATION);
     return () => window.clearTimeout(done);
   }, [petalBurst]);
 
@@ -201,7 +201,7 @@ export default function ToolsList() {
                           the right of all the others. */}
                       <span className={styles.markSlot} ref={isPetal ? petalMark : undefined} aria-hidden="true">
                         {paid && (
-                          <span className={styles.markTile} data-burst={isPetal && petalBurst || undefined}>
+                          <span className={styles.markTile}>
                             {tool.icon ? (
                               <Image src={tool.icon} alt="" width={22} height={22} className={styles.markArt} />
                             ) : (
@@ -240,7 +240,7 @@ export default function ToolsList() {
                     <Icon name="chevronRight" size={16} className={styles.caret} />
                   </button>
 
-                  {isPetal && petalBurst && <PetalBurst />}
+                  {isPetal && petalBurst && !reducedMotion && <PetalBurst />}
                 </div>
 
                 {/* Rests folded at nought rows high; opening runs it out

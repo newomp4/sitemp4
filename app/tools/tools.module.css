@@ -257,45 +257,6 @@
   pointer-events: none;
 }
 
-@keyframes petalPop {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(.12) rotate(0deg);
-    animation-timing-function: cubic-bezier(.12, .74, .28, 1);
-  }
-  5% { opacity: 1; }
-  24% {
-    opacity: 1;
-    transform: translate(calc(-50% + var(--petal-x) * var(--petal-spread) * .72), calc(-50% + var(--petal-y))) scale(1) rotate(calc(var(--petal-turn) * .55));
-    animation-timing-function: ease-in;
-  }
-  56% {
-    transform: translate(calc(-50% + var(--petal-x) * var(--petal-spread) * .95), calc(-50% + var(--petal-y) + 9px)) scale(.95) rotate(var(--petal-turn));
-    animation-timing-function: ease-in;
-  }
-  60% { opacity: 1; }
-  100% {
-    opacity: 0;
-    transform: translate(calc(-50% + var(--petal-x) * var(--petal-spread) * 1.18), calc(-50% + var(--petal-y) + 42px)) scale(.65) rotate(calc(var(--petal-turn) * 1.4));
-  }
-}
-
-@keyframes logoPop {
-  0%, 100% { scale: 1; }
-  22% { scale: .9; }
-  55% { scale: 1.12; }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .burstPetal {
-    animation: petalPop 960ms var(--petal-delay) both;
-  }
-
-  .markTile[data-burst] {
-    animation: logoPop 320ms ease-out;
-  }
-}
-
 /* The same lift the So Far tiles take when you come near a chapter. */
 @media (hover: hover) {
   .row:hover .markTile,
@@ -703,6 +664,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .petalBurst {
+    display: none;
+  }
+
   .row,
   .item,
   .caret,
