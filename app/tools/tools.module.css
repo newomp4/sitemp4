@@ -233,13 +233,14 @@
   transition: color 250ms ease;
 }
 
-/* A centered burst, outside the row's reveal clipping. The header wrapper
-   follows the button's height without including its expanded details.
+/* The origin is the logo's center, measured once when the burst starts.
+   Keep the petals outside the row's entrance clipping.
    Decorations never move the layout or intercept a click. */
 .petalBurst {
+  --petal-spread: 1;
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: var(--burst-y);
+  left: var(--burst-x);
   z-index: 3;
   width: 0;
   height: 0;
@@ -259,25 +260,39 @@
 @keyframes petalPop {
   0% {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(.25) rotate(0deg);
-    animation-timing-function: cubic-bezier(.16, .8, .3, 1);
+    transform: translate(-50%, -50%) scale(.12) rotate(0deg);
+    animation-timing-function: cubic-bezier(.12, .74, .28, 1);
   }
-  16% { opacity: 1; }
-  44% {
+  5% { opacity: 1; }
+  24% {
     opacity: 1;
-    transform: translate(calc(-50% + var(--petal-x)), calc(-50% + var(--petal-y))) scale(1) rotate(var(--petal-turn));
-    animation-timing-function: cubic-bezier(.4, 0, .6, 1);
+    transform: translate(calc(-50% + var(--petal-x) * var(--petal-spread) * .72), calc(-50% + var(--petal-y))) scale(1) rotate(calc(var(--petal-turn) * .55));
+    animation-timing-function: ease-in;
   }
-  68% { opacity: 1; }
+  56% {
+    transform: translate(calc(-50% + var(--petal-x) * var(--petal-spread) * .95), calc(-50% + var(--petal-y) + 9px)) scale(.95) rotate(var(--petal-turn));
+    animation-timing-function: ease-in;
+  }
+  60% { opacity: 1; }
   100% {
     opacity: 0;
-    transform: translate(calc(-50% + var(--petal-x) * 1.14), calc(-50% + var(--petal-y) + 24px)) scale(.8) rotate(calc(var(--petal-turn) + 28deg));
+    transform: translate(calc(-50% + var(--petal-x) * var(--petal-spread) * 1.18), calc(-50% + var(--petal-y) + 42px)) scale(.65) rotate(calc(var(--petal-turn) * 1.4));
   }
+}
+
+@keyframes logoPop {
+  0%, 100% { scale: 1; }
+  22% { scale: .9; }
+  55% { scale: 1.12; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .burstPetal {
-    animation: petalPop 1400ms var(--petal-delay) both;
+    animation: petalPop 960ms var(--petal-delay) both;
+  }
+
+  .markTile[data-burst] {
+    animation: logoPop 320ms ease-out;
   }
 }
 
@@ -622,6 +637,10 @@
 /* ── Narrow ── */
 
 @media (max-width: 640px) {
+  .petalBurst {
+    --petal-spread: .65;
+  }
+
   .stage {
     padding: 80px 0 48px;
   }

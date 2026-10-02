@@ -37,17 +37,26 @@ export default function ToolsList() {
   const [open, setOpen] = useState<string | null>(null);
   const [petalBurst, setPetalBurst] = useState(false);
   const items = useRef<(HTMLButtonElement | null)[]>([]);
+  const petalMark = useRef<HTMLSpanElement>(null);
+  const petalFrame = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotionPreference();
 
   const celebratePetal = () => {
-    if (!reducedMotion) setPetalBurst(true);
+    if (reducedMotion || petalBurst || !petalMark.current || !petalFrame.current) return;
+    // Measure once per burst, using the stable slot rather than the animated
+    // icon. This also follows wrapped rows and larger text on small screens.
+    const mark = petalMark.current.getBoundingClientRect();
+    const frame = petalFrame.current.getBoundingClientRect();
+    petalFrame.current.style.setProperty("--burst-x", `${mark.left + mark.width / 2 - frame.left}px`);
+    petalFrame.current.style.setProperty("--burst-y", `${mark.top + mark.height / 2 - frame.top}px`);
+    setPetalBurst(true);
   };
 
   // Let a burst finish after the pointer leaves. Repeated entries cannot
   // stack particles or restart it mid-flight, and nothing animates at rest.
   useEffect(() => {
     if (!petalBurst) return;
-    const done = window.setTimeout(() => setPetalBurst(false), 1600);
+    const done = window.setTimeout(() => setPetalBurst(false), 1100);
     return () => window.clearTimeout(done);
   }, [petalBurst]);
 
@@ -148,7 +157,7 @@ export default function ToolsList() {
                 data-open={isOpen || undefined}
                 style={{ "--line": `${i}` } as CSSProperties}
               >
-                <div className={styles.rowFrame}>
+                <div className={styles.rowFrame} ref={isPetal ? petalFrame : undefined}>
                   <button
                     ref={(element) => {
                       items.current[i] = element;
@@ -190,9 +199,9 @@ export default function ToolsList() {
                           wear a tile. The slot is held open on every row
                           regardless, or the marked names would sit 30px to
                           the right of all the others. */}
-                      <span className={styles.markSlot} aria-hidden="true">
+                      <span className={styles.markSlot} ref={isPetal ? petalMark : undefined} aria-hidden="true">
                         {paid && (
-                          <span className={styles.markTile}>
+                          <span className={styles.markTile} data-burst={isPetal && petalBurst || undefined}>
                             {tool.icon ? (
                               <Image src={tool.icon} alt="" width={22} height={22} className={styles.markArt} />
                             ) : (
