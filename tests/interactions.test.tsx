@@ -98,6 +98,6 @@ test("blocked clipboard access exposes the handle instead of a false success", a
   render(<CopyHandle label="Discord" handle="newomp4" />);
   const button = screen.getByRole("button", { name: /Copy Discord/ });
   fireEvent.click(button);
-  expect(await screen.findByText("Copy this: newomp4")).toBeDefined();
+  expect((await screen.findByText("newomp4")).parentElement?.textContent).toBe("Copy this: newomp4");
   expect(button.getAttribute("data-copied")).toBe("false");
 });

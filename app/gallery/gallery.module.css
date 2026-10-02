@@ -98,6 +98,14 @@
   pointer-events: none;
 }
 
+.tile::after {
+  transition: box-shadow 160ms ease;
+}
+
+.tile:active::after {
+  box-shadow: inset 0 0 0 2px #ffffff66;
+}
+
 /* The blur placeholder sits under the photo at full opacity and stays
    there. The photo fades in on top of it, so the handover is a rise in
    sharpness rather than a swap, and at no point is either one
@@ -180,11 +188,22 @@
   background: #111111cc;
   color: #a3a3a3;
   cursor: pointer;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .close:hover,
 .close:focus-visible {
+  background: #292929;
   color: #f5f5f5;
+}
+
+.close:active {
+  background: #363636;
+  transform: scale(0.94);
 }
 
 .card {
@@ -260,10 +279,13 @@
 @media (prefers-reduced-motion: reduce) {
   .img,
   .card .img,
-  .tile {
+  .tile,
+  .tile::after,
+  .close {
     transition: none;
   }
-  .tile:hover .img {
+  .tile:hover .img,
+  .close:active {
     transform: none;
   }
 }

@@ -2,11 +2,10 @@
    A directory listing, in the same centred column and on the same
    8-point rhythm as the homepage. Every row carries its own entry
    folded underneath it; clicking the row breathes that open, on the
-   fold the homepage chapters use. ── */
+   fold the homepage chapters use.
 
-/* The column sits in the middle of the window however many tools there
-   are. "safe" centring means a long list falls back to the top instead of
-   being cut off at both ends. */
+   The ones I sell are marked under "The light" at the bottom. ── */
+
 .stage {
   position: relative;
   display: flex;
@@ -17,14 +16,29 @@
   padding: 96px 0 64px;
   background: #111111;
   color-scheme: dark;
+
+  /* The mark's tile, and the gap between it and the name. Everything
+     that has to line up with a name reads its indent from here rather
+     than repeating the arithmetic. */
+  --mark: 22px;
+  --mark-gap: 8px;
+
+  /* The light, and the price. `--lit-rgb` is the light itself, kept as
+     a bare triple so each gradient stop can set its own alpha off it.
+     White, because it is the page's own material catching the light,
+     and the price is white with it: not one colour on the page. */
+  --lit-rgb: 255 255 255;
+  --lit-core: 0.13;
+  --lit-fall: 0.035;
+  --sweep: 0.062;
+  --paid-quiet: #a3a3a3;
+  --paid-bright: #f5f5f5;
 }
 
 @supports (justify-content: safe center) {
   .stage { justify-content: safe center; }
 }
 
-/* The homepage's column, to the pixel: 35rem with the side padding
-   inside it, so every line starts on the same edge as the homepage's. */
 .column {
   margin-inline: auto;
   width: 100%;
@@ -38,16 +52,12 @@
   border-radius: 2px;
 }
 
-/* Rows are the exception: walking the listing already lights the line you
-   are on, so a ring over the top of it is noise. Scoped through .stage to
-   outrank the blanket rule above, which is (0,3,0) on its own. */
 .stage .row:focus-visible {
-  outline: none;
+  outline: 1px solid #737373;
+  outline-offset: -1px;
+  border-radius: 6px;
 }
 
-/* Sits on the same left edge as every row below it, the row's own
-   padding, so the column reads as one block rather than a heading that
-   has slipped out from under its list. */
 .title {
   display: flex;
   align-items: center;
@@ -70,7 +80,6 @@
   color: #f5f5f5;
 }
 
-/* Easter egg: the hammer takes a swing when you come near the title. */
 @keyframes hammerTap {
   0% { transform: rotate(0deg); }
   22% { transform: rotate(-30deg); }
@@ -86,7 +95,6 @@
   }
 }
 
-/* Says what the page is, for anyone who does not already know. */
 .intro {
   margin: 16px 0 0;
   max-width: 32rem;
@@ -95,18 +103,34 @@
   color: #a3a3a3;
 }
 
+/* ── Columns ──
+   The name column carries a 22px mark in front of the name, so it is
+   wider than it was. Widths are off measured text, not guessed: the
+   longest name is 65px and the longest tagline 281px, which 104 and 48
+   clear with room rather than landing exactly on the line.
 
-/* ── Columns ── */
+   A row with a price has no language to show, so it drops that column
+   and hands the width back to the line now carrying the price. The
+   caret still lands in the same 16px at the end either way, which is
+   what keeps the two kinds of row reading as one listing. */
 
 .legendRow,
 .row {
   display: grid;
-  grid-template-columns: 112px minmax(0, 1fr) 40px 16px;
+  grid-template-columns: 104px minmax(0, 1fr) 48px 16px;
   align-items: center;
   gap: 16px;
   padding: 8px;
   font-size: var(--text-meta);
   line-height: 1.5;
+}
+
+.row.priceRow {
+  grid-template-columns: 104px minmax(0, 1fr) 16px;
+}
+
+.legendName {
+  padding-left: calc(var(--mark) + var(--mark-gap));
 }
 
 .legendRow {
@@ -123,9 +147,8 @@
   list-style: none;
 }
 
-/* The open entry keeps its row and its fold on one quiet ground, so the
-   two read as the one thing rather than a row with something under it. */
 .item {
+  position: relative;
   border-radius: 6px;
   transition: background-color 560ms cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -151,17 +174,128 @@
     color 160ms ease;
 }
 
+/* ── The mark ──
+   The same 22px tile the homepage's So Far chapters wear, down to the
+   5px corner and the hairline, so a tool and a job read as the same
+   kind of thing. Only the ones I sell wear one, since only they have
+   artwork; a tool with no icon file yet falls back to a monogram on the
+   same tile. Every row holds the slot open regardless, or the marked
+   names would sit 30px to the right of all the others. */
+
 .colName {
+  display: flex;
+  align-items: center;
+  gap: var(--mark-gap);
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   font-weight: var(--font-weight-strong);
   color: #f5f5f5;
 }
 
-/* Closes the row on the right, where it cannot push the names off the
-   column's left edge. */
+.markSlot {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--mark);
+  height: var(--mark);
+}
+
+.markTile {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #262626;
+  border-radius: 5px;
+  background: #191919;
+  transition:
+    transform 350ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 250ms ease;
+}
+
+.markArt {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.markLetter {
+  font-size: var(--text-meta);
+  font-weight: var(--font-weight-strong);
+  line-height: 1;
+  color: #7d7d7d;
+  transition: color 250ms ease;
+}
+
+/* A brief burst from Petal's icon, outside the row's reveal clipping.
+   Decorations never move the layout or intercept a click. */
+.petalBurst {
+  position: absolute;
+  top: 19px;
+  left: calc(8px + var(--mark) / 2);
+  z-index: 3;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.burstPetal {
+  position: absolute;
+  left: 0;
+  top: 0;
+  aspect-ratio: 764 / 615.1;
+  overflow: visible;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes petalPop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(.25) rotate(0deg);
+    animation-timing-function: cubic-bezier(.16, .8, .3, 1);
+  }
+  16% { opacity: 1; }
+  44% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--petal-x)), calc(-50% + var(--petal-y))) scale(1) rotate(var(--petal-turn));
+    animation-timing-function: cubic-bezier(.4, 0, .6, 1);
+  }
+  68% { opacity: .9; }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--petal-x) * 1.14), calc(-50% + var(--petal-y) + 24px)) scale(.8) rotate(calc(var(--petal-turn) + 28deg));
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .burstPetal {
+    animation: petalPop 1400ms var(--petal-delay) both;
+  }
+}
+
+/* The same lift the So Far tiles take when you come near a chapter. */
+@media (hover: hover) {
+  .row:hover .markTile,
+  .row:focus-visible .markTile {
+    transform: translateY(-1px) rotate(-4deg) scale(1.1);
+    border-color: #3f3f3f;
+  }
+
+  .row:hover .markLetter {
+    color: #a3a3a3;
+  }
+}
+
+.nameText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .caret {
   flex: none;
   color: #5a5a5a;
@@ -176,8 +310,6 @@
   opacity: 1;
 }
 
-/* Open: the caret turns down and stays lit, whether or not the pointer
-   is anywhere near it. */
 .row[data-open] .caret {
   opacity: 1;
   transform: rotate(90deg);
@@ -191,27 +323,26 @@
   white-space: nowrap;
 }
 
-.colLang {
+.colLast {
+  justify-self: end;
   color: #7d7d7d;
-  text-align: right;
   white-space: nowrap;
 }
 
-/* ── The line under the pointer ──
-   A shade off the page rather than a slab of white: enough to say which
-   line you are on, quiet enough to belong to the rest of the site. */
 .row[data-selected] {
   background: #1c1c1c;
   color: #d4d4d4;
 }
 
-.row[data-selected] .colLang {
+.row[data-selected] .colLast {
   color: #8a8a8a;
 }
 
-/* ── The entry, folded under its row ──
-   Nought rows high at rest; opening runs the track out to the content's
-   own height, which is the one way to animate to "however tall it is". */
+.stage .row:active {
+  background: #242424;
+}
+
+/* ── The entry, folded under its row ── */
 
 .fold {
   display: grid;
@@ -232,13 +363,13 @@
   opacity: 1;
 }
 
-/* One rhythm the whole way down, 16 between the parts, 24 before the
-   two ways in, instead of a different gap under every element. */
+/* The fold's lines begin under the name rather than under the mark, so
+   the opened entry hangs off the title it belongs to. */
 .detail {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 16px 8px;
+  padding: 16px 8px 16px calc(8px + var(--mark) + var(--mark-gap));
 }
 
 .meta {
@@ -262,9 +393,6 @@
   margin-top: 8px;
 }
 
-/* Each line of the entry runs out from the left as the fold opens, the
-   same wipe the rows themselves arrive on, so an entry opening looks like
-   the listing printing one more paragraph of itself. */
 @keyframes foldLine {
   from {
     opacity: 0;
@@ -325,6 +453,167 @@
   }
 }
 
+/* ── The light ───────────────────────────────────────────────────
+   A paid entry sits on a tinted ground and picks up a light that moves
+   with the pointer, so the tint stops being a painted stripe and starts
+   behaving like a surface.
+
+   The light is on the row's button, not on the entry, and that is the
+   whole of what keeps it out of an opened fold: the bar is the thing
+   you point at, so the bar is the only thing that lights. Open an entry
+   and the tint carries on down through the fold while the light stays
+   in the bar above it, and moving the pointer down into the note puts
+   it out. `--mx` / `--my` are written onto the button on pointermove.
+
+   A negative-z layer inside the button's own stacking context puts the
+   light over the entry's ground and under its text, so not a word of it
+   is washed out. ── */
+
+.lit .row {
+  isolation: isolate;
+}
+
+.lit .row::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 6px;
+  background: radial-gradient(
+    170px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(var(--lit-rgb) / var(--lit-core)),
+    rgb(var(--lit-rgb) / var(--lit-fall)) 45%,
+    transparent 72%
+  );
+  opacity: 0;
+  transition: opacity 320ms ease;
+  pointer-events: none;
+}
+
+/* Hover rather than the row cursor on purpose: a light that follows a
+   pointer has nothing to say once the pointer has left, and leaving the
+   bar for the fold below should put it out. */
+.lit .row:hover::before,
+.lit .row:focus-visible::before {
+  opacity: 1;
+}
+
+/* The row's own hover slab would flatten the tint; the light is the
+   only thing marking the row you are on. */
+.lit .row[data-selected] {
+  background: transparent;
+}
+
+/* A price is not a language, so it does not stand in the language's
+   column: it sits at the end of the line that describes the thing, after
+   the same middle dot the rest of the site separates clauses with, and
+   the language column is left empty. Nothing to mistake for anything. */
+.price {
+  white-space: nowrap;
+  color: var(--paid-quiet);
+  transition: color 200ms ease;
+}
+
+.priceTail {
+  white-space: nowrap;
+}
+
+.sep {
+  color: #5a5a5a;
+}
+
+.lit .row:hover .price,
+.lit .row:focus-visible .price,
+.lit .row[data-open] .price {
+  color: var(--paid-bright);
+}
+
+/* ── The sweep ──
+   A soft band of light crossing the bar, then a beat of nothing, then
+   again. It is what a still tint cannot be: the page holds nothing else
+   that moves on its own, so a row that does is unmistakably not a row
+   under a pointer.
+
+   Its own element rather than a pseudo on the row, for two reasons: the
+   clipping has to happen on a box that is not the row (the mark tile
+   grows past the row's padding when you come near it, and would be
+   sheared off by an overflow rule there), and travelling by transform
+   inside that box keeps the loop on the compositor instead of repainting
+   the row sixty times a second forever. */
+
+.sweep {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  border-radius: 6px;
+  opacity: 1;
+  transition: opacity 320ms ease;
+  pointer-events: none;
+}
+
+/* Wider than the row it crosses, and shaped like a bell rather than a
+   ramp: a three-stop gradient turns over hard at the ends, and on a
+   38px bar you read those corners as edges. The intermediate stops
+   round them off, so what passes is a soft fall of light with no sides
+   to it. */
+.sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 150%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgb(var(--lit-rgb) / calc(var(--sweep) * 0.12)) 20%,
+    rgb(var(--lit-rgb) / calc(var(--sweep) * 0.45)) 35%,
+    rgb(var(--lit-rgb) / calc(var(--sweep) * 0.85)) 45%,
+    rgb(var(--lit-rgb) / var(--sweep)) 50%,
+    rgb(var(--lit-rgb) / calc(var(--sweep) * 0.85)) 55%,
+    rgb(var(--lit-rgb) / calc(var(--sweep) * 0.45)) 65%,
+    rgb(var(--lit-rgb) / calc(var(--sweep) * 0.12)) 80%,
+    transparent 100%
+  );
+  transform: translateX(-100%);
+}
+
+/* Under the pointer the moving band would be reading against the light
+   the pointer is already casting, so it steps back and lets it lead. */
+.lit .row:hover .sweep {
+  opacity: 0.35;
+}
+
+/* Off one edge to off the other, evenly, with no pause held at either
+   end. The pause was affordable while a tint was underneath it; with
+   nothing under the band, a row resting is a row with no light on it at
+   all, and the crossing has to be the whole cycle. An even rate rather
+   than an eased one for the same reason: the band's own falloff is what
+   makes it arrive and leave, so the travel underneath should not also
+   be slowing down and speeding up. */
+@keyframes sweep {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(67%); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sweep::after {
+    animation: sweep 12.5s linear infinite;
+  }
+}
+
+/* Colour on its own says nothing to a screen reader, so the row carries
+   the word as well, out of sight. */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* ── Narrow ── */
 
 @media (max-width: 640px) {
@@ -347,7 +636,7 @@
   }
 
   .row {
-    grid-template-columns: minmax(0, 1fr) 40px 16px;
+    grid-template-columns: minmax(0, 1fr) 48px 16px;
     row-gap: 4px;
     padding: 8px;
   }
@@ -356,13 +645,16 @@
     grid-column: 1;
   }
 
+  /* The tagline drops to its own line and starts under the name, not
+     under the mark, so the block still reads as one entry. */
   .colWhat {
     grid-column: 1 / -1;
     grid-row: 2;
+    padding-left: calc(var(--mark) + var(--mark-gap));
     white-space: normal;
   }
 
-  .colLang {
+  .colLast {
     grid-column: 2;
     grid-row: 1;
   }
@@ -372,9 +664,18 @@
     grid-row: 1;
   }
 
+  .row.priceRow {
+    grid-template-columns: minmax(0, 1fr) 16px;
+  }
+
+  .row.priceRow .caret {
+    grid-column: 2;
+  }
+
   .note {
     font-size: var(--text-meta);
   }
+
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -382,11 +683,29 @@
   .item,
   .caret,
   .link,
-  .linkIcon {
+  .linkIcon,
+  .markTile,
+  .markLetter,
+  .price,
+  .sweep,
+  .titleIcon,
+  .lit .row::before {
     transition: none;
   }
 
   .fold {
     transition: opacity 1ms linear;
+  }
+
+  .row:hover .markTile,
+  .row:focus-visible .markTile {
+    transform: none;
+  }
+
+  /* The band stays, it just stops travelling: centred on the bar, which
+     is a still pool of the same light rather than a grey slab. */
+  .sweep::after {
+    animation: none;
+    transform: translateX(-16.7%);
   }
 }

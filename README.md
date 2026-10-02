@@ -2,7 +2,7 @@
 
 The personal site of [Owen Opacki](https://x.com/newomp4) (@newomp4): who he is, the path so far,
 and where to find him. Dark, ultra-minimal, with a film-photo gallery at [`/gallery`](./app/gallery)
-and a Tools placeholder at [`/tools`](./app/tools).
+and a directory of free and paid tools at [`/tools`](./app/tools).
 
 Built with Next.js (App Router) + Tailwind CSS v4 + TypeScript. Fully static.
 
@@ -12,6 +12,9 @@ Built with Next.js (App Router) + Tailwind CSS v4 + TypeScript. Fully static.
 Notes and intro lines support `[markdown links](https://...)`, including in-page anchors like
 `[college](#bryant)`. Logos for path entries live in `public/logos/`; photos in `public/photos/`
 (committed byte-for-byte from the original scans, never recompress them).
+
+Tool descriptions and links live in [`lib/tools.ts`](lib/tools.ts). Paid entries
+include a price, a product URL, and an optional icon from `public/logos/`.
 
 ## Develop
 

@@ -17,6 +17,7 @@ export default function BackLink({
   return (
     <Link
       href="/"
+      aria-label="Back to home"
       className={corner ? `${styles.backLink} ${styles.backCorner} rise` : styles.backLink}
       style={corner ? ({ "--rise-delay": "0.05s" } as CSSProperties) : undefined}
     >

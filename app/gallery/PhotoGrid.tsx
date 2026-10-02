@@ -273,7 +273,7 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
   const reduced = useReducedMotionPreference();
   const [viewer, setViewer] = useState<Viewer | null>(null);
   const cells = useRef<(HTMLLIElement | null)[]>([]);
-  const tiles = useRef<(HTMLButtonElement | null)[]>([]);
+  const opener = useRef<HTMLButtonElement | null>(null);
   const card = useRef<HTMLDivElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const seen = useRef<Set<string>>(new Set());
@@ -286,6 +286,7 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
     if (viewer) return;
     const photo = photos[index];
     const ratio = photo.src.width / photo.src.height;
+    opener.current = button;
     setViewer({
       index,
       ratio,
@@ -315,13 +316,17 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
     if (!viewing) return;
     const modal = dialog.current;
     if (!modal) return;
+    const trigger = opener.current;
     modal.showModal();
     card.current?.focus({ preventScroll: true });
     const previousOverflow = document.documentElement.style.overflow;
-    document.documentElement.style.overflow = "hidden";
+    document.documentElement.style.setProperty("overflow", "hidden");
     return () => {
       modal.close();
-      document.documentElement.style.overflow = previousOverflow;
+      document.documentElement.style.setProperty("overflow", previousOverflow);
+      // React has restored the tile and removed the modal before this cleanup.
+      // A route unmount also runs cleanup, but its removed tile cannot take focus.
+      if (trigger?.isConnected) trigger.focus({ preventScroll: true });
     };
   }, [viewing]);
 
@@ -343,7 +348,6 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
 
   function finish() {
     if (viewer?.phase !== "closing" || !viewer.back) return;
-    tiles.current[viewer.index]?.focus({ preventScroll: true });
     setViewer(null);
   }
 
@@ -365,9 +369,6 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
               style={{ "--arrival-delay": `${0.1 + index * 0.05}s` } as CSSProperties}
             >
               <motion.button
-                ref={(element) => {
-                  tiles.current[index] = element;
-                }}
                 type="button"
                 layout={!reduced}
                 className={styles.tile}
@@ -379,6 +380,7 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
                 onPointerEnter={() => warm(index)}
                 onFocus={() => warm(index)}
                 aria-label={`Open photo ${index + 1}: ${item.alt}`}
+                aria-haspopup="dialog"
                 tabIndex={viewing ? -1 : 0}
               >
                 <SoftPhoto

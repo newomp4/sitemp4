@@ -28,18 +28,18 @@ export default function CopyHandle({ label, handle }: Props) {
     }
     setStatus(next);
     if (timer.current !== null) window.clearTimeout(timer.current);
-    timer.current = window.setTimeout(
-      () => setStatus("idle"),
-      next === "copied" ? 1500 : 3000,
-    );
+    timer.current = next === "copied"
+      ? window.setTimeout(() => setStatus("idle"), 1500)
+      : null;
   }
 
   return (
-    <span className="inline-flex items-baseline gap-2">
+    <span className="inline-flex flex-wrap items-baseline gap-x-2 gap-y-1">
       <button
         type="button"
         onClick={copy}
         aria-label={`Copy ${label} handle ${handle} to clipboard`}
+        title={`Copy ${handle}`}
         className={`${styles.social} cursor-pointer`}
         data-copied={status === "copied"}
       >
@@ -71,10 +71,10 @@ export default function CopyHandle({ label, handle }: Props) {
           </span>
         </span>
       </button>
-      {/* If the clipboard is unavailable, say the handle instead of failing silently */}
+      {/* Keep the selectable fallback visible until a later copy succeeds. */}
       {status === "failed" && (
         <span className={`${styles.glyphIn} text-meta text-[#8A8A8A]`}>
-          Copy this: {handle}
+          Copy this: <span className="select-all text-[#D4D4D4]">{handle}</span>
         </span>
       )}
       <span aria-live="polite" className="sr-only">

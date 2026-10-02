@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import { test } from "vitest";
 import { ageAt } from "../lib/age.ts";
 import { profile, path } from "../lib/content.ts";
+import { tools } from "../lib/tools.ts";
 import { fitPhoto } from "../lib/photo-layout.ts";
 
 test("age advances on the birthday, without rounding up beforehand", () => {
@@ -50,7 +51,27 @@ test("photos awaiting dimensions have a finite square fallback", () => {
   }
 });
 
-test("every configured career logo and both profile photos exist", async () => {
-  const assets = [...path.map(item => item.logo).filter(Boolean), "/photos/avatar.jpg", "/photos/owen-nyc.jpg"];
+test("every configured career logo, tool icon, and both profile photos exist", async () => {
+  const assets = [
+    ...path.map(item => item.logo).filter(Boolean),
+    ...tools.map(tool => tool.icon).filter(Boolean),
+    "/photos/avatar.jpg",
+    "/photos/owen-nyc.jpg",
+  ];
   await Promise.all(assets.map(asset => access(resolve("public", asset.slice(1)))));
+});
+
+// A paid entry is marked by its price, so anything carrying one has to
+// have somewhere for the money to go: a row that says $5 and then offers
+// no way to buy it is worse than one that never mentioned a price.
+test("every tool is either open source with a repo, or priced with somewhere to buy it", () => {
+  for (const tool of tools) {
+    if (tool.price) {
+      assert.ok(tool.buy, `${tool.name} has a price but no buy link`);
+      assert.ok(!tool.lang, `${tool.name} is paid, so it should not claim a language`);
+    } else {
+      assert.ok(tool.repo, `${tool.name} is free but has no repo`);
+      assert.ok(tool.lang, `${tool.name} is free but names no language`);
+    }
+  }
 });

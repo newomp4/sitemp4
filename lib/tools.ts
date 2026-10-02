@@ -1,19 +1,38 @@
 /**
  * ─────────────────────────────────────────────────────────────
- *  TOOLS, the free things on GitHub.
+ *  TOOLS, the free things on GitHub and the ones I sell.
  *  Same idea as content.ts: edit here, every layout updates.
  * ─────────────────────────────────────────────────────────────
  */
+
+/**
+ * An entry is one of two things, and which one is decided by whether it
+ * has a price.
+ *
+ * Open source: a repo, maybe a demo, the language it is written in and
+ * when it last moved. Paid: a price, somewhere to buy it, and a mark.
+ * A paid one names no language on purpose, since you cannot go and read
+ * the source of it, and the listing leaves that column empty rather than
+ * standing a price where a language belongs.
+ */
+export type Lang = "TypeScript" | "JavaScript" | "Python" | "HTML" | "CSS";
 
 export type Tool = {
   name: string;
   tagline: string; // one line, what it is
   note: string; // a sentence or two, the longer story
-  repo: string;
-  demo?: string; // a live one you can open right now
-  lang: "TypeScript" | "JavaScript" | "Python" | "HTML" | "CSS";
-  updated: string; // "2026-08", rendered as "Aug 2026"
   tags: string[];
+
+  // ── the open source ones ──
+  repo?: string;
+  demo?: string; // a live one you can open right now
+  lang?: Lang;
+  updated?: string; // "2026-08", rendered as "Aug 2026"
+
+  // ── mine, paid ──
+  price?: string; // "$5", shown at the end of the tagline
+  buy?: string; // where the money changes hands
+  icon?: string; // a file in /public; falls back to a monogram
 };
 
 export const github = "https://github.com/newomp4";
@@ -22,9 +41,18 @@ export const github = "https://github.com/newomp4";
    running off the end of it, and it says what the things are, since
    "tools" by itself does not. */
 export const toolsIntro =
-  "Open source free apps and tools I've built for myself or for one off projects. Feel free to use and edit however you want!";
+  "Apps and tools I've built, mostly for myself or for one off projects. The open source ones are free, use and edit them however you want.";
 
 export const tools: Tool[] = [
+  {
+    name: "petal.bar",
+    tagline: "AI usage in your Mac menu bar",
+    note: "Keep an eye on your Codex and Claude limits, see when they reset, and get a reminder before you run out. Runs on macOS 14 or later, on Apple silicon and Intel. One-time purchase with lifetime updates.",
+    tags: ["mac", "menu bar"],
+    price: "$3.99",
+    buy: "https://petal.bar",
+    icon: "/logos/petal.png",
+  },
   {
     name: "twitchsim",
     tagline: "Fake Twitch chat simulator",
@@ -67,14 +95,15 @@ export const tools: Tool[] = [
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-/** "2026-08" → "Aug 2026" */
-export function updatedLabel(updated: string): string {
+/** "2026-08" → "Aug 2026". Paid entries carry no date, hence the guard. */
+export function updatedLabel(updated: string | undefined): string {
+  if (!updated) return "";
   const [year, month] = updated.split("-");
   return `${MONTHS[Number(month) - 1]} ${year}`;
 }
 
 /** The short form the dense layouts use. */
-export const SHORT_LANG: Record<Tool["lang"], string> = {
+export const SHORT_LANG: Record<Lang, string> = {
   TypeScript: "TS",
   JavaScript: "JS",
   Python: "PY",
