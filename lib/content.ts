@@ -43,7 +43,7 @@ export const path: PathItem[] = [
     years: "2026 – present",
     title: "Whop",
     role: "Content Lead",
-    note: "Making marketing content for [Whop](https://whop.com) and building the creative tools behind it. Whop is where people start and run businesses on the internet.",
+    note: "Marketing and building creative tools at [Whop](https://whop.com), where people build businesses, run ads and get paid.",
     href: "https://whop.com",
     external: true,
     logo: "/logos/whop.png",
