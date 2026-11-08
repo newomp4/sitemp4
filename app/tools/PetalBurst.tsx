@@ -33,7 +33,7 @@ const flights = petals.map((petal, index) => ({
     return {
       offset: progress,
       opacity: Math.min(1, t / .025) * (1 - fade) ** 1.3,
-      transform: `translate(calc(-50% + ${x.toFixed(3)}px * var(--petal-spread)), calc(-50% + ${y.toFixed(3)}px)) rotate(${angle.toFixed(2)}deg) scale(${scale.toFixed(3)})`,
+      transform: `translate(calc(-50% + ${x.toFixed(3)}px * var(--burst-spread)), calc(-50% + ${y.toFixed(3)}px)) rotate(${angle.toFixed(2)}deg) scale(${scale.toFixed(3)})`,
     };
   }),
 }));
@@ -51,7 +51,7 @@ export default function PetalBurst() {
   }, []);
 
   return (
-    <span className={styles.petalBurst} aria-hidden="true">
+    <span className={styles.burst} aria-hidden="true">
       {petals.map(({ color, size }, i) => (
         <svg
           key={color}

@@ -12,10 +12,10 @@ export const profile = {
   // Where the @ points, it's how people know him, so the site links it big.
   handleHref: "https://x.com/newomp4",
   email: "owen@contentrewards.com",
-  headline: "Hi, I'm Owen",
+  headline: "Hi, I'm Owen Opacki",
   tagline: "I make things for the internet.",
   intro: [
-    "Head of Creative at [Content Rewards](https://contentrewards.com).",
+    "Creative & Marketing at Whop, previously Head of Creative at Content Rewards.",
     "Boston · [19](#age)",
   ],
 };
@@ -39,6 +39,15 @@ export type PathItem = {
 export const path: PathItem[] = [
   {
     years: "2026 – present",
+    title: "Whop",
+    role: "Content Lead",
+    note: "Leading creative and marketing at [Whop](https://whop.com) and building the tools behind it. Whop is where people start and run businesses on the internet.",
+    href: "https://whop.com",
+    external: true,
+    logo: "/logos/whop.png",
+  },
+  {
+    years: "2026",
     title: "Content Rewards",
     role: "Head of Creative",
     note: "The Marketplace for Virality where - brands pay creators for their content.",
@@ -104,13 +113,12 @@ export const links: LinkItem[] = [
 ];
 
 export type Social = {
-  label: string;
+  label: string; // also picks its mark in app/SocialIcon.tsx
   handle: string;
-  href?: string; // omitted => rendered as click-to-copy (Discord)
+  href: string;
 };
 
 export const socials: Social[] = [
   { label: "X", handle: "@newomp4", href: "https://x.com/newomp4" },
   { label: "Instagram", handle: "@newomp4", href: "https://instagram.com/newomp4" },
-  { label: "Discord", handle: "newomp4" },
 ];

@@ -61,17 +61,17 @@ test("every configured career logo, tool icon, and both profile photos exist", a
   await Promise.all(assets.map(asset => access(resolve("public", asset.slice(1)))));
 });
 
-// A paid entry is marked by its price, so anything carrying one has to
-// have somewhere for the money to go: a row that says $5 and then offers
-// no way to buy it is worse than one that never mentioned a price.
-test("every tool is either open source with a repo, or priced with somewhere to buy it", () => {
+// An app is marked by its price, so anything carrying one has to have
+// somewhere to go: a row that says $5 and then offers no way to get it
+// is worse than one that never mentioned a price.
+test("every tool is either open source with a repo, or an app with its own site", () => {
   for (const tool of tools) {
     if (tool.price) {
-      assert.ok(tool.buy, `${tool.name} has a price but no buy link`);
-      assert.ok(!tool.lang, `${tool.name} is paid, so it should not claim a language`);
+      assert.ok(tool.site, `${tool.name} has a price but no site`);
+      assert.ok(!tool.lang, `${tool.name} is an app, so it should not claim a language`);
     } else {
-      assert.ok(tool.repo, `${tool.name} is free but has no repo`);
-      assert.ok(tool.lang, `${tool.name} is free but names no language`);
+      assert.ok(tool.repo, `${tool.name} has no price and no repo`);
+      assert.ok(tool.lang, `${tool.name} has no price and names no language`);
     }
   }
 });

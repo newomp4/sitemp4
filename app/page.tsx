@@ -5,18 +5,19 @@ import { profile, path, socials, type PathItem } from "@/lib/content";
 import AgeTicker from "./AgeTicker";
 import AnchorLink from "./AnchorLink";
 import Avatar from "./Avatar";
-import CopyHandle from "./copy-handle";
 import FoldRow from "./FoldRow";
 import GalleryLink from "./GalleryLink";
 import HiddenFooter from "./HiddenFooter";
 import LocalTime from "./LocalTime";
 import NamePortrait from "./NamePortrait";
+import SocialIcon from "./SocialIcon";
 import styles from "./styles.module.css";
 
 /* One staggered entrance runs down the page: headline, the two intro
-   lines, the contact row, each chapter, then the footer. */
+   lines (the second ends with the contact marks), each chapter, then the
+   footer. */
 const RISE_STEP = 0.05;
-const PATH_RISE_START = 4;
+const PATH_RISE_START = 3;
 
 const rise = (step: number): CSSProperties =>
   ({ "--rise-delay": `${step * RISE_STEP}s` }) as CSSProperties;
@@ -132,8 +133,7 @@ function PathRow({ item, index }: { item: PathItem; index: number }) {
 }
 
 export default function Home() {
-  const firstName = profile.name.split(" ")[0];
-  const nameIndex = profile.headline.indexOf(firstName);
+  const nameIndex = profile.headline.indexOf(profile.name);
 
   return (
     <div className={`${styles.root} min-h-dvh w-full bg-[#111111]`}>
@@ -145,12 +145,22 @@ export default function Home() {
             style={rise(0)}
             className="rise relative z-10 text-title font-strong tracking-tight text-[#F5F5F5]"
           >
-            {profile.headline.slice(0, nameIndex)}
-            <NamePortrait>{firstName}</NamePortrait>
-            {profile.headline.slice(nameIndex + firstName.length)}{" "}
-            <span aria-hidden="true" className="font-regular text-[#3F3F3F]">
+            {nameIndex < 0 ? (
+              profile.headline
+            ) : (
+              <>
+                {profile.headline.slice(0, nameIndex)}
+                <NamePortrait>{profile.name}</NamePortrait>
+                {profile.headline.slice(nameIndex + profile.name.length)}
+              </>
+            )}{" "}
+            {/* A phone has no room for the name and the handle on one line,
+                so it sets the handle on its own rather than letting it wrap
+                and strand the slash at the end of the first. */}
+            <span aria-hidden="true" className="font-regular text-[#3F3F3F] max-sm:hidden">
               /
             </span>{" "}
+            <br className="sm:hidden" />
             <a
               href={profile.handleHref}
               target="_blank"
@@ -168,47 +178,45 @@ export default function Home() {
               </span>
             </a>
           </h1>
-          {profile.intro.map((paragraph, index) => (
-            <p
-              key={paragraph}
-              style={rise(index + 1)}
-              className={`rise text-body leading-relaxed text-[#A3A3A3] ${index === 0 ? "mt-4" : "mt-1"}`}
-            >
-              {richText(paragraph)}
-            </p>
-          ))}
-          {/* Where to find me, part of the introduction, not a footer. */}
-          <ul
-            id="contact"
-            aria-label="Contact"
-            style={rise(profile.intro.length + 1)}
-            className={`${styles.contactLinks} rise mt-4 flex scroll-mt-10 flex-wrap gap-y-2`}
-          >
-            {socials.map((social) => (
-              <li key={social.label}>
-                {social.href ? (
-                  <a
-                    href={social.href}
-                    {...(social.href.startsWith("http")
-                      ? { target: "_blank", rel: "noopener noreferrer" }
-                      : {})}
-                    aria-label={`${social.label} · ${social.handle}`}
-                    className={styles.social}
-                  >
-                    {social.label}{" "}
-                    <span
-                      aria-hidden="true"
-                      className={`${styles.socialArrow} inline-block`}
-                    >
-                      ↗
-                    </span>
-                  </a>
-                ) : (
-                  <CopyHandle label={social.label} handle={social.handle} />
+          {profile.intro.map((paragraph, index) => {
+            const last = index === profile.intro.length - 1;
+            /* The last line carries the contact marks, so it is a block
+               rather than a paragraph: a list cannot sit inside a <p>. */
+            const Line = last ? "div" : "p";
+            return (
+              <Line
+                key={paragraph}
+                style={rise(index + 1)}
+                className={`rise text-body leading-relaxed text-[#A3A3A3] ${index === 0 ? "mt-4" : "mt-1"}`}
+              >
+                {richText(paragraph)}
+                {last && (
+                  <>
+                    {" "}
+                    <span aria-hidden="true">·</span>{" "}
+                    {/* Where to find me, closing the line that says where
+                        I am, rather than a row of its own. */}
+                    <ul id="contact" aria-label="Contact" className={`${styles.contactIcons} scroll-mt-10`}>
+                      {socials.map((social) => (
+                        <li key={social.label} className="flex">
+                          <a
+                            href={social.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${social.label} · ${social.handle}`}
+                            title={social.label}
+                            className={styles.socialIcon}
+                          >
+                            <SocialIcon name={social.label} />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
                 )}
-              </li>
-            ))}
-          </ul>
+              </Line>
+            );
+          })}
         </section>
 
         <main>

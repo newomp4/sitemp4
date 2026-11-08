@@ -1,10 +1,11 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { expect, test, vi } from "vitest";
+import { expect, test } from "vitest";
 import NamePortrait from "../app/NamePortrait";
 import AgeTicker from "../app/AgeTicker";
 import FoldRow from "../app/FoldRow";
 import PhotoGrid from "../app/gallery/PhotoGrid";
-import CopyHandle from "../app/copy-handle";
+import { hasSocialIcon } from "../app/SocialIcon";
+import { socials } from "../lib/content";
 
 function tap(element: HTMLElement) {
   fireEvent.pointerDown(element, { pointerType: "touch" });
@@ -85,19 +86,6 @@ test("gallery keyboard focus wraps, and unmount releases its scroll lock", async
   expect(document.documentElement.style.overflow).toBe("");
 });
 
-test("Discord copy reports success only after the clipboard write succeeds", async () => {
-  render(<CopyHandle label="Discord" handle="newomp4" />);
-  const button = screen.getByRole("button", { name: /Copy Discord/ });
-  fireEvent.click(button);
-  await waitFor(() => expect(button.getAttribute("data-copied")).toBe("true"));
-  expect(navigator.clipboard.writeText).toHaveBeenCalledWith("newomp4");
-});
-
-test("blocked clipboard access exposes the handle instead of a false success", async () => {
-  vi.mocked(navigator.clipboard.writeText).mockRejectedValue(new Error("Clipboard denied"));
-  render(<CopyHandle label="Discord" handle="newomp4" />);
-  const button = screen.getByRole("button", { name: /Copy Discord/ });
-  fireEvent.click(button);
-  expect((await screen.findByText("newomp4")).parentElement?.textContent).toBe("Copy this: newomp4");
-  expect(button.getAttribute("data-copied")).toBe("false");
+test("every contact has a mark, since the row shows marks and no names", () => {
+  for (const social of socials) expect(hasSocialIcon(social.label), social.label).toBe(true);
 });

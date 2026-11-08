@@ -4,7 +4,7 @@
    folded underneath it; clicking the row breathes that open, on the
    fold the homepage chapters use.
 
-   The ones I sell are marked under "The light" at the bottom. ── */
+   The apps are marked under "The light" at the bottom. ── */
 
 .stage {
   position: relative;
@@ -31,8 +31,8 @@
   --lit-core: 0.13;
   --lit-fall: 0.035;
   --sweep: 0.062;
-  --paid-quiet: #a3a3a3;
-  --paid-bright: #f5f5f5;
+  --price-quiet: #a3a3a3;
+  --price-bright: #f5f5f5;
 }
 
 @supports (justify-content: safe center) {
@@ -104,29 +104,21 @@
 }
 
 /* ── Columns ──
-   The name column carries a 22px mark in front of the name, so it is
-   wider than it was. Widths are off measured text, not guessed: the
-   longest name is 65px and the longest tagline 281px, which 104 and 48
-   clear with room rather than landing exactly on the line.
-
-   A row with a price has no language to show, so it drops that column
-   and hands the width back to the line now carrying the price. The
-   caret still lands in the same 16px at the end either way, which is
-   what keeps the two kinds of row reading as one listing. */
+   The name, what it does, and the caret. The name column is wider than
+   its longest name (65px, plus the 30px the mark takes in front of it)
+   on purpose: with nothing after the description but the caret, the
+   description can afford to stand well clear of the name rather than
+   crowding it, and the longest one still ends with room to spare. */
 
 .legendRow,
 .row {
   display: grid;
-  grid-template-columns: 104px minmax(0, 1fr) 48px 16px;
+  grid-template-columns: 152px minmax(0, 1fr) 16px;
   align-items: center;
   gap: 16px;
   padding: 8px;
   font-size: var(--text-meta);
   line-height: 1.5;
-}
-
-.row.priceRow {
-  grid-template-columns: 104px minmax(0, 1fr) 16px;
 }
 
 .legendName {
@@ -181,9 +173,9 @@
 /* ── The mark ──
    The same 22px tile the homepage's So Far chapters wear, down to the
    5px corner and the hairline, so a tool and a job read as the same
-   kind of thing. Only the ones I sell wear one, since only they have
-   artwork; a tool with no icon file yet falls back to a monogram on the
-   same tile. Every row holds the slot open regardless, or the marked
+   kind of thing. Only the apps wear one, since only they have artwork;
+   a tool with no icon file yet falls back to a monogram on the same
+   tile. Every row holds the slot open regardless, or the marked
    names would sit 30px to the right of all the others. */
 
 .colName {
@@ -233,11 +225,26 @@
   transition: color 250ms ease;
 }
 
+/* ID4's mark is drawn rather than placed, so that it can turn inside its
+   tile. It rests in the row's own grey and comes up to white with the
+   hover or the open entry, the same as the price beside it. */
+.spark {
+  width: calc(var(--mark) * 0.64);
+  height: calc(var(--mark) * 0.64);
+  color: #a3a3a3;
+  transition: color 250ms ease;
+}
+
+.row[data-open] .spark {
+  color: #f5f5f5;
+}
+
 /* The origin is the logo's center, measured once when the burst starts.
-   Keep the petals outside the row's entrance clipping.
+   Keep the burst outside the row's entrance clipping.
    Decorations never move the layout or intercept a click. */
-.petalBurst {
-  --petal-spread: 1;
+.burst {
+  --burst-spread: 1;
+  --ring-spread: 1;
   position: absolute;
   top: var(--burst-y);
   left: var(--burst-x);
@@ -257,6 +264,33 @@
   pointer-events: none;
 }
 
+.burstSite {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  overflow: visible;
+  color: #f5f5f5;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* A quarter turn, once, as the sites land: it starts just ahead of the
+   first and the spring is at its fastest through the rest. The mark has
+   four-way symmetry, so when the burst ends and the rotation is dropped
+   the spark lands on itself and nothing appears to move. */
+@keyframes sparkTurn {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(90deg); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-bursting] .spark {
+    animation: sparkTurn 640ms cubic-bezier(0.34, 1.56, 0.64, 1) 720ms both;
+  }
+}
+
 /* The same lift the So Far tiles take when you come near a chapter. */
 @media (hover: hover) {
   .row:hover .markTile,
@@ -267,6 +301,11 @@
 
   .row:hover .markLetter {
     color: #a3a3a3;
+  }
+
+  .row:hover .spark,
+  .row:focus-visible .spark {
+    color: #f5f5f5;
   }
 }
 
@@ -304,19 +343,9 @@
   white-space: nowrap;
 }
 
-.colLast {
-  justify-self: end;
-  color: #7d7d7d;
-  white-space: nowrap;
-}
-
 .row[data-selected] {
   background: #1c1c1c;
   color: #d4d4d4;
-}
-
-.row[data-selected] .colLast {
-  color: #8a8a8a;
 }
 
 .stage .row:active {
@@ -435,8 +464,8 @@
 }
 
 /* ── The light ───────────────────────────────────────────────────
-   A paid entry sits on a tinted ground and picks up a light that moves
-   with the pointer, so the tint stops being a painted stripe and starts
+   An app sits on a tinted ground and picks up a light that moves with
+   the pointer, so the tint stops being a painted stripe and starts
    behaving like a surface.
 
    The light is on the row's button, not on the entry, and that is the
@@ -491,7 +520,7 @@
    the language column is left empty. Nothing to mistake for anything. */
 .price {
   white-space: nowrap;
-  color: var(--paid-quiet);
+  color: var(--price-quiet);
   transition: color 200ms ease;
 }
 
@@ -506,7 +535,7 @@
 .lit .row:hover .price,
 .lit .row:focus-visible .price,
 .lit .row[data-open] .price {
-  color: var(--paid-bright);
+  color: var(--price-bright);
 }
 
 /* ── The sweep ──
@@ -576,9 +605,11 @@
   to { transform: translateX(67%); }
 }
 
+/* Half a cycle apart row by row, so the apps take turns and two bars on
+   top of each other never carry the same band at the same moment. */
 @media (prefers-reduced-motion: no-preference) {
   .sweep::after {
-    animation: sweep 12.5s linear infinite;
+    animation: sweep 12.5s linear calc(var(--line) * -6.25s) infinite;
   }
 }
 
@@ -598,8 +629,11 @@
 /* ── Narrow ── */
 
 @media (max-width: 640px) {
-  .petalBurst {
-    --petal-spread: .65;
+  /* A phone has about 40px left of the logo. The petals only drift that
+     way, but a ring goes all the way round, so it has to draw in tighter. */
+  .burst {
+    --burst-spread: .65;
+    --ring-spread: .45;
   }
 
   .stage {
@@ -610,8 +644,8 @@
     padding-inline: 32px;
   }
 
-  /* Four columns will not fit a phone, and the headings are the part the
-     rows can do without, each row names its own fields by position. */
+  /* The headings are the part a phone can do without: each row names
+     its own fields by position. */
   .legendRow {
     display: none;
   }
@@ -621,7 +655,7 @@
   }
 
   .row {
-    grid-template-columns: minmax(0, 1fr) 48px 16px;
+    grid-template-columns: minmax(0, 1fr) 16px;
     row-gap: 4px;
     padding: 8px;
   }
@@ -639,32 +673,18 @@
     white-space: normal;
   }
 
-  .colLast {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
   .caret {
-    grid-column: 3;
-    grid-row: 1;
-  }
-
-  .row.priceRow {
-    grid-template-columns: minmax(0, 1fr) 16px;
-  }
-
-  .row.priceRow .caret {
     grid-column: 2;
+    grid-row: 1;
   }
 
   .note {
     font-size: var(--text-meta);
   }
-
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .petalBurst {
+  .burst {
     display: none;
   }
 
@@ -675,6 +695,7 @@
   .linkIcon,
   .markTile,
   .markLetter,
+  .spark,
   .price,
   .sweep,
   .titleIcon,

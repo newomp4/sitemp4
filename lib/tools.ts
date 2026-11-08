@@ -1,6 +1,6 @@
 /**
  * ─────────────────────────────────────────────────────────────
- *  TOOLS, the free things on GitHub and the ones I sell.
+ *  TOOLS, the free things on GitHub and the apps.
  *  Same idea as content.ts: edit here, every layout updates.
  * ─────────────────────────────────────────────────────────────
  */
@@ -10,10 +10,9 @@
  * has a price.
  *
  * Open source: a repo, maybe a demo, the language it is written in and
- * when it last moved. Paid: a price, somewhere to buy it, and a mark.
- * A paid one names no language on purpose, since you cannot go and read
- * the source of it, and the listing leaves that column empty rather than
- * standing a price where a language belongs.
+ * when it last moved. An app: a price, even if the price is "Free", a site
+ * of its own, and a mark. An app names no language on purpose, since you
+ * cannot go and read the source of it.
  */
 export type Lang = "TypeScript" | "JavaScript" | "Python" | "HTML" | "CSS";
 
@@ -29,9 +28,9 @@ export type Tool = {
   lang?: Lang;
   updated?: string; // "2026-08", rendered as "Aug 2026"
 
-  // ── mine, paid ──
-  price?: string; // "$5", shown at the end of the tagline
-  buy?: string; // where the money changes hands
+  // ── the apps ──
+  price?: string; // "$5" or "Free", shown at the end of the tagline
+  site?: string; // its own page
   icon?: string; // a file in /public; falls back to a monogram
 };
 
@@ -45,13 +44,21 @@ export const toolsIntro =
 
 export const tools: Tool[] = [
   {
-    name: "petal.bar",
+    name: "Petal",
     tagline: "AI usage in your Mac menu bar",
     note: "Keep an eye on your Codex and Claude limits, see when they reset, and get a reminder before you run out. Runs on macOS 14 or later, on Apple silicon and Intel. One-time purchase with lifetime updates.",
     tags: ["mac", "menu bar"],
     price: "$3.99",
-    buy: "https://petal.bar",
+    site: "https://petal.bar",
     icon: "/logos/petal.png",
+  },
+  {
+    name: "ID4",
+    tagline: "Download anything on the internet",
+    note: "Paste a link and save the video, the audio or the transcript, from YouTube, TikTok, Instagram and about 1,800 other sites. Runs on macOS 14 or later, on Apple silicon. Free, with no account to make.",
+    tags: ["mac", "video", "audio"],
+    price: "Free",
+    site: "https://polyviral.org/id4",
   },
   {
     name: "twitchsim",
@@ -82,31 +89,13 @@ export const tools: Tool[] = [
     updated: "2026-09",
     tags: ["3d", "browser"],
   },
-  {
-    name: "ID4",
-    tagline: "Save YouTube videos as MP4 or MP3",
-    note: "Paste a link, choose video or audio, and it saves to a folder on your computer.",
-    repo: "https://github.com/newomp4/ID4",
-    lang: "Python",
-    updated: "2026-05",
-    tags: ["local"],
-  },
 ];
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-/** "2026-08" → "Aug 2026". Paid entries carry no date, hence the guard. */
+/** "2026-08" → "Aug 2026". Apps carry no date, hence the guard. */
 export function updatedLabel(updated: string | undefined): string {
   if (!updated) return "";
   const [year, month] = updated.split("-");
   return `${MONTHS[Number(month) - 1]} ${year}`;
 }
-
-/** The short form the dense layouts use. */
-export const SHORT_LANG: Record<Lang, string> = {
-  TypeScript: "TS",
-  JavaScript: "JS",
-  Python: "PY",
-  HTML: "HTML",
-  CSS: "CSS",
-};

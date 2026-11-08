@@ -1,0 +1,28 @@
+/* ── The 404. ── */
+
+/* The dots span the column; the numerals sit flush left in it. */
+.glyph {
+  display: block;
+  width: 100%;
+  height: 96px;
+}
+
+@media (max-width: 639px) {
+  .glyph {
+    height: 80px;
+  }
+}
+
+/* The arrow slides back the way it points, rather than tilting like the
+   homepage footer's icons. */
+a.home:hover > svg,
+a.home:focus-visible > svg {
+  transform: translateX(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.home:hover > svg,
+  a.home:focus-visible > svg {
+    transform: none;
+  }
+}
