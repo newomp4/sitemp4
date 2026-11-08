@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import { Fragment, type CSSProperties, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { profile, path, socials, type PathItem } from "@/lib/content";
@@ -56,6 +56,18 @@ function richText(text: string) {
   }
   if (last < text.length) parts.push(text.slice(last));
   return parts;
+}
+
+/* An intro line is plain copy, or a list of clauses that each hold
+   together, so the line can break between them and nowhere else. */
+function introLine(line: string | readonly string[]) {
+  if (typeof line === "string") return richText(line);
+  return line.map((clause, index) => (
+    <Fragment key={clause}>
+      {index > 0 && " "}
+      <span className="whitespace-nowrap">{richText(clause)}</span>
+    </Fragment>
+  ));
 }
 
 /* Hover or keyboard focus unfolds the story beneath each chapter. */
@@ -178,18 +190,18 @@ export default function Home() {
               </span>
             </a>
           </h1>
-          {profile.intro.map((paragraph, index) => {
+          {profile.intro.map((line, index) => {
             const last = index === profile.intro.length - 1;
             /* The last line carries the contact marks, so it is a block
                rather than a paragraph: a list cannot sit inside a <p>. */
             const Line = last ? "div" : "p";
             return (
               <Line
-                key={paragraph}
+                key={typeof line === "string" ? line : line.join(" ")}
                 style={rise(index + 1)}
                 className={`rise text-body leading-relaxed text-[#A3A3A3] ${index === 0 ? "mt-4" : "mt-1"}`}
               >
-                {richText(paragraph)}
+                {introLine(line)}
                 {last && (
                   <>
                     {" "}

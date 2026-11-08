@@ -14,8 +14,10 @@ export const profile = {
   email: "owen@contentrewards.com",
   headline: "Hi, I'm Owen Opacki",
   tagline: "I make things for the internet.",
+  // A line given as clauses only ever breaks between them, at the comma,
+  // so a narrow screen never leaves one word of it on a line by itself.
   intro: [
-    "Creative & Marketing at Whop, previously Head of Creative at Content Rewards.",
+    ["Creative & Marketing at Whop,", "ex-Head of Creative at Content Rewards."],
     "Boston · [19](#age)",
   ],
 };
@@ -41,7 +43,7 @@ export const path: PathItem[] = [
     years: "2026 – present",
     title: "Whop",
     role: "Content Lead",
-    note: "Leading creative and marketing at [Whop](https://whop.com) and building the tools behind it. Whop is where people start and run businesses on the internet.",
+    note: "Making marketing content for [Whop](https://whop.com) and building the creative tools behind it. Whop is where people start and run businesses on the internet.",
     href: "https://whop.com",
     external: true,
     logo: "/logos/whop.png",
