@@ -6,7 +6,7 @@ import { ageAt } from "../lib/age.ts";
 import { profile, path } from "../lib/content.ts";
 import { tools } from "../lib/tools.ts";
 import { fitPhoto } from "../lib/photo-layout.ts";
-import { metadata as toolsMetadata } from "../app/tools/page.tsx";
+import { metadata as toolsMetadata } from "../app/projects/page.tsx";
 import { metadata as galleryMetadata } from "../app/gallery/page.tsx";
 import { shareImage } from "../app/share.ts";
 

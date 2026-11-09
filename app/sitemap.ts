@@ -4,6 +4,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: "https://owenopacki.com/", lastModified: new Date() },
     { url: "https://owenopacki.com/gallery", lastModified: new Date() },
-    { url: "https://owenopacki.com/tools", lastModified: new Date() },
+    { url: "https://owenopacki.com/projects", lastModified: new Date() },
   ];
 }

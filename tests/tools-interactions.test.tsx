@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { expect, test } from "vitest";
-import ToolsList from "../app/tools/ToolsList";
+import ToolsList from "../app/projects/ToolsList";
 
 test("a paid app opens its own site without a source link", () => {
   render(<ToolsList />);

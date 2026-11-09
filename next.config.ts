@@ -10,8 +10,12 @@ const nextConfig: NextConfig = {
   // there, links, the old sitemap entry, still lands on it. Matching
   // is exact on purpose: the photos themselves are served from
   // /photos/... in /public, and a wildcard here would redirect them.
+  // Projects used to live at /tools; links already out there still land.
   redirects() {
-    return [{ source: "/photos", destination: "/gallery", permanent: true }];
+    return [
+      { source: "/photos", destination: "/gallery", permanent: true },
+      { source: "/tools", destination: "/projects", permanent: true },
+    ];
   },
 };
 

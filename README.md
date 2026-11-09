@@ -2,7 +2,7 @@
 
 The personal site of [Owen Opacki](https://x.com/newomp4) (@newomp4): who he is, the path so far,
 and where to find him. Dark, ultra-minimal, with a film-photo gallery at [`/gallery`](./app/gallery)
-and a directory of free and paid tools at [`/tools`](./app/tools).
+and a directory of free and paid apps and tools at [`/projects`](./app/projects).
 
 Built with Next.js (App Router) + Tailwind CSS v4 + TypeScript. Fully static.
 

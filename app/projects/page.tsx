@@ -6,11 +6,11 @@ import { shareImage } from "../share";
 export const metadata: Metadata = {
   title: "Owen Opacki · Projects",
   description: toolsIntro,
-  alternates: { canonical: "/tools" },
+  alternates: { canonical: "/projects" },
   openGraph: {
     title: "Owen Opacki · Projects",
     description: toolsIntro,
-    url: "/tools",
+    url: "/projects",
     siteName: "Owen Opacki",
     type: "website",
     images: [shareImage],
