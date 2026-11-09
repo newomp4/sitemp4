@@ -32,7 +32,7 @@ export default function AgeTicker({ birthday, children }: { birthday: string; ch
   return (
     <button
       type="button"
-      aria-label={valid ? `Age ${Math.floor(age)}. ${live ? "Hide" : "Show"} precise age` : "Show precise age"}
+      aria-label={valid ? `Age ${live ? age.toFixed(2) : Math.floor(age)}` : undefined}
       aria-pressed={live}
       onPointerEnter={(event) => { if (event.pointerType === "mouse") setLive(true); }}
       onPointerLeave={(event) => { if (event.pointerType === "mouse") setLive(false); }}
@@ -42,7 +42,7 @@ export default function AgeTicker({ birthday, children }: { birthday: string; ch
       onClick={(event) => {
         if (event.detail === 0 || pointerType.current !== "mouse") setLive((value) => !value);
       }}
-      className="cursor-default text-[#D4D4D4] tabular-nums"
+      className="cursor-default tabular-nums"
     >
       {valid ? (live ? age.toFixed(reduced ? 2 : 9) : Math.floor(age)) : children}
     </button>

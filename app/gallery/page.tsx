@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { shareImage } from "../share";
 import type { ReactNode } from "react";
 import BackLink from "../BackLink";
 import root from "../styles.module.css";
@@ -35,6 +36,7 @@ export const metadata: Metadata = {
     url: "/gallery",
     siteName: "Owen Opacki",
     type: "website",
+    images: [shareImage],
   },
 };
 
@@ -97,7 +99,7 @@ const ALL_PHOTOS: Photo[] = [
   {
     src: film29,
     alt: "The team working on laptops around a long outdoor dinner table",
-    caption: <>team bbq</>,
+    caption: <>Team BBQ</>,
   },
   {
     src: chinatown,
@@ -107,7 +109,7 @@ const ALL_PHOTOS: Photo[] = [
   {
     src: film19,
     alt: "Two people standing in front of an orange Content Rewards billboard",
-    caption: <>make content. get paid</>,
+    caption: <>Make content. Get paid.</>,
   },
   {
     src: parisTeamDinner,
@@ -127,7 +129,7 @@ const ALL_PHOTOS: Photo[] = [
   {
     src: film33,
     alt: "Two friends building a tower of Red Bull cans on a hotel room table",
-    caption: <>diet.</>,
+    caption: <>Diet.</>,
   },
   {
     src: film16a,

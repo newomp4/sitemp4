@@ -40,14 +40,14 @@ export const github = "https://github.com/newomp4";
    running off the end of it, and it says what the things are, since
    "tools" by itself does not. */
 export const toolsIntro =
-  "Apps and tools I've built, mostly for myself or for one off projects. The open source ones are free, use and edit them however you want.";
+  "Apps and tools I've built, mostly for myself or for one-off projects. The open-source ones are free to use and edit however you want.";
 
 export const tools: Tool[] = [
   {
     name: "Petal",
     tagline: "AI usage in your Mac menu bar",
     note: "Keep an eye on your Codex and Claude limits, see when they reset, and get a reminder before you run out. Runs on macOS 14 or later, on Apple silicon and Intel. One-time purchase with lifetime updates.",
-    tags: ["mac", "menu bar"],
+    tags: ["Mac", "menu bar"],
     price: "$3.99",
     site: "https://petal.bar",
     icon: "/logos/petal.png",
@@ -56,7 +56,7 @@ export const tools: Tool[] = [
     name: "ID4",
     tagline: "Download anything on the internet",
     note: "Paste a link and save the video, the audio or the transcript, from YouTube, TikTok, Instagram and about 1,800 other sites. Runs on macOS 14 or later, on Apple silicon. Free, with no account to make.",
-    tags: ["mac", "video", "audio"],
+    tags: ["Mac", "video", "audio"],
     price: "Free",
     site: "https://polyviral.org/id4",
   },
@@ -87,7 +87,7 @@ export const tools: Tool[] = [
     repo: "https://github.com/newomp4/mok",
     lang: "TypeScript",
     updated: "2026-09",
-    tags: ["3d", "browser"],
+    tags: ["3D", "browser"],
   },
 ];
 

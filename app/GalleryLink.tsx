@@ -77,7 +77,7 @@ export default function GalleryLink() {
                   opacity: { duration: open ? 0.22 : 0.14, delay },
                 }}
               >
-                <Image src={photo.src} alt="" fill sizes="80px" loading="eager" className="object-cover" />
+                <Image src={photo.src} alt="" fill sizes="80px" loading="eager" fetchPriority="low" className="object-cover" />
               </motion.span>
             );
           })}

@@ -1,8 +1,8 @@
 export type PhotoBox = { top: number; left: number; width: number; height: number };
 
 /* Room set aside under the print for its caption: the 16px gap plus the
-   couple of lines the caption itself can run to. */
-const CAPTION_SPACE = 104;
+   90px the caption is allowed to run to (its max-height in the CSS). */
+const CAPTION_SPACE = 106;
 
 /**
  * The open print's box: as large as fits comfortably, at the photo's own

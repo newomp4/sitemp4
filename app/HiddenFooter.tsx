@@ -150,7 +150,7 @@ export default function HiddenFooter() {
           <p className={styles.revealQuote}>
             &ldquo;It won&rsquo;t fail because of me&rdquo;
           </p>
-          <p className={styles.revealBy}>tom sachs</p>
+          <p className={styles.revealBy}>Tom Sachs</p>
         </div>
       </div>
     </div>

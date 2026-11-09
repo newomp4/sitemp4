@@ -1,6 +1,7 @@
 import { Fragment, type CSSProperties, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { ageAt } from "@/lib/age";
 import { profile, path, socials, type PathItem } from "@/lib/content";
 import AgeTicker from "./AgeTicker";
 import AnchorLink from "./AnchorLink";
@@ -19,6 +20,11 @@ import styles from "./styles.module.css";
 const RISE_STEP = 0.05;
 const PATH_RISE_START = 3;
 
+/* The age and the year in the footer are worked out when the page is
+   built, and the page is rebuilt once a day, so neither goes stale
+   between deploys. (The age also updates itself in the browser.) */
+export const revalidate = 86400;
+
 const rise = (step: number): CSSProperties =>
   ({ "--rise-delay": `${step * RISE_STEP}s` }) as CSSProperties;
 
@@ -33,7 +39,7 @@ function richText(text: string) {
     parts.push(
       m[2] === "#age" ? (
         <AgeTicker key={m.index} birthday={profile.birthday}>
-          {m[1]}
+          {Math.floor(ageAt(profile.birthday, Date.now())) || m[1]}
         </AgeTicker>
       ) : m[2].startsWith("#") ? (
         <AnchorLink key={m.index} href={m[2]} className={styles.captionLink}>
@@ -86,6 +92,7 @@ function PathRow({ item, index }: { item: PathItem; index: number }) {
             alt=""
             width={22}
             height={22}
+            loading="eager"
             className="h-full w-full object-cover"
           />
         </span>
@@ -150,6 +157,9 @@ export default function Home() {
   return (
     <div className={`${styles.root} min-h-dvh w-full bg-[#111111]`}>
       <div className={`${styles.homeContent} mx-auto w-full max-w-[35rem] px-6 py-12 max-sm:px-8 sm:py-16`}>
+        {/* The introduction and the path together are the page's main
+            content; the footer sits outside it. */}
+        <main>
         {/* ── Hero ── */}
         <section aria-labelledby="intro-heading">
           <h1
@@ -231,19 +241,22 @@ export default function Home() {
           })}
         </section>
 
-        <main>
+          {/* On a phone the chapters stack their years over their titles, so
+              the page leans on spacing to keep its three parts apart: 4px
+              inside a chapter, 24px between chapters, 48px between the
+              introduction, the path and the footer. */}
           {/* ── The path ── */}
           <section
             id="path"
             aria-labelledby="path-heading"
-            className="scroll-mt-10 pt-8"
+            className="scroll-mt-10 pt-8 max-sm:pt-12"
           >
             {/* Kept for section navigation. Restore the original visible styling:
                 className="mb-6 text-meta font-strong text-[#F5F5F5]" */}
             <h2 id="path-heading" className="sr-only">
               So far
             </h2>
-            <ul className={`${styles.list} space-y-4 max-sm:space-y-3`}>
+            <ul className={`${styles.list} space-y-4 max-sm:space-y-6`}>
               {path.map((item, index) => (
                 <PathRow key={item.title} item={item} index={index} />
               ))}
@@ -254,7 +267,7 @@ export default function Home() {
         {/* ── The end of the page: where else to go, and when it is here ── */}
         <footer
           style={rise(PATH_RISE_START + path.length)}
-          className="rise pt-8"
+          className="rise pt-8 max-sm:pt-12"
         >
           <div className="relative z-20 flex items-center gap-8">
             <GalleryLink />
@@ -263,12 +276,12 @@ export default function Home() {
                 <path d="M1.73717 12.7374C1.05375 12.054 1.05376 10.946 1.73717 10.2626L9.48717 2.51256C9.81536 2.18437 10.2605 2 10.7246 2H14.2749C14.739 2 15.1841 2.18437 15.5123 2.51256L16.2623 3.26256C16.9457 3.94598 16.9457 5.05402 16.2623 5.73744L6.73717 15.2626C6.05376 15.946 4.94572 15.946 4.2623 15.2626L1.73717 12.7374Z" fill="currentColor" />
                 <path fillRule="evenodd" clipRule="evenodd" d="M20.2497 20.25C19.2832 21.2165 17.7162 21.2165 16.7497 20.25L10.2497 13.75L13.7497 10.25L20.2497 16.75C21.2162 17.7165 21.2162 19.2835 20.2497 20.25Z" fill="currentColor" />
               </svg>
-              <span>Tools</span>
+              <span>Projects</span>
             </Link>
           </div>
           <LocalTime />
           <p className="mt-2 text-meta text-[#7D7D7D]">
-            © 2026 {profile.name}
+            © {new Date().getFullYear()} {profile.name}
           </p>
         </footer>
       </div>

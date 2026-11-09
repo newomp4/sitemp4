@@ -43,7 +43,7 @@ const spring = { type: "spring" as const, stiffness: 320, damping: 34, mass: 1 }
 const RADIUS = 10;
 /* The print and the warmer must agree, or warming fetches the wrong
    candidate and the open still waits on a download. */
-const TILE_SIZES = "(max-width: 520px) 46vw, (max-width: 860px) 30vw, 176px";
+const TILE_SIZES = "(max-width: 520px) 46vw, (max-width: 607px) 30vw, (max-width: 860px) 182px, 176px";
 const PRINT_SIZES = "(max-width: 520px) 86vw, 760px";
 const PRINT_QUALITY = 90;
 
@@ -191,10 +191,19 @@ function SoftPhoto({
    on metered or very slow connections. */
 const IDLE_WARM = 4;
 
+/* Metered or very slow: no warming at all, not even on hover or focus,
+   where Tabbing across the grid would otherwise pull every full print. */
+function constrainedConnection() {
+  type Conn = { saveData?: boolean; effectiveType?: string };
+  const link = (navigator as Navigator & { connection?: Conn }).connection;
+  return Boolean(link?.saveData || (link?.effectiveType && /2g$/.test(link.effectiveType)));
+}
+
 function useWarmQueue(total: number) {
   const [queue, setQueue] = useState<number[]>([]);
 
   const warm = useCallback((...indexes: number[]) => {
+    if (constrainedConnection()) return;
     setQueue((current) => {
       const next = indexes.filter((i) => i < total && !current.includes(i));
       return next.length ? [...current, ...next] : current;
@@ -202,9 +211,7 @@ function useWarmQueue(total: number) {
   }, [total]);
 
   useEffect(() => {
-    type Conn = { saveData?: boolean; effectiveType?: string };
-    const link = (navigator as Navigator & { connection?: Conn }).connection;
-    if (link?.saveData || (link?.effectiveType && /2g$/.test(link.effectiveType))) return;
+    if (constrainedConnection()) return;
 
     let cancelled = false;
     const start = () => {
@@ -388,6 +395,7 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
                   role="tile"
                   sizes={TILE_SIZES}
                   preload={index < 4}
+                  eager={index >= 4 && index < 12}
                   seen={seen}
                 />
               </motion.button>
@@ -411,6 +419,15 @@ export default function PhotoGrid({ photos }: { photos: Photo[] }) {
           aria-label={photo.alt}
           onCancel={(event) => { event.preventDefault(); close(); }}
           onKeyDown={(event) => {
+            /* Handle Escape here rather than only in onCancel: a second
+               Escape while the print is flying home sends a cancel event
+               that cannot be prevented, and the dialog would shut
+               mid-flight with its grid slot left empty. */
+            if (event.key === "Escape") {
+              event.preventDefault();
+              close();
+              return;
+            }
             if (event.key !== "Tab") return;
             const controls = Array.from(event.currentTarget.querySelectorAll<HTMLElement>(
               'a[href], button:not([disabled]), [tabindex="0"]',

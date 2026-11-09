@@ -6,6 +6,9 @@ import { ageAt } from "../lib/age.ts";
 import { profile, path } from "../lib/content.ts";
 import { tools } from "../lib/tools.ts";
 import { fitPhoto } from "../lib/photo-layout.ts";
+import { metadata as toolsMetadata } from "../app/tools/page.tsx";
+import { metadata as galleryMetadata } from "../app/gallery/page.tsx";
+import { shareImage } from "../app/share.ts";
 
 test("age advances on the birthday, without rounding up beforehand", () => {
   const birthday = Date.parse("2026-12-01T00:00:00-05:00");
@@ -73,5 +76,14 @@ test("every tool is either open source with a repo, or an app with its own site"
       assert.ok(tool.repo, `${tool.name} has no price and no repo`);
       assert.ok(tool.lang, `${tool.name} has no price and names no language`);
     }
+  }
+});
+
+// A page that sets its own Open Graph fields replaces the layout's whole
+// object, so the preview image has to be carried along explicitly or the
+// link shares as a bare card.
+test("pages with their own share card still show the preview image", () => {
+  for (const [name, metadata] of [["tools", toolsMetadata], ["gallery", galleryMetadata]]) {
+    assert.deepEqual(metadata.openGraph?.images, [shareImage], `${name} shares without the preview image`);
   }
 });

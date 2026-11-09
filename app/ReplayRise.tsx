@@ -13,11 +13,17 @@ export default function ReplayRise() {
     const onShow = (event: PageTransitionEvent) => {
       if (!event.persisted) return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      document.querySelectorAll<HTMLElement>(".rise").forEach((element) => {
-        element.getAnimations().forEach((animation) => {
-          animation.currentTime = 0;
-          animation.play();
-        });
+      // A finished entrance no longer shows up in getAnimations(), so there
+      // is nothing to rewind. Taking the animation off and putting it back,
+      // with one forced layout in between, starts each one over from its
+      // own delay, so the stagger runs again exactly as on a first load.
+      const elements = document.querySelectorAll<HTMLElement>(".rise");
+      elements.forEach((element) => {
+        element.style.animation = "none";
+      });
+      void document.documentElement.offsetWidth;
+      elements.forEach((element) => {
+        element.style.animation = "";
       });
     };
     window.addEventListener("pageshow", onShow);

@@ -118,6 +118,7 @@ export default function NamePortrait({ children }: { children: ReactNode }) {
             sizes="136px"
             quality={90}
             loading="eager"
+            fetchPriority="low"
             className="object-cover"
           />
         </motion.span>

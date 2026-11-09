@@ -1,8 +1,8 @@
 import Image from "next/image";
 import type { ComponentType, PointerEvent } from "react";
 import type { Tool } from "@/lib/tools";
-import ID4Burst, { ID4_BURST_DURATION, ID4Spark } from "./ID4Burst";
-import PetalBurst, { PETAL_BURST_DURATION } from "./PetalBurst";
+import ID4Burst, { ID4Spark } from "./ID4Burst";
+import PetalBurst from "./PetalBurst";
 import styles from "./tools.module.css";
 
 /**
@@ -12,16 +12,31 @@ import styles from "./tools.module.css";
  */
 
 /** Each app's own moment, keyed by name. */
-export const flourishes: Partial<Record<string, { Burst: ComponentType; duration: number }>> = {
-  Petal: { Burst: PetalBurst, duration: PETAL_BURST_DURATION },
-  ID4: { Burst: ID4Burst, duration: ID4_BURST_DURATION },
+export const flourishes: Partial<Record<string, { Burst: ComponentType }>> = {
+  Petal: { Burst: PetalBurst },
+  ID4: { Burst: ID4Burst },
 };
 
 /** ID4's mark is drawn so it can turn in its tile; the others wear their
-    artwork, or their initial until they have some. */
+    artwork, or their initial until they have some. The artwork is a few
+    kilobytes and sits at the top of the page, so it is fetched at once and
+    served as it is: going through the image optimizer left the tile an
+    empty grey square for a second or two whenever its cache was cold. */
 export function AppMark({ tool }: { tool: Tool }) {
   if (tool.name === "ID4") return <ID4Spark className={styles.spark} />;
-  if (tool.icon) return <Image src={tool.icon} alt="" width={22} height={22} className={styles.markArt} />;
+  if (tool.icon) {
+    return (
+      <Image
+        src={tool.icon}
+        alt=""
+        width={22}
+        height={22}
+        loading="eager"
+        unoptimized
+        className={styles.markArt}
+      />
+    );
+  }
   return <span className={styles.markLetter}>{tool.name.charAt(0).toUpperCase()}</span>;
 }
 

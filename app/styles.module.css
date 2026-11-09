@@ -2,6 +2,7 @@
 
 .root {
   color-scheme: dark;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .homeContent {
@@ -117,7 +118,6 @@
   transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.footerLink:hover,
 .footerLink:focus-visible {
   color: #f5f5f5;
 }
@@ -126,9 +126,20 @@
   translate: 0 1px;
 }
 
-.footerLink:hover > svg,
 .footerLink:focus-visible > svg {
   transform: translateY(-1px) rotate(-6deg);
+}
+
+/* Hover only where hover exists: on a touch screen a tap would latch these
+   on until the next tap somewhere else. */
+@media (hover: hover) {
+  .footerLink:hover {
+    color: #f5f5f5;
+  }
+
+  .footerLink:hover > svg {
+    transform: translateY(-1px) rotate(-6deg);
+  }
 }
 
 .galleryPreview {
@@ -199,7 +210,6 @@
   transition: color 150ms ease;
 }
 
-.handleLink:hover,
 .handleLink:focus-visible {
   color: #f5f5f5;
 }
@@ -213,13 +223,26 @@
     transform 150ms ease;
 }
 
-.handleLink:hover .handleArrow,
 .handleLink:focus-visible .handleArrow {
   opacity: 1;
   transform: translate(0, 0);
   transition:
     opacity 250ms ease 70ms,
     transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 70ms;
+}
+
+@media (hover: hover) {
+  .handleLink:hover {
+    color: #f5f5f5;
+  }
+
+  .handleLink:hover .handleArrow {
+    opacity: 1;
+    transform: translate(0, 0);
+    transition:
+      opacity 250ms ease 70ms,
+      transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1) 70ms;
+  }
 }
 
 /* ── The note rests folded; hovering/focusing the row breathes it open.
@@ -265,7 +288,7 @@
   transform: translate(0, 0);
 }
 
-/* ── Deep-linked chapter (e.g. "college" in the intro → #bryant): the
+/* ── Deep-linked chapter (a [link](#bryant) in any copy): the
    AnchorLink glide lands the row upper-middle with its note unfolded.
    scroll-margin covers direct /#bryant visits; :target and
    [data-unfold] both open the note, no flash. ── */
@@ -370,13 +393,13 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.socialIcon:hover,
 .socialIcon:focus-visible {
   color: #f5f5f5;
 }
 
 @media (hover: hover) {
   .socialIcon:hover {
+    color: #f5f5f5;
     transform: translateY(-1px);
   }
 }
@@ -428,59 +451,19 @@
   transform: translateX(-2px);
 }
 
-/* ── The photos page. Quiet, film-first: frames sharpen when regarded,
-   neighbors recede, everything on slow deliberate curves. ── */
-.photoFig {
-  transition: opacity 500ms ease;
-}
-
-.photoFrame {
-  overflow: hidden;
-  border-radius: 8px;
-  border: 1px solid #232323;
-  transition: border-color 500ms ease;
-}
-
-.photoImg {
-  display: block;
-  transform: scale(1);
-  transition: transform 1200ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.photoIndex {
-  font-size: var(--text-meta);
-  color: #7d7d7d;
-  transition: color 500ms ease;
-}
-
-/* Hover choreography only where hover exists, on touch a tap would
-   latch these until the next tap elsewhere */
-@media (hover: hover) {
-  .photoList:hover > li:not(:hover) .photoFig {
-    opacity: 0.7;
-  }
-
-  .photoList > li:hover .photoFrame {
-    border-color: #333333;
-  }
-
-  .photoList > li:hover .photoImg {
-    transform: scale(1.015);
-  }
-
-  .photoList > li:hover .photoIndex {
-    color: #f5f5f5;
-  }
-}
-
 .captionLink {
   color: #d4d4d4;
   transition: color 150ms ease;
 }
 
-.captionLink:hover,
 .captionLink:focus-visible {
   color: #f5f5f5;
+}
+
+@media (hover: hover) {
+  .captionLink:hover {
+    color: #f5f5f5;
+  }
 }
 
 /* ── The hidden footer: a fixed aurora in the avatar's electric blues
@@ -836,12 +819,10 @@
   color: rgba(238, 244, 251, 0.55);
 }
 
-/* ── Reduced motion: the print renders straight and in full color, nothing moves ── */
+/* ── Reduced motion: nothing moves ── */
 @media (prefers-reduced-motion: reduce) {
   .handleLink,
   .handleArrow,
-  .print,
-  .print::after,
   .noteWrap,
   .logoBox,
   .list > li,
@@ -872,17 +853,12 @@
     display: none;
   }
 
-  /* Photos page: everything rendered plainly, nothing moves */
+  /* Sub-pages: the way home rendered plainly, nothing moves */
   .backLink,
-  .backArrow,
-  .photoFig,
-  .photoFrame,
-  .photoImg,
-  .photoIndex {
+  .backArrow {
     transition: none;
   }
 
-  .photoList > li:hover .photoImg,
   .backLink:hover .backArrow,
   .backLink:focus-visible .backArrow {
     transform: none;
@@ -896,15 +872,6 @@
   .list .noteWrap {
     grid-template-rows: 1fr;
     opacity: 1;
-  }
-
-  .print,
-  .print:hover {
-    transform: none;
-  }
-
-  .print:hover::after {
-    opacity: 0;
   }
 
   .list > li:hover,

@@ -236,7 +236,6 @@
 
 .word {
   display: inline-block;
-  will-change: opacity, transform, filter;
 }
 
 @keyframes arrive {

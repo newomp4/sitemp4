@@ -38,6 +38,8 @@ export default function ToolsList() {
   const [typing, setTyping] = useState(true);
   const [open, setOpen] = useState<string | null>(null);
   const items = useRef<(HTMLButtonElement | null)[]>([]);
+  const stage = useRef<HTMLElement>(null);
+  const column = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotionPreference();
   const petalBurst = useBurst(PETAL_BURST_DURATION, reducedMotion);
   const id4Burst = useBurst(ID4_BURST_DURATION, reducedMotion);
@@ -84,14 +86,46 @@ export default function ToolsList() {
     return () => window.clearTimeout(done);
   }, []);
 
+  /* Pin the column where centring puts it at rest (see .stage[data-pinned]).
+     Unpinning, measuring and pinning again happen in one go, so nothing
+     moves on screen. It is measured again once the fonts are in and on
+     resize, but never while an entry is open, since that is exactly the
+     height it must not re-centre for. */
+  useEffect(() => {
+    const el = stage.current;
+    const col = column.current;
+    if (!el || !col) return;
+    const pin = () => {
+      if (el.querySelector("li[data-open]")) return;
+      delete el.dataset.pinned;
+      const top = col.offsetTop - parseFloat(getComputedStyle(el).paddingTop);
+      el.style.setProperty("--rest-top", `${Math.max(0, top)}px`);
+      el.dataset.pinned = "";
+    };
+    pin();
+    let frame = 0;
+    const onResize = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(pin);
+    };
+    let live = true;
+    document.fonts?.ready.then(() => { if (live) pin(); });
+    window.addEventListener("resize", onResize);
+    return () => {
+      live = false;
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
+
   return (
-    <main className={styles.stage}>
+    <main ref={stage} className={styles.stage}>
       <BackLink />
 
-      <div className={styles.column}>
+      <div ref={column} className={styles.column}>
         <h1 className={`${styles.title} rise`} style={{ "--rise-delay": "0.08s" } as CSSProperties}>
           <Icon name="hammer" size={20} className={styles.titleIcon} />
-          Tools
+          Projects
         </h1>
 
         <p className={`${styles.intro} rise`} style={{ "--rise-delay": "0.14s" } as CSSProperties}>
@@ -156,11 +190,15 @@ export default function ToolsList() {
                     }}
                     onFocus={(event) => {
                       setCursor(i);
-                      if (event.currentTarget.matches(":focus-visible")) burst?.play();
+                      // Not when focus is coming back from the row's own
+                      // entry (Escape, or Shift+Tab out of its links): that
+                      // is the entry closing, not someone arriving.
+                      const fromEntry = event.currentTarget.closest("li")?.contains(event.relatedTarget as Node | null);
+                      if (!fromEntry && event.currentTarget.matches(":focus-visible")) burst?.play();
                     }}
                     onBlur={() => setCursor(-1)}
                   >
-                    {/* Out of flow, so it is not a fifth cell in the row's
+                    {/* Out of flow, so it is not a cell in the row's
                         grid, and clipped to the bar, so the band never runs
                         out into the fold below. */}
                     {app && <span className={styles.sweep} aria-hidden="true" />}

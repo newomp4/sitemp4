@@ -39,6 +39,18 @@
   .stage { justify-content: safe center; }
 }
 
+/* Once the page has laid out, the column is pinned where centring put it,
+   so opening an entry only grows the page downward. Left centred, every
+   open re-centred the whole column and slid the row out from under the
+   pointer, or from under the thumb about to tap it closed. */
+.stage[data-pinned] {
+  justify-content: flex-start;
+}
+
+.stage[data-pinned] .column {
+  margin-top: var(--rest-top, 0px);
+}
+
 .column {
   margin-inline: auto;
   width: 100%;
@@ -503,9 +515,24 @@
 /* Hover rather than the row cursor on purpose: a light that follows a
    pointer has nothing to say once the pointer has left, and leaving the
    bar for the fold below should put it out. */
-.lit .row:hover::before,
 .lit .row:focus-visible::before {
   opacity: 1;
+}
+
+/* Only where hover exists: on a touch screen a tap would leave the light,
+   the dimmed band and the bright price latched on after the row closed. */
+@media (hover: hover) {
+  .lit .row:hover::before {
+    opacity: 1;
+  }
+
+  .lit .row:hover .sweep {
+    opacity: 0.35;
+  }
+
+  .lit .row:hover .price {
+    color: var(--price-bright);
+  }
 }
 
 /* The row's own hover slab would flatten the tint; the light is the
@@ -514,10 +541,8 @@
   background: transparent;
 }
 
-/* A price is not a language, so it does not stand in the language's
-   column: it sits at the end of the line that describes the thing, after
-   the same middle dot the rest of the site separates clauses with, and
-   the language column is left empty. Nothing to mistake for anything. */
+/* The price sits at the end of the line that describes the thing, after
+   the same middle dot the rest of the site separates clauses with. */
 .price {
   white-space: nowrap;
   color: var(--price-quiet);
@@ -532,7 +557,6 @@
   color: #5a5a5a;
 }
 
-.lit .row:hover .price,
 .lit .row:focus-visible .price,
 .lit .row[data-open] .price {
   color: var(--price-bright);
@@ -588,10 +612,8 @@
 }
 
 /* Under the pointer the moving band would be reading against the light
-   the pointer is already casting, so it steps back and lets it lead. */
-.lit .row:hover .sweep {
-  opacity: 0.35;
-}
+   the pointer is already casting, so it steps back and lets it lead (the
+   rule sits with the other hover-only ones above). */
 
 /* Off one edge to off the other, evenly, with no pause held at either
    end. The pause was affordable while a tint was underneath it; with
